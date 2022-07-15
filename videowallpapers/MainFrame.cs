@@ -11,8 +11,8 @@ namespace videowallpapers
         BackWork backwork;
         readonly string cfgpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\config.cfg"; // путь конфига
         readonly string shortcut= Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\videowallpapers.lnk"; // ярлык автозагрузки 
-        string mpcFilter = "MPC плейлист (*.mpcpl)|*.mpcpl|KMP плейлист (*.kpl)|*.kpl|Все файлы (*.*)|*.*";
-        string kmpFilter = "KMP плейлист (*.kpl)|*.kpl|MPC плейлист (*.mpcpl)|*.mpcpl|Все файлы (*.*)|*.*";
+        readonly string mpcFilter = "MPC плейлист (*.mpcpl)|*.mpcpl|KMP плейлист (*.kpl)|*.kpl|Все файлы (*.*)|*.*";
+        readonly string kmpFilter = "KMP плейлист (*.kpl)|*.kpl|MPC плейлист (*.mpcpl)|*.mpcpl|Все файлы (*.*)|*.*";
         string pathname = ""; // путь плейлиста
         int workAfterBoot; // работа после запуска
         readonly OpenFileDialog ofd = new OpenFileDialog();
@@ -23,10 +23,10 @@ namespace videowallpapers
 
         public MainForm()
         {
-
             backwork = new BackWork(0);
             // дизайн
             InitializeComponent();
+            this.CenterToScreen();
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             // проверка автозапуска
             if (File.Exists(shortcut))
