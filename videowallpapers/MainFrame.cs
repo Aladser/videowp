@@ -225,7 +225,7 @@ namespace videowallpapers
         // Информация о программе
         private void aboutImage_MouseHover(object sender, EventArgs e)
         {
-            toolTip.SetToolTip(aboutImage, "Видеобом 1.63\n(c) Aladser\n2022");
+            toolTip.SetToolTip(aboutImage, "Видеобом 1.65\n(c) Aladser\n2022");
         }
         // Открыть приложение после нажатия на иконку в трее
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
