@@ -262,6 +262,7 @@ namespace videowallpapers
                 writer.WriteLine(text);
                 writer.Close();
             }
+            // Закрытие приложения
             var result = MessageBox.Show("Вы действительно хотите закрыть приложение?", "Завершение работы", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
                 Process.GetCurrentProcess().Kill();
