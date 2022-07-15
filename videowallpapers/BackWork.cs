@@ -88,6 +88,14 @@ namespace videowallpapers
             bw.CancelAsync();
         }
         /// <summary>
+        /// Возравращает, работает ли фоновая задача
+        /// </summary>
+        /// <returns></returns>
+        public bool isActive()
+        {
+            return bw.IsBusy;
+        }
+        /// <summary>
         /// установка времнеи простоя системы
         /// </summary>
         /// <param name="inActionNumber"></param>
@@ -95,6 +103,7 @@ namespace videowallpapers
         {
             this.inActionNumber = inActionNumber;
             inactionInMs = (int)(inActonTime[inActionNumber] * 60000);
+            Console.WriteLine(inactionInMs);
         }
         /// <summary>
         /// возвращает индекс времени для combobox

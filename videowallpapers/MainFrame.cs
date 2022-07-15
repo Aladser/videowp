@@ -140,7 +140,7 @@ namespace videowallpapers
                 notifyIcon.Visible = true;
             }
         }
-        // смена периода бездействия
+        // Переключение времени простоя
         private void TimeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             offRadioButton.Checked = true;
@@ -247,7 +247,15 @@ namespace videowallpapers
                 writer.WriteLine(text);
                 writer.Close();
             }
-            Process.GetCurrentProcess().Kill();
+            // Закрытие или сворачивание приложения
+            if(!backwork.isActive())
+                Process.GetCurrentProcess().Kill();
+            else
+            {
+                e.Cancel = true;
+                Hide();
+                notifyIcon.Visible = true;
+            }
         }
 
     }
