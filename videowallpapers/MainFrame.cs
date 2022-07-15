@@ -60,12 +60,8 @@ namespace videowallpapers
                 }
                 else
                 {
-                    if(File.Exists(line))
-                        playlistNameLabel.Text = "Неизвестный формат плейлиста";
-                    else
-                        playlistNameLabel.Text = "Не найден плейлист";
+                    playlistNameLabel.Text = File.Exists(line) ? "Неизвестный формат плейлиста" : "Не найден плейлист";
                     ofd.Filter = mpcFilter;
-                    procIndex = 0;
                     playerComboBox.SelectedIndex = 0;
                     switchPanel.Enabled = false;
                     playlistSelectButton.Enabled = true;
@@ -87,11 +83,26 @@ namespace videowallpapers
                 globalHook.OnMouseActivity += GlobalMouseActivity;
                 globalHook.Start(true, true);
             }
-            catch (FileNotFoundException ex)
+            catch (FileNotFoundException)
             {
-                var result = MessageBox.Show(ex.Message, "Приложение не запущено", MessageBoxButtons.OK);
+                var result = MessageBox.Show("Файл настроек не найден. Будут установлены стандартные настройки", "Приложение не запущено", MessageBoxButtons.OK);
                 if (result == DialogResult.OK)
-                    Environment.Exit(1);
+                {
+                    StreamWriter writer = new StreamWriter(cfgpath, false);
+                    String text = "period = 0\n";
+                    text += "workafterboot = 0\n";
+                    text += "playerpath = ";
+                    writer.WriteLine(text);
+                    writer.Close();
+                    Visible = true;
+                    playlistNameLabel.Text = "Не найден плейлист";
+                    ofd.Filter = mpcFilter;
+                    playerComboBox.SelectedIndex = 0;
+                    switchPanel.Enabled = false;
+                    playlistSelectButton.Enabled = true;
+                    notifyIcon.Visible = false;
+                    offRadioButton.Checked = true;
+                }
             }
         }
         // глобальное нажатие клавиатуры
@@ -175,16 +186,8 @@ namespace videowallpapers
             switchPanel.Enabled = false;
             playlistNameLabel.Text = "Не выбран плейлист";
             pathname = "";
-            if(playerComboBox.SelectedIndex == 0)
-            {
-                procIndex = 0;
-                ofd.Filter = mpcFilter;
-            }
-            else
-            {
-                procIndex = 1;
-                ofd.Filter = kmpFilter;
-            }
+            procIndex = playerComboBox.SelectedIndex==0 ? 0 : 1;
+            ofd.Filter = playerComboBox.SelectedIndex == 0 ? mpcFilter : kmpFilter;
         }
         // переключение плеера и плейлиста
         private void playlistSelectButton_Click(object sender, EventArgs e)
@@ -222,7 +225,7 @@ namespace videowallpapers
         // Информация о программе
         private void aboutImage_MouseHover(object sender, EventArgs e)
         {
-            toolTip.SetToolTip(aboutImage, "Видеобом 1.6\nby Aladser\n2022");
+            toolTip.SetToolTip(aboutImage, "Видеобом 1.63\n(c) Aladser\n2022");
         }
         // Открыть приложение после нажатия на иконку в трее
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
