@@ -14,7 +14,7 @@ namespace videowallpapers
         readonly string mpcFilter = "MPC плейлист (*.mpcpl)|*.mpcpl|KMP плейлист (*.kpl)|*.kpl|Все файлы (*.*)|*.*";
         readonly string kmpFilter = "KMP плейлист (*.kpl)|*.kpl|MPC плейлист (*.mpcpl)|*.mpcpl|Все файлы (*.*)|*.*";
         string pathname = ""; // путь плейлиста
-        int workAfterBoot; // работа после запуска
+        int workafterboot; // работа после запуска
         readonly OpenFileDialog ofd = new OpenFileDialog();
         bool isEdited = false;
         // процесс Windows
@@ -44,37 +44,19 @@ namespace videowallpapers
                 // считывание workafterboot
                 line = reader.ReadLine();
                 number = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
-                if (number == 0)
-                {
-                    workAfterBoot = 0;
-                    wabCheckBox.Checked = false;
-                }
-                else
-                {
-                    workAfterBoot = 1;
-                    wabCheckBox.Checked = true;
-                }
+                workafterboot = number==0 ? 0 : 1;
+                wabCheckBox.Checked = number==0 ? false : true;
                 // считывание playerpath
                 line = reader.ReadLine();
                 line = line.Substring(line.IndexOf("= ") + 2);
                 string ext = Path.GetExtension(line);
-                if ( File.Exists(line) && (ext==".mpcpl" || ext==".kpl") )
+                if (File.Exists(line))
                 {
                     playlistNameLabel.Text = line;
                     pathname = line;
-                    if (ext == ".mpcpl")
-                    {
-                        playerComboBox.SelectedIndex = 0;
-                        procIndex = 0;
-                        ofd.Filter = mpcFilter;
-                    }                       
-                    else
-                    {
-                        playerComboBox.SelectedIndex = 1;
-                        procIndex = 1;
-                        ofd.Filter = kmpFilter;
-                    }
-                    pathname = line;
+                    playerComboBox.SelectedIndex = ext==".mpcpl" ? 0 : 1;
+                    procIndex = ext==".mpcpl" ? 0 : 1;
+                    ofd.Filter = ext==".mpcpl" ? mpcFilter : kmpFilter;
                 }
                 else
                 {
@@ -92,7 +74,7 @@ namespace videowallpapers
                 }
                 reader.Close();
                 // начать работу после запуска
-                if (workAfterBoot == 1)
+                if (workafterboot == 1)
                 {
                     notifyIcon.Visible = true;
                     onRadioButton.Checked = true;
@@ -234,7 +216,7 @@ namespace videowallpapers
         // Флаг Работа после запуска
         private void wabCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            workAfterBoot = wabCheckBox.Checked ? 1 : 0;
+            workafterboot = wabCheckBox.Checked ? 1 : 0;
             isEdited = true;
         }
         // Информация о программе
@@ -257,21 +239,12 @@ namespace videowallpapers
             {
                 StreamWriter writer = new StreamWriter(cfgpath, false);
                 String text = "period = " + timeComboBox.SelectedIndex + "\n";
-                text += "workafterboot = " + workAfterBoot + "\n";
+                text += "workafterboot = " + workafterboot + "\n";
                 text += "playerpath = " + pathname + "\n";
                 writer.WriteLine(text);
                 writer.Close();
             }
-            // Закрытие приложения
-            var result = MessageBox.Show("Вы действительно хотите закрыть приложение?", "Завершение работы", MessageBoxButtons.YesNo);
-            if (result == DialogResult.Yes)
-                Process.GetCurrentProcess().Kill();
-            else
-            {
-                e.Cancel = true;
-                this.Hide();
-                notifyIcon.Visible = true;
-            }
+            Process.GetCurrentProcess().Kill();
         }
 
     }
