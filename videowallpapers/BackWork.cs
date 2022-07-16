@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace videowallpapers
@@ -31,46 +32,39 @@ namespace videowallpapers
             setTimePeriod(inActionNumber);
         }
         // фоновая задача
-        // downtime обнулятся из событий движения мыши и нажатия клавиатуры
         private void BW_DoWork(object sender, DoWorkEventArgs e)
         {
             bool isActive = false;
             downtime = 0;
-            long s;
-            int delta;
             while (true)
             {
-                s = DateTime.Now.Ticks/TimeSpan.TicksPerMillisecond;
                 // послана команда на выключение фоновой задачи
                 if (bw.CancellationPending)
                 {
                     e.Cancel = true;
                     break;
                 }
-                // закончился таймер ожидания
-                if (downtime>=inactionInMs && !IsForegroundFullScreen() && !isActive)
+                //  увеличение таймера
+                if (downtime<inactionInMs && !IsForegroundFullScreen() && !isActive)
+                {
+                    downtime += 100;
+                }
+                // таймер закончился
+                else if (downtime>=inactionInMs && !IsForegroundFullScreen() && !isActive)
                 {
                     isActive = true;
                     Process.Start((string)e.Argument);
                 }
-                if (downtime >= inactionInMs && !IsForegroundFullScreen() && isActive)
-                {
-                    continue;
-                }
                 // пробуждение после запуска приложения
                 else if ((downtime<inactionInMs || IsForegroundFullScreen()) && isActive)
                 {
+                    // downtime обнулятся из событий движения мыши и нажатия клавиатуры
                     isActive = false;
-                    Process[] processes = System.Diagnostics.Process.GetProcessesByName(procs[procIndex]);
+                    Process[] processes = Process.GetProcessesByName(procs[procIndex]);
                     foreach (Process elem in processes)
                         elem.Kill();
                 }
-                else
-                {
-                    delta = (int)((DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond - s));
-                    System.Threading.Thread.Sleep(90-delta);
-                    downtime += 100;
-                }
+                Thread.Sleep(95);
             }
         }
         /// <summary>
