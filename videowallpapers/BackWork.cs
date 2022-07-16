@@ -1,9 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace videowallpapers
 {
@@ -29,7 +30,7 @@ namespace videowallpapers
             setTimePeriod(inActionNumber);
         }
         // фоновая задача
-        // downtime обнулятся и событий движения мыши и нажатия клавиатуры
+        // downtime обнулятся из событий движения мыши и нажатия клавиатуры
         private void BW_DoWork(object sender, DoWorkEventArgs e)
         {
             bool isActive = false;
@@ -42,37 +43,14 @@ namespace videowallpapers
                     e.Cancel = true;
                     break;
                 }
-                // обновление downtime для Win10-11
-                if(Environment.OSVersion.ToString() == "Microsoft Windows NT 6.2.9200.0")
-                {
-                    downtime = GetIdleTime();
-                } 
                 // закончился таймер ожидания
-                if (downtime>=inactionInMs && !isActive)
+                if (downtime>=inactionInMs && !IsForegroundFullScreen() && !isActive)
                 {
-                    bool isProcess = false;
-                    // запрет запуска второго видеоплеера
-                    Process[] actprocs = Process.GetProcesses();
-                    foreach (Process elemi in Process.GetProcesses())
-                    {
-                        foreach(string elemj in procs)
-                        if (elemi.ToString().Contains(elemj))
-                        {
-                            isProcess = true;
-                            break;
-                        }
-                    }
-                    if (isProcess == true)
-                        continue;
                     isActive = true;
                     Process.Start((string)e.Argument);
                 }
-                else if (downtime >= (inactionInMs+1000) && isActive)
-                {
-                    continue;
-                }
                 // пробуждение после запуска приложения
-                else if (downtime < inactionInMs && isActive)
+                else if ((downtime<inactionInMs || IsForegroundFullScreen()) && isActive)
                 {
                     isActive = false;
                     Process[] processes = System.Diagnostics.Process.GetProcessesByName(procs[procIndex]);
@@ -82,8 +60,7 @@ namespace videowallpapers
                 else
                 {
                     System.Threading.Thread.Sleep(100);
-                    if (Environment.OSVersion.ToString() != "Microsoft Windows NT 6.2.9200.0")
-                        downtime += 100;
+                    downtime += 100;
                 }
             }
         }
@@ -140,26 +117,58 @@ namespace videowallpapers
         {
             return inActionNumber;
         }
-
+        /// <summary>
+        /// Событие об остановке показа обоев
+        /// </summary>
         public void stopShowWallpaper()
         {
             downtime = 0;
         }
-        // Таймер бездействия системы. Работает корректно на Вин10/Вин11
-        [DllImport("User32.dll")]
-        private static extern bool GetLastInputInfo(ref LASTINPUTINFO plii);
-        internal struct LASTINPUTINFO
-        {
-            public uint cbSize;
 
-            public uint dwTime;
-        }
-        public static uint GetIdleTime()
+        [StructLayout(LayoutKind.Sequential)]
+        private struct RECT
         {
-            LASTINPUTINFO LastUserAction = new LASTINPUTINFO();
-            LastUserAction.cbSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(LastUserAction);
-            GetLastInputInfo(ref LastUserAction);
-            return ((uint)Environment.TickCount - LastUserAction.dwTime);
+            public int left;
+            public int top;
+            public int right;
+            public int bottom;
+        }
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+
+        [DllImport("user32.dll")]
+        private static extern bool GetWindowRect(HandleRef hWnd, [In, Out] ref RECT rect);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
+
+        public bool IsForegroundFullScreen()
+        {
+            return IsForegroundFullScreen(null);
+        }
+
+        public bool IsForegroundFullScreen(Screen screen)
+        {
+            if (screen == null)
+            {
+                screen = Screen.PrimaryScreen;
+            }
+            RECT rect = new RECT();
+            GetWindowRect(new HandleRef(null, GetForegroundWindow()), ref rect);
+            IntPtr hWnd = (IntPtr)GetForegroundWindow();
+
+            uint procId = 0;
+            GetWindowThreadProcessId(hWnd, out procId);
+            var process = System.Diagnostics.Process.GetProcessById((int)procId);
+
+            bool rslt = new Rectangle(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top).Contains(screen.Bounds);
+            if ( rslt && !process.ToString().Contains(procs[procIndex]) )
+            {
+                return true;
+            }
+            else
+                return false;
         }
     }
 }
