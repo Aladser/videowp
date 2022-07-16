@@ -36,8 +36,11 @@ namespace videowallpapers
         {
             bool isActive = false;
             downtime = 0;
+            long s1, s2, s3;
+            int s;
             while (true)
             {
+                s1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                 // послана команда на выключение фоновой задачи
                 if (bw.CancellationPending)
                 {
@@ -64,7 +67,9 @@ namespace videowallpapers
                     foreach (Process elem in processes)
                         elem.Kill();
                 }
-                Thread.Sleep(95);
+                s2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                s = (int)(s2 - s1);
+                Thread.Sleep(100-s);
             }
         }
         /// <summary>
