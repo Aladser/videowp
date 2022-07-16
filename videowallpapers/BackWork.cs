@@ -42,7 +42,7 @@ namespace videowallpapers
                     e.Cancel = true;
                     break;
                 }
-                // обновление downtime для Win11
+                // обновление downtime для Win10-11
                 if(Environment.OSVersion.ToString() == "Microsoft Windows NT 6.2.9200.0")
                 {
                     downtime = GetIdleTime();
