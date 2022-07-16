@@ -19,14 +19,11 @@ namespace videowallpapers
         string[] mpcExt = { ".mpcpl",".pls",".asx",".m3u"};
         string[] kmpExt = { ".kpl",".pls", ".asx", ".m3u"};
         string[] vlcExt = { ".xspf",".m3u",".m3u8",".html"};
-
         string pathname = ""; // путь плейлиста
         int workafterboot; // работа после запуска
         readonly OpenFileDialog ofd = new OpenFileDialog();
         bool isEdited = false;
-        // процесс Windows
-        string[] procs = { "mpc-hc64", "KMPlayer64" }; 
-        int procIndex = 0;
+        int procIndex = 0; // инжекс проигрывателя в массиве проигрываетелей класса BackWork
 
         public MainForm()
         {
@@ -142,14 +139,14 @@ namespace videowallpapers
         {
             if (onRadioButton.Checked)
             {
-                this.Text = "Видеобои 1.65: АКТИВНО";
+                this.Text = "Видеобои 1.66: АКТИВНО";
                 notifyIcon.Text = "Видеообои ВКЛ";
                 backwork.start(pathname);
                 playlistSelectButton.Enabled = false;
             }
             else
             {
-                this.Text = "Видеобои 1.65";
+                this.Text = "Видеобои 1.66";
                 notifyIcon.Text = "Видеообои ВЫКЛ";
                 backwork.stop();
                 playlistSelectButton.Enabled = true;
