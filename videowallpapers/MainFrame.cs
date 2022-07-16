@@ -114,6 +114,7 @@ namespace videowallpapers
                     text += "playerpath = ";
                     writer.WriteLine(text);
                     writer.Close();
+                    timeComboBox.SelectedIndex = 0;
                     Visible = true;
                     playlistNameLabel.Text = "Не найден плейлист";
                     playerComboBox.SelectedIndex = 0;
