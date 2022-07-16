@@ -16,6 +16,7 @@ namespace videowallpapers
         int inActionNumber;
         int inactionInMs; // время простоя
         // процесс Windows
+        // Добавление нового плеера 5/6
         string[] procs = { "mpc-hc64", "KMPlayer64", "vlc" };
         int procIndex = 0;
         /// <summary>
@@ -70,6 +71,7 @@ namespace videowallpapers
         /// <param name="plpath"></param>
         public void start(String plpath)
         {
+            // Добавление нового плеера 6/6
             switch (Path.GetExtension(plpath))
             {
                 case ".mpcpl":
@@ -124,7 +126,7 @@ namespace videowallpapers
         {
             downtime = 0;
         }
-
+        // Опеределение запуска фуллэкрана
         [StructLayout(LayoutKind.Sequential)]
         private struct RECT
         {
@@ -164,9 +166,7 @@ namespace videowallpapers
 
             bool rslt = new Rectangle(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top).Contains(screen.Bounds);
             if ( rslt && !process.ToString().Contains(procs[procIndex]) )
-            {
                 return true;
-            }
             else
                 return false;
         }

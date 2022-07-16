@@ -54,6 +54,7 @@ namespace videowallpapers
                 // считывание playerpath
                 line = reader.ReadLine();
                 line = line.Substring(line.IndexOf("= ") + 2);
+                // Добавление нового плеера 1/6
                 if (File.Exists(line))
                 {
                     playlistNameLabel.Text = line;
@@ -208,7 +209,8 @@ namespace videowallpapers
             switchPanel.Enabled = false;
             playlistNameLabel.Text = "Не выбран плейлист";
             pathname = "";
-            if(playerComboBox.SelectedIndex == 0)
+            // Добавление нового плеера 2/6
+            if (playerComboBox.SelectedIndex == 0)
             {
                 ofd.Filter = mpcfilter;
                 procIndex = 0;
@@ -231,6 +233,7 @@ namespace videowallpapers
                 return;
             ofd.InitialDirectory = ofd.FileName.Substring(0, ofd.FileName.Length-Path.GetFileName(ofd.FileName).Length);
             string ext = Path.GetExtension(ofd.FileName);
+            // Добавление нового плеера 3/6
             if (mpcExt.Contains(ext))
             {
                 playerComboBox.SelectedIndex = 0;
@@ -266,7 +269,7 @@ namespace videowallpapers
         // Информация о программе
         private void aboutImage_MouseHover(object sender, EventArgs e)
         {
-            toolTip.SetToolTip(aboutImage, "Видеобом 1.65\n(c) Aladser\n2022");
+            toolTip.SetToolTip(aboutImage, "Видеобом 1.66\n(c) Aladser\n2022");
         }
         // Открыть приложение после нажатия на иконку в трее
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
