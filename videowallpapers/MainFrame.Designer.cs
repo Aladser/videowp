@@ -169,7 +169,8 @@
             this.playerComboBox.FormattingEnabled = true;
             this.playerComboBox.Items.AddRange(new object[] {
             "Media Player Classic",
-            "KMP Player"});
+            "KMP Player",
+            "VLC Media Player"});
             this.playerComboBox.Location = new System.Drawing.Point(340, 34);
             this.playerComboBox.Name = "playerComboBox";
             this.playerComboBox.Size = new System.Drawing.Size(121, 21);
@@ -217,6 +218,7 @@
             this.Controls.Add(this.playlistNameLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Видеобои 1.65";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);

@@ -13,7 +13,7 @@ namespace videowallpapers
         int inActionNumber;
         int inactionInMs; // время простоя
         // процесс Windows
-        string[] procs = { "mpc-hc64", "KMPlayer64" };
+        string[] procs = { "mpc-hc64", "KMPlayer64", "vlc" };
         int procIndex = 0;
         /// <summary>
         /// Класс фоновой задачи для показа обоев
@@ -43,6 +43,7 @@ namespace videowallpapers
                 if (downtime >= inactionInMs && !isActive)
                 {
                     bool isProcess = false;
+                    // запрет запуска второй копии запущенного видеоплеера
                     foreach (Process elem in Process.GetProcesses())
                     {
                         if (elem.ToString().Contains(procs[procIndex]))
@@ -77,7 +78,18 @@ namespace videowallpapers
         /// <param name="plpath"></param>
         public void start(String plpath)
         {
-            procIndex = Path.GetExtension(plpath) == ".kpl" ? 1 : 0; 
+            switch (Path.GetExtension(plpath))
+            {
+                case ".mpcpl":
+                    procIndex = 0;
+                    break;
+                case ".kpl":
+                    procIndex = 1;
+                    break;
+                default:
+                    procIndex = 2;
+                    break;
+            }
             bw.RunWorkerAsync(plpath); 
         }
         /// <summary>

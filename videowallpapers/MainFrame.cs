@@ -11,8 +11,9 @@ namespace videowallpapers
         BackWork backwork;
         readonly string cfgpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\config.cfg"; // путь конфига
         readonly string shortcut= Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\videowallpapers.lnk"; // ярлык автозагрузки 
-        readonly string mpcFilter = "MPC плейлист (*.mpcpl)|*.mpcpl|KMP плейлист (*.kpl)|*.kpl|Все файлы (*.*)|*.*";
-        readonly string kmpFilter = "KMP плейлист (*.kpl)|*.kpl|MPC плейлист (*.mpcpl)|*.mpcpl|Все файлы (*.*)|*.*";
+        string mpcfilter = "MPC плейлист (*.mpcpl)|*.mpcpl|Все файлы (*.*)|*.*";
+        string kmpfilter = "KMP плейлист (*.kpl)|*.kpl|Все файлы (*.*)|*.*";
+        string vlcfilter = "VLC плейлист (*.xspf)|*.xspf|Все файлы (*.*)|*.*";
         string pathname = ""; // путь плейлиста
         int workafterboot; // работа после запуска
         readonly OpenFileDialog ofd = new OpenFileDialog();
@@ -28,6 +29,7 @@ namespace videowallpapers
             InitializeComponent();
             this.CenterToScreen();
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            ofd.Filter = mpcfilter;
             // проверка автозапуска
             if (File.Exists(shortcut))
                 autoloaderCheckBox.Checked = true;
@@ -49,19 +51,33 @@ namespace videowallpapers
                 // считывание playerpath
                 line = reader.ReadLine();
                 line = line.Substring(line.IndexOf("= ") + 2);
-                string ext = Path.GetExtension(line);
                 if (File.Exists(line))
                 {
                     playlistNameLabel.Text = line;
                     pathname = line;
-                    playerComboBox.SelectedIndex = ext==".mpcpl" ? 0 : 1;
-                    procIndex = ext==".mpcpl" ? 0 : 1;
-                    ofd.Filter = ext==".mpcpl" ? mpcFilter : kmpFilter;
+                    switch (Path.GetExtension(line))
+                    {
+                        case ".mpcpl":
+                            playerComboBox.SelectedIndex = 0;
+                            procIndex = 0;
+                            break;
+                        case ".kpl":
+                            playerComboBox.SelectedIndex = 1;
+                            procIndex = 1;
+                            ofd.Filter = kmpfilter;
+                            break;
+                        case ".xspf":
+                            playerComboBox.SelectedIndex = 2;
+                            procIndex = 2;
+                            ofd.Filter = vlcfilter;
+                            break;
+                        default:
+                            return;
+                    }
                 }
                 else
                 {
                     playlistNameLabel.Text = File.Exists(line) ? "Неизвестный формат плейлиста" : "Не найден плейлист";
-                    ofd.Filter = mpcFilter;
                     playerComboBox.SelectedIndex = 0;
                     switchPanel.Enabled = false;
                     playlistSelectButton.Enabled = true;
@@ -96,7 +112,6 @@ namespace videowallpapers
                     writer.Close();
                     Visible = true;
                     playlistNameLabel.Text = "Не найден плейлист";
-                    ofd.Filter = mpcFilter;
                     playerComboBox.SelectedIndex = 0;
                     switchPanel.Enabled = false;
                     playlistSelectButton.Enabled = true;
@@ -188,8 +203,21 @@ namespace videowallpapers
             switchPanel.Enabled = false;
             playlistNameLabel.Text = "Не выбран плейлист";
             pathname = "";
-            procIndex = playerComboBox.SelectedIndex==0 ? 0 : 1;
-            ofd.Filter = playerComboBox.SelectedIndex == 0 ? mpcFilter : kmpFilter;
+            if(playerComboBox.SelectedIndex == 0)
+            {
+                ofd.Filter = mpcfilter;
+                procIndex = 0;
+            }
+            else if(playerComboBox.SelectedIndex == 1)
+            {
+                ofd.Filter = kmpfilter;
+                procIndex = 1;
+            }
+            else
+            {
+                ofd.Filter = vlcfilter;
+                procIndex = 2;
+            }           
         }
         // переключение плеера и плейлиста
         private void playlistSelectButton_Click(object sender, EventArgs e)
@@ -202,12 +230,17 @@ namespace videowallpapers
                 case ".mpcpl":
                     playerComboBox.SelectedIndex = 0;
                     procIndex = 0;
-                    ofd.Filter = mpcFilter;
+                    ofd.Filter = mpcfilter;
                     break;
                 case ".kpl":
                     playerComboBox.SelectedIndex = 1;
                     procIndex = 1;
-                    ofd.Filter = kmpFilter;
+                    ofd.Filter = kmpfilter;
+                    break;
+                case ".xspf":
+                    playerComboBox.SelectedIndex = 2;
+                    procIndex = 2;
+                    ofd.Filter = vlcfilter;
                     break;
                 default:
                     return;
