@@ -9,7 +9,7 @@ namespace videowallpapers
 {
     internal class BackWork
     {
-        int downtime;
+        uint downtime;
         readonly BackgroundWorker bw = new BackgroundWorker();
         readonly double[] inActonTime = { 0.03, 1, 3, 5, 10, 15 };
         int inActionNumber;
@@ -29,6 +29,7 @@ namespace videowallpapers
             setTimePeriod(inActionNumber);
         }
         // фоновая задача
+        // downtime обнулятся и событий движения мыши и нажатия клавиатуры
         private void BW_DoWork(object sender, DoWorkEventArgs e)
         {
             bool isActive = false;
@@ -41,6 +42,11 @@ namespace videowallpapers
                     e.Cancel = true;
                     break;
                 }
+                // обновление downtime для Win11
+                if(Environment.OSVersion.ToString() == "Microsoft Windows NT 6.2.9200.0")
+                {
+                    downtime = GetIdleTime();
+                } 
                 // закончился таймер ожидания
                 if (downtime>=inactionInMs && !isActive)
                 {
@@ -61,6 +67,10 @@ namespace videowallpapers
                     isActive = true;
                     Process.Start((string)e.Argument);
                 }
+                else if (downtime >= (inactionInMs+1000) && isActive)
+                {
+                    continue;
+                }
                 // пробуждение после запуска приложения
                 else if (downtime < inactionInMs && isActive)
                 {
@@ -72,7 +82,8 @@ namespace videowallpapers
                 else
                 {
                     System.Threading.Thread.Sleep(100);
-                    downtime += 100;
+                    if (Environment.OSVersion.ToString() != "Microsoft Windows NT 6.2.9200.0")
+                        downtime += 100;
                 }
             }
         }
@@ -133,6 +144,22 @@ namespace videowallpapers
         public void stopShowWallpaper()
         {
             downtime = 0;
+        }
+        // Таймер бездействия системы. Работает корректно на Вин10/Вин11
+        [DllImport("User32.dll")]
+        private static extern bool GetLastInputInfo(ref LASTINPUTINFO plii);
+        internal struct LASTINPUTINFO
+        {
+            public uint cbSize;
+
+            public uint dwTime;
+        }
+        public static uint GetIdleTime()
+        {
+            LASTINPUTINFO LastUserAction = new LASTINPUTINFO();
+            LastUserAction.cbSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(LastUserAction);
+            GetLastInputInfo(ref LastUserAction);
+            return ((uint)Environment.TickCount - LastUserAction.dwTime);
         }
     }
 }
