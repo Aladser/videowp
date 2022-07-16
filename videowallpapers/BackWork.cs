@@ -36,8 +36,11 @@ namespace videowallpapers
         {
             bool isActive = false;
             downtime = 0;
+            long s;
+            int delta;
             while (true)
             {
+                s = DateTime.Now.Ticks/TimeSpan.TicksPerMillisecond;
                 // послана команда на выключение фоновой задачи
                 if (bw.CancellationPending)
                 {
@@ -50,6 +53,10 @@ namespace videowallpapers
                     isActive = true;
                     Process.Start((string)e.Argument);
                 }
+                if (downtime >= inactionInMs && !IsForegroundFullScreen() && isActive)
+                {
+                    continue;
+                }
                 // пробуждение после запуска приложения
                 else if ((downtime<inactionInMs || IsForegroundFullScreen()) && isActive)
                 {
@@ -60,7 +67,8 @@ namespace videowallpapers
                 }
                 else
                 {
-                    System.Threading.Thread.Sleep(100);
+                    delta = (int)((DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond - s));
+                    System.Threading.Thread.Sleep(90-delta);
                     downtime += 100;
                 }
             }
@@ -109,7 +117,6 @@ namespace videowallpapers
         {
             this.inActionNumber = inActionNumber;
             inactionInMs = (int)(inActonTime[inActionNumber] * 60000);
-            Console.WriteLine(inactionInMs);
         }
         /// <summary>
         /// возвращает индекс времени для combobox

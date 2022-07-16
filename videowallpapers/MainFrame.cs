@@ -141,14 +141,14 @@ namespace videowallpapers
         {
             if (onRadioButton.Checked)
             {
-                this.Text = "Видеобои 1.66: АКТИВНО";
+                this.Text = "Видеобои 1.67: АКТИВНО";
                 notifyIcon.Text = "Видеообои ВКЛ";
                 backwork.start(pathname);
                 playlistSelectButton.Enabled = false;
             }
             else
             {
-                this.Text = "Видеобои 1.66";
+                this.Text = "Видеобои 1.67";
                 notifyIcon.Text = "Видеообои ВЫКЛ";
                 backwork.stop();
                 playlistSelectButton.Enabled = true;
