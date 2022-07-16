@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace videowallpapers
 {
@@ -40,13 +42,15 @@ namespace videowallpapers
                     break;
                 }
                 // закончился таймер ожидания
-                if (downtime >= inactionInMs && !isActive)
+                if (downtime>=inactionInMs && !isActive)
                 {
                     bool isProcess = false;
-                    // запрет запуска второй копии запущенного видеоплеера
-                    foreach (Process elem in Process.GetProcesses())
+                    // запрет запуска второго видеоплеера
+                    Process[] actprocs = Process.GetProcesses();
+                    foreach (Process elemi in Process.GetProcesses())
                     {
-                        if (elem.ToString().Contains(procs[procIndex]))
+                        foreach(string elemj in procs)
+                        if (elemi.ToString().Contains(elemj))
                         {
                             isProcess = true;
                             break;
