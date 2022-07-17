@@ -142,14 +142,14 @@ namespace videowallpapers
         {
             if (onRadioButton.Checked)
             {
-                this.Text = "Видеобои 1.7: АКТИВНО";
+                this.Text = "Видеобои 1.71: АКТИВНО";
                 notifyIcon.Text = "Видеообои ВКЛ";
                 backwork.start(pathname);
                 playlistSelectButton.Enabled = false;
             }
             else
             {
-                this.Text = "Видеобои 1.7";
+                this.Text = "Видеобои 1.71";
                 notifyIcon.Text = "Видеообои ВЫКЛ";
                 backwork.stop();
                 playlistSelectButton.Enabled = true;
@@ -270,7 +270,7 @@ namespace videowallpapers
         // Информация о программе
         private void aboutImage_MouseHover(object sender, EventArgs e)
         {
-            toolTip.SetToolTip(aboutImage, "Видеобом 1.7\n(c) Aladser\n2022");
+            toolTip.SetToolTip(aboutImage, "Видеобом 1.71\n(c) Aladser\n2022");
         }
         // Открыть приложение после нажатия на иконку в трее
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -294,10 +294,14 @@ namespace videowallpapers
                 writer.WriteLine(text);
                 writer.Close();
             }
-            /*лог
+            /*/лог
             writer = new StreamWriter(logpath, false);
-            text = backwork.downtime.ToString();
-            writer.WriteLine(text);
+            writer.WriteLine("");
+            foreach(string elem in backwork.log)
+            {
+                Console.WriteLine(elem);
+                writer.WriteLine("Процесс:" + elem + "\n");
+            }
             writer.Close();
             */// Закрытие или сворачивание приложения
             if (!backwork.isActive())

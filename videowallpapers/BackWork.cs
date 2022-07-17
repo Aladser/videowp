@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -12,11 +12,12 @@ namespace videowallpapers
     internal class BackWork
     {
         readonly BackgroundWorker bw = new BackgroundWorker();
-        readonly double[] inactionTime = { 0.08, 1, 3, 5, 10, 15 }; // массив периодов бездействия
+        readonly double[] inactionTime = { 0.05, 1, 3, 5, 10, 15 }; // массив периодов бездействия
         int inactionNumber;
         int inactionInMs;
-        public long downtime;
+        long downtime;
         long dwt1, dwt2;
+        public List<string> log = new List<string>();
 
         // процесс Windows
         // Добавление нового плеера 5/6
@@ -54,14 +55,13 @@ namespace videowallpapers
                     continue;
                 }
                 //  увеличение таймера
-                else if (downtime<inactionInMs && !isActive)
+                if (downtime<inactionInMs && !isActive)
                 {
                     Thread.Sleep(90);
                 }
                 // таймер закончился
                 else if (downtime>=inactionInMs && !isActive)
                 {
-                    //Console.WriteLine("Бездействие = " + downtime + " мс");
                     isActive = true;
                     Process.Start((string)e.Argument);
                 }
@@ -150,36 +150,30 @@ namespace videowallpapers
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
-
         [DllImport("user32.dll")]
         private static extern bool GetWindowRect(HandleRef hWnd, [In, Out] ref RECT rect);
-
         [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();
 
         public bool IsForegroundFullScreen()
         {
-            return IsForegroundFullScreen(null);
-        }
-
-        public bool IsForegroundFullScreen(Screen screen)
-        {
-            if (screen == null)
-            {
-                screen = Screen.PrimaryScreen;
-            }
+            Screen screen = Screen.PrimaryScreen;
             RECT rect = new RECT();
-            GetWindowRect(new HandleRef(null, GetForegroundWindow()), ref rect);
             IntPtr hWnd = (IntPtr)GetForegroundWindow();
+            GetWindowRect(new HandleRef(null, hWnd), ref rect);
 
             uint procId = 0;
             GetWindowThreadProcessId(hWnd, out procId);
-            var process = System.Diagnostics.Process.GetProcessById((int)procId);
-
-            bool rslt = new Rectangle(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top).Contains(screen.Bounds);
-
-            if ( rslt && !process.ToString().Contains(procs[procIndex]) )
+            string proc = Process.GetProcessById((int)procId).ToString();
+            if (screen.Bounds.Width == (rect.right - rect.left) 
+                && screen.Bounds.Height == (rect.bottom - rect.top) 
+                && !proc.Contains(procs[procIndex]) && !proc.Contains("explorer")
+                )
+            {
+                log.Add(proc);
+                //Console.WriteLine(proc);
                 return true;
+            }
             else
                 return false;
         }

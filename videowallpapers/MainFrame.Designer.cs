@@ -75,7 +75,7 @@
             this.timeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.timeComboBox.FormattingEnabled = true;
             this.timeComboBox.Items.AddRange(new object[] {
-            "0.08",
+            "0.05",
             "1",
             "3",
             "5",
@@ -220,7 +220,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Видеобои 1.7";
+            this.Text = "Видеобои 1.71";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             this.switchPanel.ResumeLayout(false);
