@@ -13,7 +13,7 @@ namespace videowallpapers
     {
         uint downtime;
         readonly BackgroundWorker bw = new BackgroundWorker();
-        readonly double[] inActonTime = { 0.03, 1, 3, 5, 10, 15 };
+        readonly double[] inActonTime = { 0.08, 1, 3, 5, 10, 15 };
         int inActionNumber;
         int inactionInMs; // время простоя
         // процесс Windows
@@ -36,7 +36,7 @@ namespace videowallpapers
         {
             bool isActive = false;
             downtime = 0;
-            long s1, s2, s3;
+            long s1, s2;
             int s;
             while (true)
             {
@@ -69,7 +69,8 @@ namespace videowallpapers
                 }
                 s2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                 s = (int)(s2 - s1);
-                Thread.Sleep(100-s);
+                if (s<0 || s>94) s = 5;
+                Thread.Sleep(100 - s);
             }
         }
         /// <summary>
