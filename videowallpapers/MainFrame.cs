@@ -11,6 +11,7 @@ namespace videowallpapers
         UserActivityHook globalHook;
         BackWork backwork;
         readonly string cfgpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\config.cfg"; // путь конфига
+        readonly string logpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\log.txt"; // путь лога
         readonly string shortcut= Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\videowallpapers.lnk"; // ярлык автозагрузки 
         // форматы плейлистов
         string mpcfilter = "MPC плейлист (*.mpcpl;*pls;*asx;*m3u)|*.mpcpl;*pls;*asx;*m3u|Все файлы (*.*)|*.*";
@@ -269,7 +270,7 @@ namespace videowallpapers
         // Информация о программе
         private void aboutImage_MouseHover(object sender, EventArgs e)
         {
-            toolTip.SetToolTip(aboutImage, "Видеобом 1.66\n(c) Aladser\n2022");
+            toolTip.SetToolTip(aboutImage, "Видеобом 1.7\n(c) Aladser\n2022");
         }
         // Открыть приложение после нажатия на иконку в трее
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -281,18 +282,25 @@ namespace videowallpapers
         // закрытие приложения
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            StreamWriter writer;
+            String text;
             // запись измененных данных
             if (isEdited)
             {
-                StreamWriter writer = new StreamWriter(cfgpath, false);
-                String text = "period = " + timeComboBox.SelectedIndex + "\n";
+                writer = new StreamWriter(cfgpath, false);
+                text = "period = " + timeComboBox.SelectedIndex + "\n";
                 text += "workafterboot = " + workafterboot + "\n";
                 text += "playerpath = " + pathname + "\n";
                 writer.WriteLine(text);
                 writer.Close();
             }
-            // Закрытие или сворачивание приложения
-            if(!backwork.isActive())
+            /*лог
+            writer = new StreamWriter(logpath, false);
+            text = backwork.downtime.ToString();
+            writer.WriteLine(text);
+            writer.Close();
+            */// Закрытие или сворачивание приложения
+            if (!backwork.isActive())
                 Process.GetCurrentProcess().Kill();
             else
             {

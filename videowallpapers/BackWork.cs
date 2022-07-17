@@ -11,11 +11,13 @@ namespace videowallpapers
 {
     internal class BackWork
     {
-        uint downtime;
         readonly BackgroundWorker bw = new BackgroundWorker();
-        readonly double[] inActonTime = { 0.08, 1, 3, 5, 10, 15 };
-        int inActionNumber;
-        int inactionInMs; // время простоя
+        readonly double[] inactionTime = { 0.08, 1, 3, 5, 10, 15 }; // массив периодов бездействия
+        int inactionNumber;
+        int inactionInMs;
+        public long downtime;
+        long dwt1, dwt2;
+
         // процесс Windows
         // Добавление нового плеера 5/6
         string[] procs = { "mpc-hc64", "KMPlayer64", "vlc" };
@@ -24,56 +26,56 @@ namespace videowallpapers
         /// Класс фоновой задачи для показа обоев
         /// </summary>
         /// <param name="inActionNumber">время, номер берется из Combobox</param>
-        public BackWork(int inActionNumber)
+        public BackWork(int inactionNumber)
         {
             bw.DoWork += BW_DoWork;
             bw.WorkerSupportsCancellation = true;
-            this.inActionNumber = inActionNumber;
-            setTimePeriod(inActionNumber);
+            this.inactionNumber = inactionNumber;
+            setTimePeriod(inactionNumber);
         }
         // фоновая задача
         private void BW_DoWork(object sender, DoWorkEventArgs e)
         {
             bool isActive = false;
+            dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
             downtime = 0;
-            long s2;
-            int s;
-            long s1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
             while (true)
-            {
+            {               
                 // послана команда на выключение фоновой задачи
                 if (bw.CancellationPending)
                 {
                     e.Cancel = true;
                     break;
                 }
-                //  увеличение таймера
-                if (downtime<inactionInMs && !IsForegroundFullScreen() && !isActive)
+                // если работает приложение в полном экране
+                if (IsForegroundFullScreen())
                 {
-                    downtime += 100;
-                    s2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                    s = (int)(s2 - s1);
-                    if (s < 0 || s > 94) s = 5;
-                    Thread.Sleep(100 - s);
+                    dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                    continue;
+                }
+                //  увеличение таймера
+                else if (downtime<inactionInMs && !isActive)
+                {
+                    Thread.Sleep(90);
                 }
                 // таймер закончился
-                else if (downtime>=inactionInMs && !IsForegroundFullScreen() && !isActive)
+                else if (downtime>=inactionInMs && !isActive)
                 {
-                    s2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                    Console.WriteLine((s2-s1) + " мс");
+                    //Console.WriteLine("Бездействие = " + downtime + " мс");
                     isActive = true;
                     Process.Start((string)e.Argument);
                 }
                 // пробуждение после запуска приложения
-                else if ((downtime<inactionInMs || IsForegroundFullScreen()) && isActive)
+                else if (downtime<inactionInMs && isActive)
                 {
-                    s1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                    // downtime обнулятся из событий движения мыши и нажатия клавиатуры
+                    dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                     isActive = false;
                     Process[] processes = Process.GetProcessesByName(procs[procIndex]);
                     foreach (Process elem in processes)
                         elem.Kill();
                 }
+                dwt2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                downtime = dwt2 - dwt1;
             }
         }
         /// <summary>
@@ -118,8 +120,8 @@ namespace videowallpapers
         /// <param name="inActionNumber"></param>
         public void setTimePeriod(int inActionNumber)
         {
-            this.inActionNumber = inActionNumber;
-            inactionInMs = (int)(inActonTime[inActionNumber] * 60000);
+            this.inactionNumber = inActionNumber;
+            inactionInMs = (int)(inactionTime[inActionNumber] * 60000);
         }
         /// <summary>
         /// возвращает индекс времени для combobox
@@ -127,14 +129,14 @@ namespace videowallpapers
         /// <returns></returns>
         public int getTimePeriod()
         {
-            return inActionNumber;
+            return inactionNumber;
         }
         /// <summary>
         /// Событие об остановке показа обоев
         /// </summary>
         public void stopShowWallpaper()
         {
-            downtime = 0;
+            dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
         }
         // Опеределение запуска фуллэкрана
         [StructLayout(LayoutKind.Sequential)]
@@ -175,6 +177,7 @@ namespace videowallpapers
             var process = System.Diagnostics.Process.GetProcessById((int)procId);
 
             bool rslt = new Rectangle(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top).Contains(screen.Bounds);
+
             if ( rslt && !process.ToString().Contains(procs[procIndex]) )
                 return true;
             else
