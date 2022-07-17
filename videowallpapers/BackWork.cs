@@ -36,11 +36,11 @@ namespace videowallpapers
         {
             bool isActive = false;
             downtime = 0;
-            long s1, s2;
+            long s2;
             int s;
+            long s1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
             while (true)
             {
-                s1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                 // послана команда на выключение фоновой задачи
                 if (bw.CancellationPending)
                 {
@@ -51,26 +51,29 @@ namespace videowallpapers
                 if (downtime<inactionInMs && !IsForegroundFullScreen() && !isActive)
                 {
                     downtime += 100;
+                    s2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                    s = (int)(s2 - s1);
+                    if (s < 0 || s > 94) s = 5;
+                    Thread.Sleep(100 - s);
                 }
                 // таймер закончился
                 else if (downtime>=inactionInMs && !IsForegroundFullScreen() && !isActive)
                 {
+                    s2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                    Console.WriteLine((s2-s1) + " мс");
                     isActive = true;
                     Process.Start((string)e.Argument);
                 }
                 // пробуждение после запуска приложения
                 else if ((downtime<inactionInMs || IsForegroundFullScreen()) && isActive)
                 {
+                    s1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                     // downtime обнулятся из событий движения мыши и нажатия клавиатуры
                     isActive = false;
                     Process[] processes = Process.GetProcessesByName(procs[procIndex]);
                     foreach (Process elem in processes)
                         elem.Kill();
                 }
-                s2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                s = (int)(s2 - s1);
-                if (s<0 || s>94) s = 5;
-                Thread.Sleep(100 - s);
             }
         }
         /// <summary>
