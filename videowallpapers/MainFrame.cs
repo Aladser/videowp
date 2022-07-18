@@ -8,7 +8,13 @@ namespace videowallpapers
 {
     public partial class MainForm : Form
     {
+        /// <summary>
+        /// хук глобального движения мыши или клавиатуры
+        /// </summary>
         UserActivityHook globalHook;
+        /// <summary>
+        /// фоновая задача показа обоев
+        /// </summary>
         BackWork backwork;
         readonly string cfgpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\config.cfg"; // путь конфига
         readonly string logpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\log.txt"; // путь лога
@@ -20,11 +26,18 @@ namespace videowallpapers
         string[] mpcExt = { ".mpcpl",".pls",".asx",".m3u"};
         string[] kmpExt = { ".kpl",".pls", ".asx", ".m3u"};
         string[] vlcExt = { ".xspf",".m3u",".m3u8",".html"};
-        string pathname = ""; // путь плейлиста
-        int workafterboot; // работа после запуска
         readonly OpenFileDialog ofd = new OpenFileDialog();
-        bool isEdited = false;
+        bool isConfigEdited = false; // флаго проверки правки конфиг.файла
         int procIndex = 0; // инжекс проигрывателя в массиве проигрываетелей класса BackWork
+        /// <summary>
+        /// Путь к плейлисту
+        /// </summary>
+        string plpath = "";
+        /// <summary>
+        /// Запуск обоев после запуска программы
+        /// </summary>
+        int autoloadSaver; // работа после запуска
+
 
         public MainForm()
         {
@@ -50,8 +63,8 @@ namespace videowallpapers
                 // считывание workafterboot
                 line = reader.ReadLine();
                 number = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
-                workafterboot = number==0 ? 0 : 1;
-                wabCheckBox.Checked = number==0 ? false : true;
+                autoloadSaver = number==0 ? 0 : 1;
+                autoloadSaverCheckBox.Checked = number==0 ? false : true;
                 // считывание playerpath
                 line = reader.ReadLine();
                 line = line.Substring(line.IndexOf("= ") + 2);
@@ -59,7 +72,7 @@ namespace videowallpapers
                 if (File.Exists(line))
                 {
                     playlistNameLabel.Text = line;
-                    pathname = line;
+                    plpath = line;
                     string ext = Path.GetExtension(line);
                     if (mpcExt.Contains(ext))
                     {
@@ -91,8 +104,8 @@ namespace videowallpapers
                     offRadioButton.Checked = true;
                 }
                 reader.Close();
-                // начать работу после запуска
-                if (workafterboot == 1)
+                // показ обоев после запуска программы
+                if (autoloadSaver == 1)
                 {
                     notifyIcon.Visible = true;
                     onRadioButton.Checked = true;
@@ -142,14 +155,14 @@ namespace videowallpapers
         {
             if (onRadioButton.Checked)
             {
-                this.Text = "Видеобои 1.71: АКТИВНО";
+                this.Text = "Видеобои 1.72: АКТИВНО";
                 notifyIcon.Text = "Видеообои ВКЛ";
-                backwork.start(pathname);
+                backwork.start(plpath);
                 playlistSelectButton.Enabled = false;
             }
             else
             {
-                this.Text = "Видеобои 1.71";
+                this.Text = "Видеобои 1.72";
                 notifyIcon.Text = "Видеообои ВЫКЛ";
                 backwork.stop();
                 playlistSelectButton.Enabled = true;
@@ -169,7 +182,7 @@ namespace videowallpapers
         {
             offRadioButton.Checked = true;
             backwork.setTimePeriod(timeComboBox.SelectedIndex);
-            isEdited = true;
+            isConfigEdited = true;
         }
         // Создание-удаление ярлыка
         private void autoLoader_CheckedChanged(object sender, EventArgs e)
@@ -209,7 +222,7 @@ namespace videowallpapers
             offRadioButton.Checked = true;
             switchPanel.Enabled = false;
             playlistNameLabel.Text = "Не выбран плейлист";
-            pathname = "";
+            plpath = "";
             // Добавление нового плеера 2/6
             if (playerComboBox.SelectedIndex == 0)
             {
@@ -227,12 +240,12 @@ namespace videowallpapers
                 procIndex = 2;
             }           
         }
-        // переключение плеера и плейлиста
+        // смена плейлиста
         private void playlistSelectButton_Click(object sender, EventArgs e)
         {
             if (ofd.ShowDialog() != DialogResult.OK)
                 return;
-            ofd.InitialDirectory = ofd.FileName.Substring(0, ofd.FileName.Length-Path.GetFileName(ofd.FileName).Length);
+            ofd.InitialDirectory = Path.GetDirectoryName(ofd.FileName);
             string ext = Path.GetExtension(ofd.FileName);
             // Добавление нового плеера 3/6
             if (mpcExt.Contains(ext))
@@ -255,22 +268,22 @@ namespace videowallpapers
             }
             else
                 return;
-            pathname = ofd.FileName;
+            plpath = ofd.FileName;
+            playlistNameLabel.Text = ofd.FileName;
             procIndex = playerComboBox.SelectedIndex;
-            playlistNameLabel.Text = pathname;
             switchPanel.Enabled = true;
-            isEdited = true;
+            isConfigEdited = true;
         }
         // Флаг Работа после запуска
         private void wabCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            workafterboot = wabCheckBox.Checked ? 1 : 0;
-            isEdited = true;
+            autoloadSaver = autoloadSaverCheckBox.Checked ? 1 : 0;
+            isConfigEdited = true;
         }
         // Информация о программе
         private void aboutImage_MouseHover(object sender, EventArgs e)
         {
-            toolTip.SetToolTip(aboutImage, "Видеобом 1.71\n(c) Aladser\n2022");
+            toolTip.SetToolTip(aboutImage, "Видеобом 1.72\n(c) Aladser\n2022");
         }
         // Открыть приложение после нажатия на иконку в трее
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -282,18 +295,8 @@ namespace videowallpapers
         // закрытие приложения
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            StreamWriter writer;
-            String text;
-            // запись измененных данных
-            if (isEdited)
-            {
-                writer = new StreamWriter(cfgpath, false);
-                text = "period = " + timeComboBox.SelectedIndex + "\n";
-                text += "workafterboot = " + workafterboot + "\n";
-                text += "playerpath = " + pathname + "\n";
-                writer.WriteLine(text);
-                writer.Close();
-            }
+            if (isConfigEdited)
+                ConfigStream.Write(cfgpath, timeComboBox.SelectedIndex, autoloadSaver, plpath);
             /*/лог
             writer = new StreamWriter(logpath, false);
             writer.WriteLine("");

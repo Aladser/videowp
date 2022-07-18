@@ -42,7 +42,7 @@
             this.playlistLabel = new System.Windows.Forms.Label();
             this.autoloaderCheckBox = new System.Windows.Forms.CheckBox();
             this.playerComboBox = new System.Windows.Forms.ComboBox();
-            this.wabCheckBox = new System.Windows.Forms.CheckBox();
+            this.autoloadSaverCheckBox = new System.Windows.Forms.CheckBox();
             this.aboutImage = new System.Windows.Forms.PictureBox();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.switchPanel.SuspendLayout();
@@ -177,16 +177,16 @@
             this.playerComboBox.TabIndex = 14;
             this.playerComboBox.SelectionChangeCommitted += new System.EventHandler(this.playerComboBox_SelectionChangeCommitted);
             // 
-            // wabCheckBox
+            // autoloadSaverCheckBox
             // 
-            this.wabCheckBox.AutoSize = true;
-            this.wabCheckBox.Location = new System.Drawing.Point(252, 9);
-            this.wabCheckBox.Name = "wabCheckBox";
-            this.wabCheckBox.Size = new System.Drawing.Size(139, 17);
-            this.wabCheckBox.TabIndex = 15;
-            this.wabCheckBox.Text = "Работа после запуска";
-            this.wabCheckBox.UseVisualStyleBackColor = true;
-            this.wabCheckBox.CheckedChanged += new System.EventHandler(this.wabCheckBox_CheckedChanged);
+            this.autoloadSaverCheckBox.AutoSize = true;
+            this.autoloadSaverCheckBox.Location = new System.Drawing.Point(252, 9);
+            this.autoloadSaverCheckBox.Name = "autoloadSaverCheckBox";
+            this.autoloadSaverCheckBox.Size = new System.Drawing.Size(139, 17);
+            this.autoloadSaverCheckBox.TabIndex = 15;
+            this.autoloadSaverCheckBox.Text = "Работа после запуска";
+            this.autoloadSaverCheckBox.UseVisualStyleBackColor = true;
+            this.autoloadSaverCheckBox.CheckedChanged += new System.EventHandler(this.wabCheckBox_CheckedChanged);
             // 
             // aboutImage
             // 
@@ -206,7 +206,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(533, 111);
             this.Controls.Add(this.aboutImage);
-            this.Controls.Add(this.wabCheckBox);
+            this.Controls.Add(this.autoloadSaverCheckBox);
             this.Controls.Add(this.playerComboBox);
             this.Controls.Add(this.autoloaderCheckBox);
             this.Controls.Add(this.playlistLabel);
@@ -220,7 +220,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Видеобои 1.71";
+            this.Text = "Видеобои 1.72";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             this.switchPanel.ResumeLayout(false);
@@ -244,7 +244,7 @@
         private System.Windows.Forms.Label playlistLabel;
         private System.Windows.Forms.CheckBox autoloaderCheckBox;
         private System.Windows.Forms.ComboBox playerComboBox;
-        private System.Windows.Forms.CheckBox wabCheckBox;
+        private System.Windows.Forms.CheckBox autoloadSaverCheckBox;
         private System.Windows.Forms.PictureBox aboutImage;
         private System.Windows.Forms.ToolTip toolTip;
     }
