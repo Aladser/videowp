@@ -3,10 +3,19 @@ using System.IO;
 
 namespace videowallpapers
 {
-    internal struct Configuration
+    /// <summary>
+    /// Данные конфиг.файла
+    /// </summary>
+    internal class ConfigData
     {
+        public ConfigData()
+        {
+            period = 0;
+            autoload = 0;
+            plpath = "";
+        }
         public int period;
-        public int autoloader;
+        public int autoload;
         public string plpath;
     }
     /// <summary>
@@ -19,16 +28,24 @@ namespace videowallpapers
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static Configuration Read(string path)
+        public static ConfigData Read(string path)
         {
-            Configuration rslt;
+            ConfigData rslt;
             StreamReader reader = new StreamReader(path);
-            string line = reader.ReadLine();
-            rslt.period = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
-            line = reader.ReadLine();
-            rslt.autoloader = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
-            line = reader.ReadLine();
-            rslt.plpath = line.Substring(line.IndexOf("= ") + 2);
+            try
+            {
+                rslt = new ConfigData();                
+                string line = reader.ReadLine();
+                rslt.period = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
+                line = reader.ReadLine();
+                rslt.autoload = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
+                line = reader.ReadLine();
+                rslt.plpath = line.Substring(line.IndexOf("= ") + 2);
+            }
+            catch (Exception)
+            {
+                rslt = null;
+            }
             reader.Close();
             return rslt;
         }

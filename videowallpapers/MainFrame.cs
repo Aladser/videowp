@@ -51,94 +51,79 @@ namespace videowallpapers
             if (File.Exists(shortcut))
                 autoloaderCheckBox.Checked = true;
             // Считывание конфигурационного файла
-            StreamReader reader;
-            try
+            ConfigData cfgdata;
+            if (!File.Exists(cfgpath))
             {
-                reader = new StreamReader(cfgpath);
-                // считывание period
-                string line = reader.ReadLine();
-                int number = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
-                timeComboBox.SelectedIndex = number;
-                backwork.setTimePeriod(number);
-                // считывание workafterboot
-                line = reader.ReadLine();
-                number = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
-                autoloadSaver = number==0 ? 0 : 1;
-                autoloadSaverCheckBox.Checked = number==0 ? false : true;
-                // считывание playerpath
-                line = reader.ReadLine();
-                line = line.Substring(line.IndexOf("= ") + 2);
-                // Добавление нового плеера 1/6
-                if (File.Exists(line))
+                MessageBox.Show("Файл не найден. Установлены стандартные настройки");
+                cfgdata = new ConfigData();
+                isConfigEdited = true;
+            }                
+            else
+                cfgdata = ConfigStream.Read(cfgpath);
+            if(cfgdata == null)
+            {
+                MessageBox.Show("Ошибка чтения конфиг.файла. Установлены стандартные настройки","", MessageBoxButtons.OK);
+                cfgdata = new ConfigData();
+                isConfigEdited = true;
+            }
+            // считывание period
+            timeComboBox.SelectedIndex = cfgdata.period;
+            backwork.setTimePeriod(cfgdata.period);
+            // считывание autoloadSaver
+            autoloadSaver = cfgdata.autoload;
+            autoloadSaverCheckBox.Checked = cfgdata.autoload==0 ? false : true;
+            // считывание playerpath
+            // Добавление нового плеера 1/5
+            if (File.Exists(cfgdata.plpath))
+            {
+                playlistNameLabel.Text = cfgdata.plpath;
+                plpath = cfgdata.plpath;
+                string ext = Path.GetExtension(cfgdata.plpath);
+                if (mpcExt.Contains(ext))
                 {
-                    playlistNameLabel.Text = line;
-                    plpath = line;
-                    string ext = Path.GetExtension(line);
-                    if (mpcExt.Contains(ext))
-                    {
-                        playerComboBox.SelectedIndex = 0;
-                        procIndex = 0;
-                    }
-                    else if (kmpExt.Contains(ext))
-                    {
-                        playerComboBox.SelectedIndex = 1;
-                        procIndex = 1;
-                        ofd.Filter = kmpfilter;
-                    }
-                    else if(vlcExt.Contains(ext))
-                    {
-                        playerComboBox.SelectedIndex = 2;
-                        procIndex = 2;
-                        ofd.Filter = vlcfilter;
-                    }
-                    else
-                        return;
+                    playerComboBox.SelectedIndex = 0;
+                    procIndex = 0;
+                }
+                else if (kmpExt.Contains(ext))
+                {
+                    playerComboBox.SelectedIndex = 1;
+                    procIndex = 1;
+                    ofd.Filter = kmpfilter;
+                }
+                else if(vlcExt.Contains(ext))
+                {
+                    playerComboBox.SelectedIndex = 2;
+                    procIndex = 2;
+                    ofd.Filter = vlcfilter;
                 }
                 else
                 {
-                    playlistNameLabel.Text = File.Exists(line) ? "Неизвестный формат плейлиста" : "Не найден плейлист";
                     playerComboBox.SelectedIndex = 0;
-                    switchPanel.Enabled = false;
-                    playlistSelectButton.Enabled = true;
-                    notifyIcon.Visible = false;
-                    offRadioButton.Checked = true;
+                    return;
                 }
-                reader.Close();
-                // показ обоев после запуска программы
-                if (autoloadSaver == 1)
-                {
-                    notifyIcon.Visible = true;
-                    onRadioButton.Checked = true;
-                }
-                else
-                    Visible = true;
-                // Создание хука
-                globalHook = new UserActivityHook();
-                globalHook.KeyPress += GlobalKeyPress;
-                globalHook.OnMouseActivity += GlobalMouseActivity;
-                globalHook.Start(true, true);
             }
-            catch (FileNotFoundException)
+            else
             {
-                var result = MessageBox.Show("Файл настроек не найден. Будут установлены стандартные настройки", "Приложение не запущено", MessageBoxButtons.OK);
-                if (result == DialogResult.OK)
-                {
-                    StreamWriter writer = new StreamWriter(cfgpath, false);
-                    String text = "period = 0\n";
-                    text += "workafterboot = 0\n";
-                    text += "playerpath = ";
-                    writer.WriteLine(text);
-                    writer.Close();
-                    timeComboBox.SelectedIndex = 0;
-                    Visible = true;
-                    playlistNameLabel.Text = "Не найден плейлист";
-                    playerComboBox.SelectedIndex = 0;
-                    switchPanel.Enabled = false;
-                    playlistSelectButton.Enabled = true;
-                    notifyIcon.Visible = false;
-                    offRadioButton.Checked = true;
-                }
+                playlistNameLabel.Text = "Не найден плейлист";
+                playerComboBox.SelectedIndex = 0;
+                switchPanel.Enabled = false;
+                playlistSelectButton.Enabled = true;
+                notifyIcon.Visible = false;
+                offRadioButton.Checked = true;
             }
+            // показ обоев после запуска программы
+            if (autoloadSaver == 1)
+            {
+                notifyIcon.Visible = true;
+                onRadioButton.Checked = true;
+            }
+            else
+                Visible = true;
+            // Создание хука
+            globalHook = new UserActivityHook();
+            globalHook.KeyPress += GlobalKeyPress;
+            globalHook.OnMouseActivity += GlobalMouseActivity;
+            globalHook.Start(true, true);
         }
         // глобальное нажатие клавиатуры
         public void GlobalKeyPress(object sender, KeyPressEventArgs e)
@@ -274,12 +259,6 @@ namespace videowallpapers
             switchPanel.Enabled = true;
             isConfigEdited = true;
         }
-        // Флаг Работа после запуска
-        private void wabCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            autoloadSaver = autoloadSaverCheckBox.Checked ? 1 : 0;
-            isConfigEdited = true;
-        }
         // Информация о программе
         private void aboutImage_MouseHover(object sender, EventArgs e)
         {
@@ -292,21 +271,29 @@ namespace videowallpapers
             this.WindowState = FormWindowState.Normal;
             notifyIcon.Visible = false;
         }
+        // Переключение автопоказа обоев
+        private void autoloaderSaverCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            autoloadSaver = autoloadSaverCheckBox.Checked ? 1 : 0;
+            isConfigEdited = true;
+        }
         // закрытие приложения
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (isConfigEdited)
                 ConfigStream.Write(cfgpath, timeComboBox.SelectedIndex, autoloadSaver, plpath);
-            /*/лог
-            writer = new StreamWriter(logpath, false);
+            /*
+            //лог
+            StreamWriter writer = new StreamWriter(logpath, false);
             writer.WriteLine("");
             foreach(string elem in backwork.log)
             {
                 Console.WriteLine(elem);
-                writer.WriteLine("Процесс:" + elem + "\n");
+                writer.WriteLine(elem + "\n");
             }
             writer.Close();
-            */// Закрытие или сворачивание приложения
+            */
+            // Закрытие или сворачивание приложения
             if (!backwork.isActive())
                 Process.GetCurrentProcess().Kill();
             else
@@ -316,6 +303,5 @@ namespace videowallpapers
                 notifyIcon.Visible = true;
             }
         }
-
     }
 }

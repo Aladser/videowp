@@ -81,7 +81,7 @@
             "5",
             "10",
             "15 "});
-            this.timeComboBox.Location = new System.Drawing.Point(71, 79);
+            this.timeComboBox.Location = new System.Drawing.Point(119, 80);
             this.timeComboBox.Name = "timeComboBox";
             this.timeComboBox.Size = new System.Drawing.Size(48, 21);
             this.timeComboBox.TabIndex = 5;
@@ -91,14 +91,14 @@
             // 
             this.periodLabel.Location = new System.Drawing.Point(9, 79);
             this.periodLabel.Name = "periodLabel";
-            this.periodLabel.Size = new System.Drawing.Size(56, 21);
+            this.periodLabel.Size = new System.Drawing.Size(113, 21);
             this.periodLabel.TabIndex = 6;
-            this.periodLabel.Text = "Период:";
+            this.periodLabel.Text = "Время бездействия:";
             this.periodLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // minLabel
             // 
-            this.minLabel.Location = new System.Drawing.Point(125, 79);
+            this.minLabel.Location = new System.Drawing.Point(173, 80);
             this.minLabel.Name = "minLabel";
             this.minLabel.Size = new System.Drawing.Size(33, 21);
             this.minLabel.TabIndex = 7;
@@ -186,7 +186,7 @@
             this.autoloadSaverCheckBox.TabIndex = 15;
             this.autoloadSaverCheckBox.Text = "Работа после запуска";
             this.autoloadSaverCheckBox.UseVisualStyleBackColor = true;
-            this.autoloadSaverCheckBox.CheckedChanged += new System.EventHandler(this.wabCheckBox_CheckedChanged);
+            this.autoloadSaverCheckBox.CheckedChanged += new System.EventHandler(this.autoloaderSaverCheckBox_CheckedChanged);
             // 
             // aboutImage
             // 

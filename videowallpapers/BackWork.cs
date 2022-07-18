@@ -57,11 +57,14 @@ namespace videowallpapers
                 //  увеличение таймера
                 if (downtime<inactionInMs && !isActive)
                 {
-                    Thread.Sleep(90);
+                    Thread.Sleep(100);
                 }
                 // таймер закончился
                 else if (downtime>=inactionInMs && !isActive)
                 {
+                    dwt2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                    //Console.WriteLine((dwt2-dwt1) + " мс");
+                    //log.Add((dwt2 - dwt1) + " мс");
                     isActive = true;
                     Process.Start((string)e.Argument);
                 }
@@ -170,8 +173,6 @@ namespace videowallpapers
                 && !proc.Contains(procs[procIndex]) && !proc.Contains("explorer")
                 )
             {
-                log.Add(proc);
-                //Console.WriteLine(proc);
                 return true;
             }
             else
