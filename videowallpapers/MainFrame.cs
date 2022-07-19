@@ -57,12 +57,12 @@ namespace videowallpapers
                 MessageBox.Show("Файл не найден. Установлены стандартные настройки");
                 cfgdata = new ConfigData();
                 isConfigEdited = true;
-            }                
+            }
             else
                 cfgdata = ConfigStream.Read(cfgpath);
-            if(cfgdata == null)
+            if (cfgdata == null)
             {
-                MessageBox.Show("Ошибка чтения конфиг.файла. Установлены стандартные настройки","", MessageBoxButtons.OK);
+                MessageBox.Show("Ошибка чтения конфиг.файла. Установлены стандартные настройки", "", MessageBoxButtons.OK);
                 cfgdata = new ConfigData();
                 isConfigEdited = true;
             }
@@ -71,7 +71,7 @@ namespace videowallpapers
             backwork.setTimePeriod(cfgdata.period);
             // считывание autoloadSaver
             autoloadSaver = cfgdata.autoload;
-            autoloadSaverCheckBox.Checked = cfgdata.autoload==0 ? false : true;
+            autoloadSaverCheckBox.Checked = cfgdata.autoload == 0 ? false : true;
             // считывание playerpath
             // Добавление нового плеера 1/5
             if (File.Exists(cfgdata.plpath))
@@ -90,7 +90,7 @@ namespace videowallpapers
                     procIndex = 1;
                     ofd.Filter = kmpfilter;
                 }
-                else if(vlcExt.Contains(ext))
+                else if (vlcExt.Contains(ext))
                 {
                     playerComboBox.SelectedIndex = 2;
                     procIndex = 2;
@@ -112,13 +112,18 @@ namespace videowallpapers
                 offRadioButton.Checked = true;
             }
             // показ обоев после запуска программы
-            if (autoloadSaver == 1)
+            if (autoloadSaver == 1 && !plpath.Equals(""))
             {
                 notifyIcon.Visible = true;
                 onRadioButton.Checked = true;
+                backwork.start(plpath);
             }
             else
+            {
                 Visible = true;
+                offRadioButton.Checked = true;
+            }
+                
             // Создание хука
             globalHook = new UserActivityHook();
             globalHook.KeyPress += GlobalKeyPress;
@@ -140,18 +145,23 @@ namespace videowallpapers
         {
             if (onRadioButton.Checked)
             {
-                this.Text = "Видеобои 1.72: АКТИВНО";
+                this.Text = "Видеобои 1.74: АКТИВНО";
                 notifyIcon.Text = "Видеообои ВКЛ";
                 backwork.start(plpath);
                 playlistSelectButton.Enabled = false;
             }
             else
             {
-                this.Text = "Видеобои 1.72";
+                this.Text = "Видеобои 1.74";
                 notifyIcon.Text = "Видеообои ВЫКЛ";
                 backwork.stop();
                 playlistSelectButton.Enabled = true;
             }               
+        }
+        // Информация о программе
+        private void aboutImage_MouseHover(object sender, EventArgs e)
+        {
+            toolTip.SetToolTip(aboutImage, "Видеобом 1.74\n(c) Aladser\n2022");
         }
         // Сворачивание в трей
         private void MainForm_SizeChanged(object sender, EventArgs e)
@@ -165,7 +175,6 @@ namespace videowallpapers
         // Переключение времени простоя
         private void TimeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            offRadioButton.Checked = true;
             backwork.setTimePeriod(timeComboBox.SelectedIndex);
             isConfigEdited = true;
         }
@@ -259,11 +268,6 @@ namespace videowallpapers
             switchPanel.Enabled = true;
             isConfigEdited = true;
         }
-        // Информация о программе
-        private void aboutImage_MouseHover(object sender, EventArgs e)
-        {
-            toolTip.SetToolTip(aboutImage, "Видеобом 1.72\n(c) Aladser\n2022");
-        }
         // Открыть приложение после нажатия на иконку в трее
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -285,7 +289,6 @@ namespace videowallpapers
             /*
             //лог
             StreamWriter writer = new StreamWriter(logpath, false);
-            writer.WriteLine("");
             foreach(string elem in backwork.log)
             {
                 Console.WriteLine(elem);

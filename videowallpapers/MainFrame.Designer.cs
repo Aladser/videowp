@@ -81,7 +81,7 @@
             "5",
             "10",
             "15 "});
-            this.timeComboBox.Location = new System.Drawing.Point(119, 80);
+            this.timeComboBox.Location = new System.Drawing.Point(128, 80);
             this.timeComboBox.Name = "timeComboBox";
             this.timeComboBox.Size = new System.Drawing.Size(48, 21);
             this.timeComboBox.TabIndex = 5;
@@ -98,7 +98,7 @@
             // 
             // minLabel
             // 
-            this.minLabel.Location = new System.Drawing.Point(173, 80);
+            this.minLabel.Location = new System.Drawing.Point(182, 78);
             this.minLabel.Name = "minLabel";
             this.minLabel.Size = new System.Drawing.Size(33, 21);
             this.minLabel.TabIndex = 7;
@@ -182,9 +182,9 @@
             this.autoloadSaverCheckBox.AutoSize = true;
             this.autoloadSaverCheckBox.Location = new System.Drawing.Point(252, 9);
             this.autoloadSaverCheckBox.Name = "autoloadSaverCheckBox";
-            this.autoloadSaverCheckBox.Size = new System.Drawing.Size(139, 17);
+            this.autoloadSaverCheckBox.Size = new System.Drawing.Size(135, 17);
             this.autoloadSaverCheckBox.TabIndex = 15;
-            this.autoloadSaverCheckBox.Text = "Работа после запуска";
+            this.autoloadSaverCheckBox.Text = "Автозапуск заставки";
             this.autoloadSaverCheckBox.UseVisualStyleBackColor = true;
             this.autoloadSaverCheckBox.CheckedChanged += new System.EventHandler(this.autoloaderSaverCheckBox_CheckedChanged);
             // 
@@ -220,7 +220,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Видеобои 1.72";
+            this.Text = "Видеобои 1.74";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             this.switchPanel.ResumeLayout(false);

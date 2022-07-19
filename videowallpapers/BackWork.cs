@@ -11,6 +11,13 @@ namespace videowallpapers
 {
     internal class BackWork
     {
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+        [DllImport("user32.dll")]
+        private static extern bool GetWindowRect(HandleRef hWnd, [In, Out] ref RECT rect);
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
+
         readonly BackgroundWorker bw = new BackgroundWorker();
         readonly double[] inactionTime = { 0.05, 1, 3, 5, 10, 15 }; // массив периодов бездействия
         int inactionNumber;
@@ -52,18 +59,12 @@ namespace videowallpapers
                 if (IsForegroundFullScreen())
                 {
                     dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                    continue;
-                }
-                //  увеличение таймера
-                if (downtime<inactionInMs && !isActive)
-                {
-                    Thread.Sleep(100);
                 }
                 // таймер закончился
                 else if (downtime>=inactionInMs && !isActive)
                 {
                     dwt2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                    //Console.WriteLine((dwt2-dwt1) + " мс");
+                    Console.WriteLine((dwt2-dwt1) + " мс");
                     //log.Add((dwt2 - dwt1) + " мс");
                     isActive = true;
                     Process.Start((string)e.Argument);
@@ -77,6 +78,7 @@ namespace videowallpapers
                     foreach (Process elem in processes)
                         elem.Kill();
                 }
+                Thread.Sleep(100);
                 dwt2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                 downtime = dwt2 - dwt1;
             }
@@ -150,14 +152,10 @@ namespace videowallpapers
             public int right;
             public int bottom;
         }
-
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
-        [DllImport("user32.dll")]
-        private static extern bool GetWindowRect(HandleRef hWnd, [In, Out] ref RECT rect);
-        [DllImport("user32.dll")]
-        private static extern IntPtr GetForegroundWindow();
-
+        /// <summary>
+        /// Поиск другой программы в фуллскрине
+        /// </summary>
+        /// <returns></returns>
         public bool IsForegroundFullScreen()
         {
             Screen screen = Screen.PrimaryScreen;
@@ -170,11 +168,10 @@ namespace videowallpapers
             string proc = Process.GetProcessById((int)procId).ToString();
             if (screen.Bounds.Width == (rect.right - rect.left) 
                 && screen.Bounds.Height == (rect.bottom - rect.top) 
-                && !proc.Contains(procs[procIndex]) && !proc.Contains("explorer")
+                && !proc.Contains(procs[procIndex]) 
+                && !proc.Contains("explorer")
                 )
-            {
                 return true;
-            }
             else
                 return false;
         }
