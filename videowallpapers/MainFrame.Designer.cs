@@ -170,7 +170,8 @@
             this.playerComboBox.Items.AddRange(new object[] {
             "Media Player Classic",
             "KMP Player",
-            "VLC Media Player"});
+            "VLC Media Player",
+            "Light Alloy"});
             this.playerComboBox.Location = new System.Drawing.Point(340, 34);
             this.playerComboBox.Name = "playerComboBox";
             this.playerComboBox.Size = new System.Drawing.Size(121, 21);

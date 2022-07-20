@@ -21,15 +21,16 @@ namespace videowallpapers
         readonly string shortcut= Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\videowallpapers.lnk"; // ярлык автозагрузки 
         readonly OpenFileDialog ofd = new OpenFileDialog();
         bool isConfigEdited = false; // флаго проверки правки конфиг.файла
-        VideoPlayer player;
         // форматы плейлистов
 
         string mpcfilter = "MPC плейлист (*.mpcpl;*pls;*asx;*m3u)|*.mpcpl;*pls;*asx;*m3u|Все файлы (*.*)|*.*";
         string kmpfilter = "KMP плейлист (*.kpl;*pls;*asx;*m3u)|*.kpl;*pls;*asx;*m3u|Все файлы (*.*)|*.*";
         string vlcfilter = "VLC плейлист (*.xspf;*.m3u;*.m3u8;*.html)|*.xspf;*.m3u;*.m3u8;*.html|Все файлы (*.*)|*.*";
+        string lafilter = "LA плейлист (*.lap;*.m3u)|*.lap;*.m3u|Все файлы (*.*)|*.*";
         string[] mpcExt = { ".mpcpl",".pls",".asx",".m3u"};
         string[] kmpExt = { ".kpl",".pls", ".asx", ".m3u"};
         string[] vlcExt = { ".xspf",".m3u",".m3u8",".html"};
+        string[] laExtensions = { ".lap", ".m3u" };
         int procIndex = 0; // инжекс проигрывателя в массиве проигрываетелей класса BackWork
         
         /// <summary>
@@ -98,6 +99,12 @@ namespace videowallpapers
                     playerComboBox.SelectedIndex = 2;
                     procIndex = 2;
                     ofd.Filter = vlcfilter;
+                }
+                else if (laExtensions.Contains(ext))
+                {
+                    playerComboBox.SelectedIndex = 3;
+                    procIndex = 3;
+                    ofd.Filter = lafilter;
                 }
                 else
                 {
@@ -231,10 +238,15 @@ namespace videowallpapers
                 ofd.Filter = kmpfilter;
                 procIndex = 1;
             }
-            else
+            else if (playerComboBox.SelectedIndex == 2)
             {
                 ofd.Filter = vlcfilter;
                 procIndex = 2;
+            }
+            else
+            {
+                ofd.Filter = lafilter;
+                procIndex = 3;
             }           
         }
         // смена плейлиста
@@ -262,6 +274,12 @@ namespace videowallpapers
                 playerComboBox.SelectedIndex = 2;
                 procIndex = 2;
                 ofd.Filter = vlcfilter;
+            }
+            else if (laExtensions.Contains(ext))
+            {
+                playerComboBox.SelectedIndex = 3;
+                procIndex = 3;
+                ofd.Filter = lafilter;
             }
             else
                 return;

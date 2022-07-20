@@ -28,7 +28,7 @@ namespace videowallpapers
 
         // процесс Windows
         // Добавление нового плеера 5/6
-        string[] procs = { "mpc-hc64", "KMPlayer64", "vlc" };
+        string[] procs = { "mpc-hc64", "KMPlayer64", "vlc", "LA" };
         int procIndex = 0;
         /// <summary>
         /// Класс фоновой задачи для показа обоев
@@ -72,6 +72,7 @@ namespace videowallpapers
                 // пробуждение после запуска приложения
                 else if (downtime<inactionInMs && isActive)
                 {
+                    Console.WriteLine("Гасить " + procs[procIndex]);
                     dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                     isActive = false;
                     Process[] processes = Process.GetProcessesByName(procs[procIndex]);
@@ -97,6 +98,9 @@ namespace videowallpapers
                     break;
                 case ".kpl":
                     procIndex = 1;
+                    break;
+                case ".lap":
+                    procIndex = 3;
                     break;
                 default:
                     procIndex = 2;
