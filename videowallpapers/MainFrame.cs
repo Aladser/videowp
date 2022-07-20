@@ -33,15 +33,12 @@ namespace videowallpapers
 
 
         public MainForm()
-        {
-            backwork = new BackWork(0);
+        {           
+            if (File.Exists(shortcut)) autoloaderCheckBox.Checked = true; // проверка автозапуска
+            backwork = new BackWork(); // фоновая задача показа обоев
             InitializeComponent();
             this.CenterToScreen();
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            ofd.Filter = VideoPlayer.playerFilters[0];
-            // проверка автозапуска
-            if (File.Exists(shortcut))
-                autoloaderCheckBox.Checked = true;
             // Считывание конфигурационного файла
             ConfigData cfgdata;
             if (!File.Exists(cfgpath))
@@ -57,10 +54,8 @@ namespace videowallpapers
                 MessageBox.Show("Ошибка чтения конфиг.файла. Установлены стандартные настройки", "", MessageBoxButtons.OK);
                 cfgdata = new ConfigData();
                 isConfigEdited = true;
-            }
-            // считывание period
-            timeComboBox.SelectedIndex = cfgdata.period;
-            backwork.setTimePeriod(cfgdata.period);
+            }           
+            timeComboBox.SelectedIndex = cfgdata.period;  // считывание времени бездействия
             // считывание autoloadSaver
             autoloadSaver = cfgdata.autoload;
             autoloadSaverCheckBox.Checked = cfgdata.autoload == 0 ? false : true;
@@ -87,6 +82,7 @@ namespace videowallpapers
             {
                 playlistNameLabel.Text = "Не найден плейлист";
                 playerComboBox.SelectedIndex = 0;
+                ofd.Filter = VideoPlayer.playerFilters[0];
                 switchPanel.Enabled = false;
                 playlistSelectButton.Enabled = true;
                 notifyIcon.Visible = false;
@@ -153,7 +149,7 @@ namespace videowallpapers
                 notifyIcon.Visible = true;
             }
         }
-        // Переключение времени простоя
+        // Переключение времени простоя на форме и backwork
         private void TimeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             backwork.setTimePeriod(timeComboBox.SelectedIndex);

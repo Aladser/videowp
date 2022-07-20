@@ -42,6 +42,13 @@ namespace videowallpapers
             this.inactionNumber = inactionNumber;
             setTimePeriod(inactionNumber);
         }
+        public BackWork()
+        {
+            bw.DoWork += BW_DoWork;
+            bw.WorkerSupportsCancellation = true;
+            this.inactionNumber = 0;
+            setTimePeriod(0);
+        }
         // фоновая задача
         private void BW_DoWork(object sender, DoWorkEventArgs e)
         {
