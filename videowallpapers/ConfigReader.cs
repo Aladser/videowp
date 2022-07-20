@@ -9,10 +9,10 @@ namespace videowallpapers
     internal class ConfigData
     {
         public ConfigData()
-        {
-            period = 0;
+        {           
             autoload = 0;
             plpath = "";
+            period = 0;
         }
         public int period;
         public int autoload;
@@ -36,11 +36,11 @@ namespace videowallpapers
             {
                 rslt = new ConfigData();                
                 string line = reader.ReadLine();
-                rslt.period = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
-                line = reader.ReadLine();
                 rslt.autoload = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
                 line = reader.ReadLine();
                 rslt.plpath = line.Substring(line.IndexOf("= ") + 2);
+                line = reader.ReadLine();
+                rslt.period = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
             }
             catch (Exception)
             {
@@ -58,10 +58,9 @@ namespace videowallpapers
         public static void Write(string path, int period, int autoloader, string plpath)
         {
             StreamWriter writer = new StreamWriter(path, false);
-            String text;
-            text = "period = " + period + "\n";
-            text += "autoload = " + autoloader + "\n";
+            String text = "autoload = " + autoloader + "\n";
             text += "playerpath = " + plpath + "\n";
+            text += "period = " + period + "\n";
             writer.WriteLine(text);
             writer.Close();
         }

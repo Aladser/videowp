@@ -19,16 +19,19 @@ namespace videowallpapers
         readonly string cfgpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\config.cfg"; // путь конфига
         readonly string logpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\log.txt"; // путь лога
         readonly string shortcut= Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\videowallpapers.lnk"; // ярлык автозагрузки 
+        readonly OpenFileDialog ofd = new OpenFileDialog();
+        bool isConfigEdited = false; // флаго проверки правки конфиг.файла
+        VideoPlayer player;
         // форматы плейлистов
+
         string mpcfilter = "MPC плейлист (*.mpcpl;*pls;*asx;*m3u)|*.mpcpl;*pls;*asx;*m3u|Все файлы (*.*)|*.*";
         string kmpfilter = "KMP плейлист (*.kpl;*pls;*asx;*m3u)|*.kpl;*pls;*asx;*m3u|Все файлы (*.*)|*.*";
         string vlcfilter = "VLC плейлист (*.xspf;*.m3u;*.m3u8;*.html)|*.xspf;*.m3u;*.m3u8;*.html|Все файлы (*.*)|*.*";
         string[] mpcExt = { ".mpcpl",".pls",".asx",".m3u"};
         string[] kmpExt = { ".kpl",".pls", ".asx", ".m3u"};
         string[] vlcExt = { ".xspf",".m3u",".m3u8",".html"};
-        readonly OpenFileDialog ofd = new OpenFileDialog();
-        bool isConfigEdited = false; // флаго проверки правки конфиг.файла
         int procIndex = 0; // инжекс проигрывателя в массиве проигрываетелей класса BackWork
+        
         /// <summary>
         /// Путь к плейлисту
         /// </summary>
@@ -145,14 +148,14 @@ namespace videowallpapers
         {
             if (onRadioButton.Checked)
             {
-                this.Text = "Видеобои 1.74: АКТИВНО";
+                this.Text = "Видеобои 1.75: АКТИВНО";
                 notifyIcon.Text = "Видеообои ВКЛ";
                 backwork.start(plpath);
                 playlistSelectButton.Enabled = false;
             }
             else
             {
-                this.Text = "Видеобои 1.74";
+                this.Text = "Видеобои 1.75";
                 notifyIcon.Text = "Видеообои ВЫКЛ";
                 backwork.stop();
                 playlistSelectButton.Enabled = true;
@@ -161,7 +164,7 @@ namespace videowallpapers
         // Информация о программе
         private void aboutImage_MouseHover(object sender, EventArgs e)
         {
-            toolTip.SetToolTip(aboutImage, "Видеобом 1.74\n(c) Aladser\n2022");
+            toolTip.SetToolTip(aboutImage, "Видеобом 1.75\n(c) Aladser\n2022");
         }
         // Сворачивание в трей
         private void MainForm_SizeChanged(object sender, EventArgs e)

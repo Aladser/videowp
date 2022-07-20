@@ -60,6 +60,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserActivityHook.cs" />
+    <Compile Include="VideoPlayer.cs" />
     <EmbeddedResource Include="MainFrame.resx">
       <DependentUpon>MainFrame.cs</DependentUpon>
     </EmbeddedResource>
