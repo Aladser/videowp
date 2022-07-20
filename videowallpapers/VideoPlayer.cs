@@ -13,13 +13,13 @@ namespace videowallpapers
         static string kmpfilter = "KMP плейлист (*.kpl;*pls;*asx;*m3u)|*.kpl;*pls;*asx;*m3u|Все файлы (*.*)|*.*";
         static string vlcfilter = "VLC плейлист (*.xspf;*.m3u;*.m3u8;*.html)|*.xspf;*.m3u;*.m3u8;*.html|Все файлы (*.*)|*.*";
         static string lafilter = "LA плейлист (*.lap;*.m3u)|*.lap;*.m3u|Все файлы (*.*)|*.*";
-        string[] playerFilters = { mpcfilter, kmpfilter, vlcfilter, lafilter };
+        public static readonly string[] playerFilters = { mpcfilter, kmpfilter, vlcfilter, lafilter };
 
         static string[] mpcExtensions = { ".mpcpl", ".pls", ".asx", ".m3u" };
         static string[] kmpExtensions = { ".kpl", ".pls", ".asx", ".m3u" };
         static string[] vlcExtensions = { ".xspf", ".m3u", ".m3u8", ".html" };
         static string[] laExtensions = { ".lap", ".m3u" };
-        string[][] playerExtensions = { mpcExtensions, kmpExtensions, vlcExtensions, laExtensions };
+        public static readonly string[][] playerExtensions = { mpcExtensions, kmpExtensions, vlcExtensions, laExtensions };
 
         string[] playerProcesses = { "mpc-hc64", "KMPlayer64", "vlc", "LA" };
         int procIndex;

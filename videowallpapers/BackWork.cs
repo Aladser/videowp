@@ -72,7 +72,6 @@ namespace videowallpapers
                 // пробуждение после запуска приложения
                 else if (downtime<inactionInMs && isActive)
                 {
-                    Console.WriteLine("Гасить " + procs[procIndex]);
                     dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                     isActive = false;
                     Process[] processes = Process.GetProcessesByName(procs[procIndex]);

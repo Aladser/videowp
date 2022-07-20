@@ -22,15 +22,6 @@ namespace videowallpapers
         readonly OpenFileDialog ofd = new OpenFileDialog();
         bool isConfigEdited = false; // флаго проверки правки конфиг.файла
         // форматы плейлистов
-
-        string mpcfilter = "MPC плейлист (*.mpcpl;*pls;*asx;*m3u)|*.mpcpl;*pls;*asx;*m3u|Все файлы (*.*)|*.*";
-        string kmpfilter = "KMP плейлист (*.kpl;*pls;*asx;*m3u)|*.kpl;*pls;*asx;*m3u|Все файлы (*.*)|*.*";
-        string vlcfilter = "VLC плейлист (*.xspf;*.m3u;*.m3u8;*.html)|*.xspf;*.m3u;*.m3u8;*.html|Все файлы (*.*)|*.*";
-        string lafilter = "LA плейлист (*.lap;*.m3u)|*.lap;*.m3u|Все файлы (*.*)|*.*";
-        string[] mpcExt = { ".mpcpl",".pls",".asx",".m3u"};
-        string[] kmpExt = { ".kpl",".pls", ".asx", ".m3u"};
-        string[] vlcExt = { ".xspf",".m3u",".m3u8",".html"};
-        string[] laExtensions = { ".lap", ".m3u" };
         int procIndex = 0; // инжекс проигрывателя в массиве проигрываетелей класса BackWork
         
         /// <summary>
@@ -50,7 +41,7 @@ namespace videowallpapers
             InitializeComponent();
             this.CenterToScreen();
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            ofd.Filter = mpcfilter;
+            ofd.Filter = VideoPlayer.playerFilters[0];
             // проверка автозапуска
             if (File.Exists(shortcut))
                 autoloaderCheckBox.Checked = true;
@@ -83,28 +74,28 @@ namespace videowallpapers
                 playlistNameLabel.Text = cfgdata.plpath;
                 plpath = cfgdata.plpath;
                 string ext = Path.GetExtension(cfgdata.plpath);
-                if (mpcExt.Contains(ext))
+                if (VideoPlayer.playerExtensions[0].Contains(ext))
                 {
                     playerComboBox.SelectedIndex = 0;
                     procIndex = 0;
                 }
-                else if (kmpExt.Contains(ext))
+                else if (VideoPlayer.playerExtensions[1].Contains(ext))
                 {
                     playerComboBox.SelectedIndex = 1;
                     procIndex = 1;
-                    ofd.Filter = kmpfilter;
+                    ofd.Filter = VideoPlayer.playerFilters[1];
                 }
-                else if (vlcExt.Contains(ext))
+                else if (VideoPlayer.playerExtensions[2].Contains(ext))
                 {
                     playerComboBox.SelectedIndex = 2;
                     procIndex = 2;
-                    ofd.Filter = vlcfilter;
+                    ofd.Filter = VideoPlayer.playerFilters[2];
                 }
-                else if (laExtensions.Contains(ext))
+                else if (VideoPlayer.playerExtensions[3].Contains(ext))
                 {
                     playerComboBox.SelectedIndex = 3;
                     procIndex = 3;
-                    ofd.Filter = lafilter;
+                    ofd.Filter = VideoPlayer.playerFilters[3];
                 }
                 else
                 {
@@ -227,27 +218,17 @@ namespace videowallpapers
             switchPanel.Enabled = false;
             playlistNameLabel.Text = "Не выбран плейлист";
             plpath = "";
-            // Добавление нового плеера 2/6
+            int index;
             if (playerComboBox.SelectedIndex == 0)
-            {
-                ofd.Filter = mpcfilter;
-                procIndex = 0;
-            }
+                index = 0;
             else if(playerComboBox.SelectedIndex == 1)
-            {
-                ofd.Filter = kmpfilter;
-                procIndex = 1;
-            }
+                index = 1;
             else if (playerComboBox.SelectedIndex == 2)
-            {
-                ofd.Filter = vlcfilter;
-                procIndex = 2;
-            }
+                index = 2;
             else
-            {
-                ofd.Filter = lafilter;
-                procIndex = 3;
-            }           
+                index = 3;
+            ofd.Filter = VideoPlayer.playerFilters[index];
+            procIndex = index;
         }
         // смена плейлиста
         private void playlistSelectButton_Click(object sender, EventArgs e)
@@ -256,33 +237,21 @@ namespace videowallpapers
                 return;
             ofd.InitialDirectory = Path.GetDirectoryName(ofd.FileName);
             string ext = Path.GetExtension(ofd.FileName);
-            // Добавление нового плеера 3/6
-            if (mpcExt.Contains(ext))
-            {
-                playerComboBox.SelectedIndex = 0;
-                procIndex = 0;
-                ofd.Filter = mpcfilter;
-            }
-            else if (kmpExt.Contains(ext))
-            {
-                playerComboBox.SelectedIndex = 1;
-                procIndex = 1;
-                ofd.Filter = kmpfilter;
-            }
-            else if (vlcExt.Contains(ext))
-            {
-                playerComboBox.SelectedIndex = 2;
-                procIndex = 2;
-                ofd.Filter = vlcfilter;
-            }
-            else if (laExtensions.Contains(ext))
-            {
-                playerComboBox.SelectedIndex = 3;
-                procIndex = 3;
-                ofd.Filter = lafilter;
-            }
+            int index=0;
+            if (VideoPlayer.playerFilters[0].Contains(ext))
+                index = 0;
+            else if (VideoPlayer.playerFilters[1].Contains(ext))
+                index = 1;
+            else if (VideoPlayer.playerFilters[2].Contains(ext))
+                index = 2;
+            else if (VideoPlayer.playerFilters[3].Contains(ext))
+                index = 3;
             else
                 return;
+            playerComboBox.SelectedIndex = index;
+            procIndex = index;
+
+            ofd.Filter = VideoPlayer.playerFilters[0];
             plpath = ofd.FileName;
             playlistNameLabel.Text = ofd.FileName;
             procIndex = playerComboBox.SelectedIndex;
