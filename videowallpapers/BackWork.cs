@@ -19,6 +19,7 @@ namespace videowallpapers
         private static extern IntPtr GetForegroundWindow();
 
         readonly BackgroundWorker bw = new BackgroundWorker();
+        VideoPlayer player;
         readonly double[] inactionTime = { 0.05, 1, 3, 5, 10, 15 }; // массив периодов бездействия
         int inactionNumber;
         int inactionInMs;
@@ -64,7 +65,7 @@ namespace videowallpapers
                 else if (downtime>=inactionInMs && !isActive)
                 {
                     dwt2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                    Console.WriteLine((dwt2-dwt1) + " мс");
+                    //Console.WriteLine((dwt2-dwt1) + " мс");
                     //log.Add((dwt2 - dwt1) + " мс");
                     isActive = true;
                     Process.Start((string)e.Argument);

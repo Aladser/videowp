@@ -35,7 +35,6 @@ namespace videowallpapers
         public MainForm()
         {
             backwork = new BackWork(0);
-            // дизайн
             InitializeComponent();
             this.CenterToScreen();
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
