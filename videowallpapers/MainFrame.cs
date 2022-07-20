@@ -8,10 +8,8 @@ namespace videowallpapers
 {
     public partial class MainForm : Form
     {
-        /// <summary>
-        /// хук глобального движения мыши или клавиатуры
-        /// </summary>
-        UserActivityHook globalHook;
+        VideoPlayer player;
+        UserActivityHook globalHook;  // хук глобального движения мыши или клавиатуры
         /// <summary>
         /// фоновая задача показа обоев
         /// </summary>
@@ -68,40 +66,23 @@ namespace videowallpapers
             autoloadSaver = cfgdata.autoload;
             autoloadSaverCheckBox.Checked = cfgdata.autoload == 0 ? false : true;
             // считывание playerpath
-            // Добавление нового плеера 1/5
             if (File.Exists(cfgdata.plpath))
             {
                 playlistNameLabel.Text = cfgdata.plpath;
                 plpath = cfgdata.plpath;
                 string ext = Path.GetExtension(cfgdata.plpath);
+                int index = 0;
                 if (VideoPlayer.playerExtensions[0].Contains(ext))
-                {
-                    playerComboBox.SelectedIndex = 0;
-                    procIndex = 0;
-                }
+                    index = 0;
                 else if (VideoPlayer.playerExtensions[1].Contains(ext))
-                {
-                    playerComboBox.SelectedIndex = 1;
-                    procIndex = 1;
-                    ofd.Filter = VideoPlayer.playerFilters[1];
-                }
+                    index = 1;
                 else if (VideoPlayer.playerExtensions[2].Contains(ext))
-                {
-                    playerComboBox.SelectedIndex = 2;
-                    procIndex = 2;
-                    ofd.Filter = VideoPlayer.playerFilters[2];
-                }
+                    index = 2;
                 else if (VideoPlayer.playerExtensions[3].Contains(ext))
-                {
-                    playerComboBox.SelectedIndex = 3;
-                    procIndex = 3;
-                    ofd.Filter = VideoPlayer.playerFilters[3];
-                }
-                else
-                {
-                    playerComboBox.SelectedIndex = 0;
-                    return;
-                }
+                    index = 3;
+                playerComboBox.SelectedIndex = index;
+                procIndex = index;
+                ofd.Filter = VideoPlayer.playerFilters[index];
             }
             else
             {
@@ -218,17 +199,8 @@ namespace videowallpapers
             switchPanel.Enabled = false;
             playlistNameLabel.Text = "Не выбран плейлист";
             plpath = "";
-            int index;
-            if (playerComboBox.SelectedIndex == 0)
-                index = 0;
-            else if(playerComboBox.SelectedIndex == 1)
-                index = 1;
-            else if (playerComboBox.SelectedIndex == 2)
-                index = 2;
-            else
-                index = 3;
-            ofd.Filter = VideoPlayer.playerFilters[index];
-            procIndex = index;
+            ofd.Filter = VideoPlayer.playerFilters[playerComboBox.SelectedIndex];
+            procIndex = playerComboBox.SelectedIndex;
         }
         // смена плейлиста
         private void playlistSelectButton_Click(object sender, EventArgs e)

@@ -28,5 +28,18 @@ namespace videowallpapers
         {
             procIndex = index;
         }
+
+        public void setActivePlayer(int index)
+        {
+            procIndex = index;
+        }
+        public int getActivePlayerNumber()
+        {
+            return procIndex;
+        }
+        public string getActivePlayer()
+        {
+            return playerProcesses[procIndex];
+        }
     }
 }
