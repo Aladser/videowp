@@ -32,13 +32,9 @@ namespace videowallpapers
                 cfgdata = new ConfigData();
                 isConfigEdited = true;
             }
-
-
-
-            if (System.Diagnostics.Process.GetProcessesByName(Application.ProductName).Length > 1)
-            {
-                return;
-            }
+            // предотвращение запуска второй копии
+            if (System.Diagnostics.Process.GetProcessesByName(Application.ProductName).Length > 1) return;
+            // запуск программы
             else
             {
                 Application.EnableVisualStyles();
@@ -47,5 +43,40 @@ namespace videowallpapers
                 Application.Run();
             }
         }
+        /// <summary>
+        /// Изменить автозапуск
+        /// </summary>
+        /// <param name="isAutoLoader">флаг</param>
+        public static void editAutoLoader(bool isAutoLoader)
+        {
+            // Создание ярлыка
+            if (isAutoLoader)
+            {
+                //Windows Script Host Shell Object
+                dynamic shell = Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8")));
+                try
+                {
+                    var lnk = shell.CreateShortcut(Program.shortcut);
+                    try
+                    {
+                        lnk.TargetPath = Application.ExecutablePath;
+                        lnk.IconLocation = "shell32.dll, 1";
+                        lnk.Save();
+                    }
+                    finally
+                    {
+                        System.Runtime.InteropServices.Marshal.FinalReleaseComObject(lnk);
+                    }
+                }
+                finally
+                {
+                    System.Runtime.InteropServices.Marshal.FinalReleaseComObject(shell);
+                }
+            }
+            // Удаление ярлыка
+            else
+                File.Delete(Program.shortcut);
+        }
+
     }
 }

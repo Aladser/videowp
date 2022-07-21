@@ -19,7 +19,6 @@ namespace videowallpapers
             if (File.Exists(Program.shortcut)) autoloaderCheckBox.Checked = true; // проверка автозапуска
             backwork = new BackWork(); // фоновая задача показа обоев
             CenterToScreen();
-          
             timeComboBox.SelectedIndex = Program.cfgdata.period;  // считывание времени бездействия на форму и backwork            
             autoShowCheckBox.Checked = Program.cfgdata.autoshow == 0 ? false : true; // считывание autoshow
             // считывание playerpath
@@ -118,33 +117,7 @@ namespace videowallpapers
         // Создание-удаление ярлыка
         private void autoLoader_CheckedChanged(object sender, EventArgs e)
         {
-            // Создание ярлыка
-            if (autoloaderCheckBox.Checked)
-            {
-                //Windows Script Host Shell Object
-                dynamic shell = Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8")));
-                try
-                {
-                    var lnk = shell.CreateShortcut(Program.shortcut);
-                    try
-                    {
-                        lnk.TargetPath = Application.ExecutablePath;
-                        lnk.IconLocation = "shell32.dll, 1";
-                        lnk.Save();
-                    }
-                    finally
-                    {
-                        System.Runtime.InteropServices.Marshal.FinalReleaseComObject(lnk);
-                    }
-                }
-                finally
-                {
-                    System.Runtime.InteropServices.Marshal.FinalReleaseComObject(shell);
-                }
-            }
-            // Удаление ярлыка
-            else
-                File.Delete(Program.shortcut);
+            Program.editAutoLoader(autoloaderCheckBox.Checked);
         }
         // переключение видеоплеера
         private void playerComboBox_SelectionChangeCommitted(object sender, EventArgs e)
