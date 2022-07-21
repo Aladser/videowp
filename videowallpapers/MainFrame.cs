@@ -10,29 +10,26 @@ namespace videowallpapers
     {
         UserActivityHook globalHook;// хук глобального движения мыши или клавиатуры
         BackWork backwork;// фоновая задача показа обоев
-        readonly string cfgpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\config.cfg"; // путь конфига
-        readonly string logpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\log.txt"; // путь лога
-        readonly string shortcut= Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\videowallpapers.lnk"; // ярлык автозагрузки 
         readonly OpenFileDialog ofd = new OpenFileDialog();
-        bool isConfigEdited = false; // флаго проверки правки конфиг.файла
+        bool isConfigEdited = false; // флаг проверки правки конфиг.файла
         public static VideoPlayer player; //текущий видеоплеер
 
         public MainForm()
-        {           
-            if (File.Exists(shortcut)) autoloaderCheckBox.Checked = true; // проверка автозапуска
-            backwork = new BackWork(); // фоновая задача показа обоев
+        {                  
             InitializeComponent();
+            if (File.Exists(Program.shortcut)) autoloaderCheckBox.Checked = true; // проверка автозапуска
+            backwork = new BackWork(); // фоновая задача показа обоев
             CenterToScreen();
             // Считывание конфигурационного файла
             ConfigData cfgdata;
-            if (!File.Exists(cfgpath))
+            if (!File.Exists(Program.cfgpath))
             {
                 MessageBox.Show("Файл не найден. Установлены стандартные настройки");
                 cfgdata = new ConfigData();
                 isConfigEdited = true;
             }
             else
-                cfgdata = ConfigStream.Read(cfgpath);
+                cfgdata = ConfigStream.Read(Program.cfgpath);
             if (cfgdata == null)
             {
                 MessageBox.Show("Ошибка чтения конфиг.файла. Установлены стандартные настройки", "", MessageBoxButtons.OK);
@@ -103,7 +100,6 @@ namespace videowallpapers
             {
                 this.Text = "Видеобои 1.75: АКТИВНО";
                 notifyIcon.Text = "Видеообои ВКЛ";
-                notifyIcon.Visible = true;
                 backwork.start( player.getPlaylist() );
                 playlistSelectButton.Enabled = false;
             }
@@ -111,7 +107,6 @@ namespace videowallpapers
             {
                 this.Text = "Видеобои 1.75";
                 notifyIcon.Text = "Видеообои ВЫКЛ";
-                notifyIcon.Visible = false;
                 backwork.stop();
                 playlistSelectButton.Enabled = true;
             }               
@@ -146,7 +141,7 @@ namespace videowallpapers
                 dynamic shell = Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8")));
                 try
                 {
-                    var lnk = shell.CreateShortcut(shortcut);
+                    var lnk = shell.CreateShortcut(Program.shortcut);
                     try
                     {
                         lnk.TargetPath = Application.ExecutablePath;
@@ -165,7 +160,7 @@ namespace videowallpapers
             }
             // Удаление ярлыка
             else
-                File.Delete(shortcut);
+                File.Delete(Program.shortcut);
         }
         // переключение видеоплеера
         private void playerComboBox_SelectionChangeCommitted(object sender, EventArgs e)
@@ -220,7 +215,7 @@ namespace videowallpapers
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (isConfigEdited)
-                ConfigStream.Write(cfgpath, timeComboBox.SelectedIndex, autoShowCheckBox.Checked, player.getPlaylist());
+                ConfigStream.Write(Program.cfgpath, timeComboBox.SelectedIndex, autoShowCheckBox.Checked, player.getPlaylist());
             /*
             //лог
             StreamWriter writer = new StreamWriter(logpath, false);
