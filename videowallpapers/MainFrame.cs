@@ -11,7 +11,6 @@ namespace videowallpapers
         UserActivityHook globalHook;// хук глобального движения мыши или клавиатуры
         BackWork backwork;// фоновая задача показа обоев
         readonly OpenFileDialog ofd = new OpenFileDialog();
-        bool isConfigEdited = false; // флаг проверки правки конфиг.файла
         public static VideoPlayer player; //текущий видеоплеер
 
         public MainForm()
@@ -20,29 +19,14 @@ namespace videowallpapers
             if (File.Exists(Program.shortcut)) autoloaderCheckBox.Checked = true; // проверка автозапуска
             backwork = new BackWork(); // фоновая задача показа обоев
             CenterToScreen();
-            // Считывание конфигурационного файла
-            ConfigData cfgdata;
-            if (!File.Exists(Program.cfgpath))
-            {
-                MessageBox.Show("Файл не найден. Установлены стандартные настройки");
-                cfgdata = new ConfigData();
-                isConfigEdited = true;
-            }
-            else
-                cfgdata = ConfigStream.Read(Program.cfgpath);
-            if (cfgdata == null)
-            {
-                MessageBox.Show("Ошибка чтения конфиг.файла. Установлены стандартные настройки", "", MessageBoxButtons.OK);
-                cfgdata = new ConfigData();
-                isConfigEdited = true;
-            }           
-            timeComboBox.SelectedIndex = cfgdata.period;  // считывание времени бездействия на форму и backwork            
-            autoShowCheckBox.Checked = cfgdata.autoshow == 0 ? false : true; // считывание autoshow
+          
+            timeComboBox.SelectedIndex = Program.cfgdata.period;  // считывание времени бездействия на форму и backwork            
+            autoShowCheckBox.Checked = Program.cfgdata.autoshow == 0 ? false : true; // считывание autoshow
             // считывание playerpath
-            if (File.Exists(cfgdata.plpath))
+            if (File.Exists(Program.cfgdata.plpath))
             {
-                playlistNameLabel.Text = cfgdata.plpath;
-                string ext = Path.GetExtension(cfgdata.plpath);
+                playlistNameLabel.Text = Program.cfgdata.plpath;
+                string ext = Path.GetExtension(Program.cfgdata.plpath);
                 int index;
                 if (VideoPlayer.playerExtensions[1].Contains(ext))
                     index = 1;
@@ -63,7 +47,7 @@ namespace videowallpapers
                 playlistSelectButton.Enabled = true;
                 offRadioButton.Checked = true;
             }
-            player = new VideoPlayer(playerComboBox.SelectedIndex, cfgdata.plpath);
+            player = new VideoPlayer(playerComboBox.SelectedIndex, Program.cfgdata.plpath);
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             ofd.Filter = player.getActivePlayerFilter();
             // показ обоев после запуска программы
@@ -129,7 +113,7 @@ namespace videowallpapers
         private void TimeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             backwork.setTimePeriod(timeComboBox.SelectedIndex);
-            isConfigEdited = true;
+            Program.isConfigEdited = true;
         }
         // Создание-удаление ярлыка
         private void autoLoader_CheckedChanged(object sender, EventArgs e)
@@ -197,7 +181,7 @@ namespace videowallpapers
             player.setPlaylist(ofd.FileName);
             playlistNameLabel.Text = ofd.FileName;
             switchPanel.Enabled = true;
-            isConfigEdited = true;
+            Program.isConfigEdited = true;
         }
         // Открыть приложение после нажатия на иконку в трее
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -209,12 +193,12 @@ namespace videowallpapers
         // Переключение автопоказа обоев
         private void autoloaderSaverCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            isConfigEdited = true;
+            Program.isConfigEdited = true;
         }
         // закрытие приложения
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (isConfigEdited)
+            if (Program.isConfigEdited)
                 ConfigStream.Write(Program.cfgpath, timeComboBox.SelectedIndex, autoShowCheckBox.Checked, player.getPlaylist());
             /*
             //лог
