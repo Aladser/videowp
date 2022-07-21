@@ -141,7 +141,6 @@
             this.notifyIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Warning;
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
             this.notifyIcon.Text = "Видео обои";
-            this.notifyIcon.Visible = true;
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
             // 
             // playlistLabel
@@ -188,7 +187,7 @@
             this.autoShowCheckBox.TabIndex = 15;
             this.autoShowCheckBox.Text = "Автозапуск заставки";
             this.autoShowCheckBox.UseVisualStyleBackColor = true;
-            this.autoShowCheckBox.CheckedChanged += new System.EventHandler(this.autoloaderSaverCheckBox_CheckedChanged);
+            this.autoShowCheckBox.CheckedChanged += new System.EventHandler(this.autoShowCheckBoxCheckBox_CheckedChanged);
             // 
             // aboutImage
             // 
@@ -222,7 +221,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Видеобои 1.75";
+            this.Text = "Видеобои 1.8";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             this.switchPanel.ResumeLayout(false);

@@ -9,8 +9,8 @@ namespace videowallpapers
     public partial class MainForm : Form
     {
         UserActivityHook globalHook;// хук глобального движения мыши или клавиатуры
-        BackWork backwork;// фоновая задача показа обоев
         readonly OpenFileDialog ofd = new OpenFileDialog();
+        BackWork backwork;// фоновая задача показа обоев
         public static VideoPlayer player; //текущий видеоплеер
 
         public MainForm()
@@ -27,11 +27,11 @@ namespace videowallpapers
                 playlistNameLabel.Text = Program.cfgdata.plpath;
                 string ext = Path.GetExtension(Program.cfgdata.plpath);
                 int index;
-                if (VideoPlayer.playerExtensions[1].Contains(ext))
+                if (VideoPlayer.playerExtensions[VideoPlayer.KMP].Contains(ext))
                     index = 1;
-                else if (VideoPlayer.playerExtensions[2].Contains(ext))
+                else if (VideoPlayer.playerExtensions[VideoPlayer.VLC].Contains(ext))
                     index = 2;
-                else if (VideoPlayer.playerExtensions[3].Contains(ext))
+                else if (VideoPlayer.playerExtensions[VideoPlayer.LA].Contains(ext))
                     index = 3;
                 else
                     index = 0;
@@ -54,6 +54,7 @@ namespace videowallpapers
             {
                 onRadioButton.Checked = true;
                 backwork.start(player.getPlaylist());
+                notifyIcon.Visible = true;
             }
             else
             {
@@ -81,15 +82,17 @@ namespace videowallpapers
         {
             if (onRadioButton.Checked)
             {
-                this.Text = "Видеобои 1.75: АКТИВНО";
+                this.Text = "Видеобои 1.8: АКТИВНО";
                 notifyIcon.Text = "Видеообои ВКЛ";
+                notifyIcon.Visible = true;
                 backwork.start( player.getPlaylist() );
                 playlistSelectButton.Enabled = false;
             }
             else
             {
-                this.Text = "Видеобои 1.75";
+                this.Text = "Видеобои 1.8";
                 notifyIcon.Text = "Видеообои ВЫКЛ";
+                notifyIcon.Visible = false;
                 backwork.stop();
                 playlistSelectButton.Enabled = true;
             }               
@@ -97,7 +100,7 @@ namespace videowallpapers
         // Информация о программе
         private void aboutImage_MouseHover(object sender, EventArgs e)
         {
-            toolTip.SetToolTip(aboutImage, "Видеобом 1.75\n(c) Aladser\n2022");
+            toolTip.SetToolTip(aboutImage, "Видеобом 1.8\n(c) Aladser\n2022");
         }
         // Сворачивание в трей
         private void MainForm_SizeChanged(object sender, EventArgs e)
@@ -112,7 +115,8 @@ namespace videowallpapers
         private void TimeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             backwork.setTimePeriod(timeComboBox.SelectedIndex);
-            Program.isConfigEdited = true;
+            Program.cfgdata.period = timeComboBox.SelectedIndex;
+            ConfigStream.Write(Program.cfgpath, Program.cfgdata);
         }
         // Создание-удаление ярлыка
         private void autoLoader_CheckedChanged(object sender, EventArgs e)
@@ -140,13 +144,13 @@ namespace videowallpapers
             ofd.InitialDirectory = Path.GetDirectoryName(ofd.FileName);
             string ext = Path.GetExtension(ofd.FileName);
             int index=0;
-            if (VideoPlayer.playerFilters[0].Contains(ext))
+            if (VideoPlayer.playerFilters[VideoPlayer.MPC].Contains(ext))
                 index = 0;
-            else if (VideoPlayer.playerFilters[1].Contains(ext))
+            else if (VideoPlayer.playerFilters[VideoPlayer.KMP].Contains(ext))
                 index = 1;
-            else if (VideoPlayer.playerFilters[2].Contains(ext))
+            else if (VideoPlayer.playerFilters[VideoPlayer.VLC].Contains(ext))
                 index = 2;
-            else if (VideoPlayer.playerFilters[3].Contains(ext))
+            else if (VideoPlayer.playerFilters[VideoPlayer.LA].Contains(ext))
                 index = 3;
             else
                 return;
@@ -154,7 +158,8 @@ namespace videowallpapers
             player.setPlaylist(ofd.FileName);
             playlistNameLabel.Text = ofd.FileName;
             switchPanel.Enabled = true;
-            Program.isConfigEdited = true;
+            Program.cfgdata.plpath = player.getPlaylist();
+            ConfigStream.Write(Program.cfgpath, Program.cfgdata);
         }
         // Открыть приложение после нажатия на иконку в трее
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -164,15 +169,14 @@ namespace videowallpapers
             notifyIcon.Visible = false;
         }
         // Переключение автопоказа обоев
-        private void autoloaderSaverCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void autoShowCheckBoxCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            Program.isConfigEdited = true;
+            Program.cfgdata.autoshow = autoShowCheckBox.Checked ? 1 : 0;
+            ConfigStream.Write(Program.cfgpath, Program.cfgdata);
         }
         // закрытие приложения
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (Program.isConfigEdited)
-                ConfigStream.Write(Program.cfgpath, timeComboBox.SelectedIndex, autoShowCheckBox.Checked, player.getPlaylist());
             /*
             //лог
             StreamWriter writer = new StreamWriter(logpath, false);
@@ -193,5 +197,7 @@ namespace videowallpapers
                 notifyIcon.Visible = true;
             }
         }
+
+
     }
 }

@@ -2,6 +2,10 @@
 {
     public class VideoPlayer
     {
+        public const int MPC = 0;
+        public const int KMP = 1;
+        public const int VLC = 2;
+        public const int LA = 3;
         // форматы плейлистов
         static string mpcfilter = "MPC плейлист (*.mpcpl;*pls;*asx;*m3u)|*.mpcpl;*pls;*asx;*m3u|Все файлы (*.*)|*.*";
         static string kmpfilter = "KMP плейлист (*.kpl;*pls;*asx;*m3u)|*.kpl;*pls;*asx;*m3u|Все файлы (*.*)|*.*";

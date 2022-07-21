@@ -76,7 +76,6 @@ namespace videowallpapers
                 {
                     dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                     isActive = false;
-                    Console.WriteLine( "Плеер " + MainForm.player.getActivePlayer() );
                     Process[] processes = Process.GetProcessesByName( MainForm.player.getActivePlayer() );
                     foreach (Process elem in processes)
                         elem.Kill();

@@ -7,10 +7,9 @@ namespace videowallpapers
     internal static class Program
     {
         public static readonly string cfgpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\config.cfg"; // путь конфига
+        public static ConfigData cfgdata;
         public static readonly string logpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\log.txt"; // путь лога
         public static readonly string shortcut = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\videowallpapers.lnk"; // ярлык автозагрузки 
-        public static bool isConfigEdited = false; // флаг проверки правки конфиг.файла
-        public static ConfigData cfgdata;
         /// <summary>
         /// Главная точка входа для приложения.
         /// </summary>
@@ -22,7 +21,7 @@ namespace videowallpapers
             {
                 MessageBox.Show("Файл не найден. Установлены стандартные настройки");
                 cfgdata = new ConfigData();
-                isConfigEdited = true;
+                ConfigStream.Write(cfgpath, cfgdata);
             }
             else
                 cfgdata = ConfigStream.Read(Program.cfgpath);
@@ -30,7 +29,7 @@ namespace videowallpapers
             {
                 MessageBox.Show("Ошибка чтения конфиг.файла. Установлены стандартные настройки", "", MessageBoxButtons.OK);
                 cfgdata = new ConfigData();
-                isConfigEdited = true;
+                ConfigStream.Write(cfgpath, cfgdata);
             }
             // предотвращение запуска второй копии
             if (System.Diagnostics.Process.GetProcessesByName(Application.ProductName).Length > 1) return;

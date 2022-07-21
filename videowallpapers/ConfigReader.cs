@@ -23,6 +23,9 @@ namespace videowallpapers
     /// </summary>
     internal static class ConfigStream
     {
+        public const int AUTOSHOW = 0;
+        public const int PLAYLIST = 1;
+        public const int PERIOD = 2;
         /// <summary>
         /// Чтение данных из конфиг.файла
         /// </summary>
@@ -61,6 +64,20 @@ namespace videowallpapers
             String text = "autoshow = " + (autoshow?"1":"0") + "\n";
             text += "playerpath = " + plpath + "\n";
             text += "period = " + period + "\n";
+            writer.WriteLine(text);
+            writer.Close();
+        }
+        /// <summary>
+        /// Запись данных в конфиг.файл
+        /// </summary>
+        /// <param name="path"> Путь конф.файла </param>
+        /// <param name="data"> ConfigFata </param>
+        public static void Write(string path, ConfigData data)
+        {
+            StreamWriter writer = new StreamWriter(path, false);
+            String text = "autoshow = " + data.autoshow + "\n";
+            text += "playerpath = " + data.plpath + "\n";
+            text += "period = " + data.period + "\n";
             writer.WriteLine(text);
             writer.Close();
         }
