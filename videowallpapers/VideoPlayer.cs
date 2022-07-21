@@ -23,10 +23,12 @@ namespace videowallpapers
 
         string[] playerProcesses = { "mpc-hc64", "KMPlayer64", "vlc", "LA" };
         int procIndex;
+        string plpath;
 
-        public VideoPlayer(int index)
+        public VideoPlayer(int index, string pl)
         {
             procIndex = index;
+            plpath = pl;
         }
 
         public void setActivePlayer(int index)
@@ -40,6 +42,14 @@ namespace videowallpapers
         public string getActivePlayer()
         {
             return playerProcesses[procIndex];
+        }
+        public void setPlaylist(string pl)
+        {
+            plpath = pl;
+        }
+        public string getPlaylist()
+        {
+            return plpath;
         }
     }
 }

@@ -19,7 +19,6 @@ namespace videowallpapers
         private static extern IntPtr GetForegroundWindow();
 
         readonly BackgroundWorker bw = new BackgroundWorker();
-        VideoPlayer player;
         readonly double[] inactionTime = { 0.05, 1, 3, 5, 10, 15 }; // массив периодов бездействия
         int inactionNumber;
         int inactionInMs;

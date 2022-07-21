@@ -42,7 +42,7 @@
             this.playlistLabel = new System.Windows.Forms.Label();
             this.autoloaderCheckBox = new System.Windows.Forms.CheckBox();
             this.playerComboBox = new System.Windows.Forms.ComboBox();
-            this.autoloadSaverCheckBox = new System.Windows.Forms.CheckBox();
+            this.autoShowCheckBox = new System.Windows.Forms.CheckBox();
             this.aboutImage = new System.Windows.Forms.PictureBox();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.switchPanel.SuspendLayout();
@@ -178,16 +178,16 @@
             this.playerComboBox.TabIndex = 14;
             this.playerComboBox.SelectionChangeCommitted += new System.EventHandler(this.playerComboBox_SelectionChangeCommitted);
             // 
-            // autoloadSaverCheckBox
+            // autoShowCheckBox
             // 
-            this.autoloadSaverCheckBox.AutoSize = true;
-            this.autoloadSaverCheckBox.Location = new System.Drawing.Point(252, 9);
-            this.autoloadSaverCheckBox.Name = "autoloadSaverCheckBox";
-            this.autoloadSaverCheckBox.Size = new System.Drawing.Size(135, 17);
-            this.autoloadSaverCheckBox.TabIndex = 15;
-            this.autoloadSaverCheckBox.Text = "Автозапуск заставки";
-            this.autoloadSaverCheckBox.UseVisualStyleBackColor = true;
-            this.autoloadSaverCheckBox.CheckedChanged += new System.EventHandler(this.autoloaderSaverCheckBox_CheckedChanged);
+            this.autoShowCheckBox.AutoSize = true;
+            this.autoShowCheckBox.Location = new System.Drawing.Point(252, 9);
+            this.autoShowCheckBox.Name = "autoShowCheckBox";
+            this.autoShowCheckBox.Size = new System.Drawing.Size(135, 17);
+            this.autoShowCheckBox.TabIndex = 15;
+            this.autoShowCheckBox.Text = "Автозапуск заставки";
+            this.autoShowCheckBox.UseVisualStyleBackColor = true;
+            this.autoShowCheckBox.CheckedChanged += new System.EventHandler(this.autoloaderSaverCheckBox_CheckedChanged);
             // 
             // aboutImage
             // 
@@ -207,7 +207,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(533, 111);
             this.Controls.Add(this.aboutImage);
-            this.Controls.Add(this.autoloadSaverCheckBox);
+            this.Controls.Add(this.autoShowCheckBox);
             this.Controls.Add(this.playerComboBox);
             this.Controls.Add(this.autoloaderCheckBox);
             this.Controls.Add(this.playlistLabel);
@@ -245,7 +245,7 @@
         private System.Windows.Forms.Label playlistLabel;
         private System.Windows.Forms.CheckBox autoloaderCheckBox;
         private System.Windows.Forms.ComboBox playerComboBox;
-        private System.Windows.Forms.CheckBox autoloadSaverCheckBox;
+        private System.Windows.Forms.CheckBox autoShowCheckBox;
         private System.Windows.Forms.PictureBox aboutImage;
         private System.Windows.Forms.ToolTip toolTip;
     }

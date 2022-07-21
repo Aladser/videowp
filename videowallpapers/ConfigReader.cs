@@ -10,12 +10,12 @@ namespace videowallpapers
     {
         public ConfigData()
         {           
-            autoload = 0;
+            autoshow = 0;
             plpath = "";
             period = 0;
         }
         public int period;
-        public int autoload;
+        public int autoshow;
         public string plpath;
     }
     /// <summary>
@@ -36,7 +36,7 @@ namespace videowallpapers
             {
                 rslt = new ConfigData();                
                 string line = reader.ReadLine();
-                rslt.autoload = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
+                rslt.autoshow = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
                 line = reader.ReadLine();
                 rslt.plpath = line.Substring(line.IndexOf("= ") + 2);
                 line = reader.ReadLine();
@@ -53,12 +53,12 @@ namespace videowallpapers
         /// Запись данных в конфиг.файл
         /// </summary>
         /// <param name="period"></param>
-        /// <param name="autoloader"></param>
+        /// <param name="autoshow"></param>
         /// <param name="path"></param>
-        public static void Write(string path, int period, int autoloader, string plpath)
+        public static void Write(string path, int period, bool autoshow, string plpath)
         {
             StreamWriter writer = new StreamWriter(path, false);
-            String text = "autoload = " + autoloader + "\n";
+            String text = "autoshow = " + (autoshow?"1":"0") + "\n";
             text += "playerpath = " + plpath + "\n";
             text += "period = " + period + "\n";
             writer.WriteLine(text);

@@ -8,36 +8,21 @@ namespace videowallpapers
 {
     public partial class MainForm : Form
     {
-        VideoPlayer player;
-        UserActivityHook globalHook;  // хук глобального движения мыши или клавиатуры
-        /// <summary>
-        /// фоновая задача показа обоев
-        /// </summary>
-        BackWork backwork;
+        UserActivityHook globalHook;// хук глобального движения мыши или клавиатуры
+        BackWork backwork;// фоновая задача показа обоев
         readonly string cfgpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\config.cfg"; // путь конфига
         readonly string logpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\log.txt"; // путь лога
         readonly string shortcut= Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\videowallpapers.lnk"; // ярлык автозагрузки 
         readonly OpenFileDialog ofd = new OpenFileDialog();
         bool isConfigEdited = false; // флаго проверки правки конфиг.файла
-        // форматы плейлистов
-        int procIndex = 0; // инжекс проигрывателя в массиве проигрываетелей класса BackWork
-        
-        /// <summary>
-        /// Путь к плейлисту
-        /// </summary>
-        string plpath = "";
-        /// <summary>
-        /// Запуск обоев после запуска программы
-        /// </summary>
-        int autoloadSaver; // работа после запуска
-
+        VideoPlayer player; //текущий видеоплеер
 
         public MainForm()
         {           
             if (File.Exists(shortcut)) autoloaderCheckBox.Checked = true; // проверка автозапуска
             backwork = new BackWork(); // фоновая задача показа обоев
             InitializeComponent();
-            this.CenterToScreen();
+            CenterToScreen();
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             // Считывание конфигурационного файла
             ConfigData cfgdata;
@@ -55,52 +40,45 @@ namespace videowallpapers
                 cfgdata = new ConfigData();
                 isConfigEdited = true;
             }           
-            timeComboBox.SelectedIndex = cfgdata.period;  // считывание времени бездействия
-            // считывание autoloadSaver
-            autoloadSaver = cfgdata.autoload;
-            autoloadSaverCheckBox.Checked = cfgdata.autoload == 0 ? false : true;
+            timeComboBox.SelectedIndex = cfgdata.period;  // считывание времени бездействия на форму и backwork            
+            autoShowCheckBox.Checked = cfgdata.autoshow == 0 ? false : true; // считывание autoshow
             // считывание playerpath
             if (File.Exists(cfgdata.plpath))
             {
                 playlistNameLabel.Text = cfgdata.plpath;
-                plpath = cfgdata.plpath;
                 string ext = Path.GetExtension(cfgdata.plpath);
-                int index = 0;
-                if (VideoPlayer.playerExtensions[0].Contains(ext))
-                    index = 0;
-                else if (VideoPlayer.playerExtensions[1].Contains(ext))
+                int index;
+                if (VideoPlayer.playerExtensions[1].Contains(ext))
                     index = 1;
                 else if (VideoPlayer.playerExtensions[2].Contains(ext))
                     index = 2;
                 else if (VideoPlayer.playerExtensions[3].Contains(ext))
                     index = 3;
+                else
+                    index = 0;
                 playerComboBox.SelectedIndex = index;
-                procIndex = index;
-                ofd.Filter = VideoPlayer.playerFilters[index];
             }
             else
             {
                 playlistNameLabel.Text = "Не найден плейлист";
                 playerComboBox.SelectedIndex = 0;
-                ofd.Filter = VideoPlayer.playerFilters[0];
+
                 switchPanel.Enabled = false;
                 playlistSelectButton.Enabled = true;
-                notifyIcon.Visible = false;
                 offRadioButton.Checked = true;
             }
+            player = new VideoPlayer(playerComboBox.SelectedIndex, cfgdata.plpath);
             // показ обоев после запуска программы
-            if (autoloadSaver == 1 && !plpath.Equals(""))
+            if (autoShowCheckBox.Checked && !player.getPlaylist().Equals(""))
             {
-                notifyIcon.Visible = true;
                 onRadioButton.Checked = true;
-                backwork.start(plpath);
+                backwork.start(player.getPlaylist());
             }
             else
             {
                 Visible = true;
                 offRadioButton.Checked = true;
-            }
-                
+            }               
             // Создание хука
             globalHook = new UserActivityHook();
             globalHook.KeyPress += GlobalKeyPress;
@@ -124,13 +102,15 @@ namespace videowallpapers
             {
                 this.Text = "Видеобои 1.75: АКТИВНО";
                 notifyIcon.Text = "Видеообои ВКЛ";
-                backwork.start(plpath);
+                notifyIcon.Visible = true;
+                backwork.start( player.getPlaylist() );
                 playlistSelectButton.Enabled = false;
             }
             else
             {
                 this.Text = "Видеобои 1.75";
                 notifyIcon.Text = "Видеообои ВЫКЛ";
+                notifyIcon.Visible = false;
                 backwork.stop();
                 playlistSelectButton.Enabled = true;
             }               
@@ -190,12 +170,12 @@ namespace videowallpapers
         private void playerComboBox_SelectionChangeCommitted(object sender, EventArgs e)
         {
             backwork.stop();
+            player.setPlaylist("");
+
+            playlistNameLabel.Text = "Не выбран плейлист";
+            ofd.Filter = VideoPlayer.playerFilters[playerComboBox.SelectedIndex];
             offRadioButton.Checked = true;
             switchPanel.Enabled = false;
-            playlistNameLabel.Text = "Не выбран плейлист";
-            plpath = "";
-            ofd.Filter = VideoPlayer.playerFilters[playerComboBox.SelectedIndex];
-            procIndex = playerComboBox.SelectedIndex;
         }
         // смена плейлиста
         private void playlistSelectButton_Click(object sender, EventArgs e)
@@ -216,12 +196,8 @@ namespace videowallpapers
             else
                 return;
             playerComboBox.SelectedIndex = index;
-            procIndex = index;
-
-            ofd.Filter = VideoPlayer.playerFilters[0];
-            plpath = ofd.FileName;
+            player.setPlaylist(ofd.FileName);
             playlistNameLabel.Text = ofd.FileName;
-            procIndex = playerComboBox.SelectedIndex;
             switchPanel.Enabled = true;
             isConfigEdited = true;
         }
@@ -235,14 +211,13 @@ namespace videowallpapers
         // Переключение автопоказа обоев
         private void autoloaderSaverCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            autoloadSaver = autoloadSaverCheckBox.Checked ? 1 : 0;
             isConfigEdited = true;
         }
         // закрытие приложения
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (isConfigEdited)
-                ConfigStream.Write(cfgpath, timeComboBox.SelectedIndex, autoloadSaver, plpath);
+                ConfigStream.Write(cfgpath, timeComboBox.SelectedIndex, autoShowCheckBox.Checked, player.getPlaylist());
             /*
             //лог
             StreamWriter writer = new StreamWriter(logpath, false);
