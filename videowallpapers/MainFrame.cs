@@ -15,7 +15,7 @@ namespace videowallpapers
         readonly string shortcut= Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\videowallpapers.lnk"; // ярлык автозагрузки 
         readonly OpenFileDialog ofd = new OpenFileDialog();
         bool isConfigEdited = false; // флаго проверки правки конфиг.файла
-        VideoPlayer player; //текущий видеоплеер
+        public static VideoPlayer player; //текущий видеоплеер
 
         public MainForm()
         {           
@@ -23,7 +23,6 @@ namespace videowallpapers
             backwork = new BackWork(); // фоновая задача показа обоев
             InitializeComponent();
             CenterToScreen();
-            ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             // Считывание конфигурационного файла
             ConfigData cfgdata;
             if (!File.Exists(cfgpath))
@@ -68,6 +67,8 @@ namespace videowallpapers
                 offRadioButton.Checked = true;
             }
             player = new VideoPlayer(playerComboBox.SelectedIndex, cfgdata.plpath);
+            ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            ofd.Filter = player.getActivePlayerFilter();
             // показ обоев после запуска программы
             if (autoShowCheckBox.Checked && !player.getPlaylist().Equals(""))
             {
@@ -171,6 +172,7 @@ namespace videowallpapers
         {
             backwork.stop();
             player.setPlaylist("");
+            player.setActivePlayer(playerComboBox.SelectedIndex);
 
             playlistNameLabel.Text = "Не выбран плейлист";
             ofd.Filter = VideoPlayer.playerFilters[playerComboBox.SelectedIndex];
@@ -180,6 +182,7 @@ namespace videowallpapers
         // смена плейлиста
         private void playlistSelectButton_Click(object sender, EventArgs e)
         {
+            ofd.InitialDirectory = player.getPlaylist();
             if (ofd.ShowDialog() != DialogResult.OK)
                 return;
             ofd.InitialDirectory = Path.GetDirectoryName(ofd.FileName);

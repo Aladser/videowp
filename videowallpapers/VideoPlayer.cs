@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace videowallpapers
+﻿namespace videowallpapers
 {
     public class VideoPlayer
     {
@@ -50,6 +44,10 @@ namespace videowallpapers
         public string getPlaylist()
         {
             return plpath;
+        }
+        public string getActivePlayerFilter()
+        {
+            return playerFilters[procIndex];
         }
     }
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -26,12 +25,8 @@ namespace videowallpapers
         long dwt1, dwt2;
         public List<string> log = new List<string>();
 
-        // процесс Windows
-        // Добавление нового плеера 5/6
-        string[] procs = { "mpc-hc64", "KMPlayer64", "vlc", "LA" };
-        int procIndex = 0;
         /// <summary>
-        /// Класс фоновой задачи для показа обоев
+        /// Класс фоновой задачи показа обоев
         /// </summary>
         /// <param name="inActionNumber">время, номер берется из Combobox</param>
         public BackWork(int inactionNumber)
@@ -74,14 +69,15 @@ namespace videowallpapers
                     //Console.WriteLine((dwt2-dwt1) + " мс");
                     //log.Add((dwt2 - dwt1) + " мс");
                     isActive = true;
-                    Process.Start((string)e.Argument);
+                    Process.Start( MainForm.player.getPlaylist() );
                 }
                 // пробуждение после запуска приложения
                 else if (downtime<inactionInMs && isActive)
                 {
                     dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                     isActive = false;
-                    Process[] processes = Process.GetProcessesByName(procs[procIndex]);
+                    Console.WriteLine( "Плеер " + MainForm.player.getActivePlayer() );
+                    Process[] processes = Process.GetProcessesByName( MainForm.player.getActivePlayer() );
                     foreach (Process elem in processes)
                         elem.Kill();
                 }
@@ -96,23 +92,7 @@ namespace videowallpapers
         /// <param name="plpath"></param>
         public void start(String plpath)
         {
-            // Добавление нового плеера 6/6
-            switch (Path.GetExtension(plpath))
-            {
-                case ".mpcpl":
-                    procIndex = 0;
-                    break;
-                case ".kpl":
-                    procIndex = 1;
-                    break;
-                case ".lap":
-                    procIndex = 3;
-                    break;
-                default:
-                    procIndex = 2;
-                    break;
-            }
-            bw.RunWorkerAsync(plpath); 
+            bw.RunWorkerAsync(); 
         }
         /// <summary>
         /// остановка фоновой задачи
@@ -178,7 +158,7 @@ namespace videowallpapers
             string proc = Process.GetProcessById((int)procId).ToString();
             if (screen.Bounds.Width == (rect.right - rect.left) 
                 && screen.Bounds.Height == (rect.bottom - rect.top) 
-                && !proc.Contains(procs[procIndex]) 
+                && !proc.Contains( MainForm.player.getActivePlayer() ) 
                 && !proc.Contains("explorer")
                 )
                 return true;
