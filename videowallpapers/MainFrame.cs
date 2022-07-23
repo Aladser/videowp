@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace videowallpapers
@@ -65,6 +67,7 @@ namespace videowallpapers
             globalHook.OnMouseActivity += GlobalMouseActivity;
             globalHook.Start(true, true);
         }
+
         // глобальное нажатие клавиатуры
         public void GlobalKeyPress(object sender, KeyPressEventArgs e)
         {
@@ -174,14 +177,11 @@ namespace videowallpapers
         // закрытие приложения
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            /*
+            /*            
             //лог
             StreamWriter writer = new StreamWriter(Program.logpath, false);
-            foreach(string elem in Program.log)
-            {
-                Console.WriteLine(elem);
-                writer.WriteLine(elem + "\n");
-            }
+            Console.WriteLine(log);
+            writer.WriteLine(log + "\n");
             writer.Close();
             */
             // Закрытие или сворачивание приложения
@@ -194,7 +194,5 @@ namespace videowallpapers
                 notifyIcon.Visible = true;
             }
         }
-
-
     }
 }
