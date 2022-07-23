@@ -70,7 +70,7 @@ namespace videowallpapers
         {
             if (onRadioButton.Checked)
             {
-                this.Text = "Видеобои 1.8: АКТИВНО";
+                this.Text = "Видеобои 1.82: АКТИВНО";
                 notifyIcon.Text = "Видеообои ВКЛ";
                 notifyIcon.Visible = true;
                 backwork.start( player.getPlaylist() );
@@ -78,7 +78,7 @@ namespace videowallpapers
             }
             else
             {
-                this.Text = "Видеобои 1.8";
+                this.Text = "Видеобои 1.82";
                 notifyIcon.Text = "Видеообои ВЫКЛ";
                 notifyIcon.Visible = false;
                 backwork.stop();
@@ -88,7 +88,7 @@ namespace videowallpapers
         // Информация о программе
         private void aboutImage_MouseHover(object sender, EventArgs e)
         {
-            toolTip.SetToolTip(aboutImage, "Видеобом 1.8\n(c) Aladser\n2022");
+            toolTip.SetToolTip(aboutImage, "Видеобом 1.82\n(c) Aladser\n2022");
         }
         // Сворачивание в трей
         private void MainForm_SizeChanged(object sender, EventArgs e)

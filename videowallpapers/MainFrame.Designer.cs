@@ -172,7 +172,8 @@
             "KMP Player",
             "VLC Media Player",
             "Light Alloy",
-            "SMPlayer"});
+            "SMPlayer",
+            "MPlayer"});
             this.playerComboBox.Location = new System.Drawing.Point(340, 34);
             this.playerComboBox.Name = "playerComboBox";
             this.playerComboBox.Size = new System.Drawing.Size(121, 21);
@@ -222,7 +223,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Видеобои 1.8";
+            this.Text = "Видеобои 1.82";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             this.switchPanel.ResumeLayout(false);

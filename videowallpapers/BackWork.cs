@@ -69,7 +69,13 @@ namespace videowallpapers
                     //Console.WriteLine((dwt2-dwt1) + " мс");
                     //log.Add((dwt2 - dwt1) + " мс");
                     isActive = true;
-                    Process.Start( MainForm.player.getPlaylist() );
+                    if (Program.cfgdata.player == 5)
+                    {
+                        Program.mplayerPr.StartInfo.Arguments = " -fixed-vo -zoom -xy " + Program.widthScreen + " -shuffle -loop 0 -playlist " + Program.cfgdata.plpath + " &> /dev/null";
+                        Program.mplayerPr.Start();
+                    }
+                    else
+                        Process.Start(MainForm.player.getPlaylist());
                 }
                 // пробуждение после запуска приложения
                 else if (downtime<inactionInMs && isActive)

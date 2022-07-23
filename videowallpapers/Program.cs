@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
@@ -6,6 +7,9 @@ namespace videowallpapers
 {
     internal static class Program
     {
+        public static int widthScreen = Screen.PrimaryScreen.Bounds.Size.Width;
+        public static string mplayer = Path.GetDirectoryName(Application.ExecutablePath) + "\\mplayer";
+        public static Process mplayerPr = new Process();
         public static readonly string cfgpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\config.cfg"; // путь конфига
         public static ConfigData cfgdata;
         public static readonly string logpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\log.txt"; // путь лога
@@ -31,6 +35,8 @@ namespace videowallpapers
                 cfgdata = new ConfigData();
                 ConfigStream.Write(cfgpath, cfgdata);
             }
+            // Процесс плеера
+            mplayerPr.StartInfo.FileName = Program.mplayer;
             // предотвращение запуска второй копии
             if (System.Diagnostics.Process.GetProcessesByName(Application.ProductName).Length > 1) return;
             // запуск программы
