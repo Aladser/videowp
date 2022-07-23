@@ -8,22 +8,24 @@ namespace videowallpapers
     {
         // форматы плейлистов
         static string mpcfilter = "MPC плейлист (*.mpcpl;*pls;*asx;*m3u)|*.mpcpl;*pls;*asx;*m3u";
+        static string mpfilter = "Mplayer плейлист (*.m3u;*.m3u8;*.pls;*.pls;*.xspf)|*.m3u;*.m3u8;*.pls;*.pls;*.xspf";
+        static string smpfilter = "SMP плейлист (*.m3u;*.m3u8;*.pls;*.pls;*.xspf)|*.m3u;*.m3u8;*.pls;*.pls;*.xspf";
+        static string lafilter = "LA плейлист (*.lap;*.m3u)|*.lap;*.m3u";
         static string kmpfilter = "KMP плейлист (*.kpl;*pls;*asx;*m3u)|*.kpl;*pls;*asx;*m3u";
         static string vlcfilter = "VLC плейлист (*.xspf;*.m3u;*.m3u8;*.html)|*.xspf;*.m3u;*.m3u8;*.html";
-        static string lafilter = "LA плейлист (*.lap;*.m3u)|*.lap;*.m3u";
-        static string smpfilter = "SMP плейлист (*.m3u;*.m3u8;*.pls;*.pls;*.xspf)|*.m3u;*.m3u8;*.pls;*.pls;*.xspf";
-        static string mpfilter = "Mplayer плейлист (*.m3u;*.m3u8;*.pls;*.pls;*.xspf)|*.m3u;*.m3u8;*.pls;*.pls;*.xspf";
-        public static readonly string[] playerFilters = { mpcfilter, kmpfilter, vlcfilter, lafilter, smpfilter, mpfilter};
+
+        public static readonly string[] playerFilters = { mpcfilter, mpfilter, smpfilter, lafilter, kmpfilter, vlcfilter };
 
         static string[] mpcExtensions = { ".mpcpl", ".pls", ".asx", ".m3u" };
+        static string[] mpExtensions = { ".m3u", ".mpcpl" };
+        static string[] smpExtensions = { ".m3u", ".m3u8", ".pls", ".pls", ".xspf" };
+        static string[] laExtensions = { ".lap", ".m3u" };
         static string[] kmpExtensions = { ".kpl", ".pls", ".asx", ".m3u" };
         static string[] vlcExtensions = { ".xspf", ".m3u", ".m3u8", ".html" };
-        static string[] laExtensions = { ".lap", ".m3u" };
-        static string[] smpExtensions = { ".m3u", ".m3u8", ".pls", ".pls", ".xspf" };
-        static string[] mpExtensions = { ".m3u", ".mpcpl" };
-        public static readonly string[][] playerExtensions = { mpcExtensions, kmpExtensions, vlcExtensions, laExtensions, smpExtensions, mpExtensions };
 
-        string[] playerProcesses = { "mpc-hc64", "KMPlayer64", "vlc", "LA", "smplayer", "mplayer" };
+        public static readonly string[][] playerExtensions = { mpcExtensions, mpExtensions, smpExtensions, laExtensions, kmpExtensions, vlcExtensions };
+
+        string[] playerProcesses = { "mpc-hc64", "mplayer", "smplayer", "LA", "KMPlayer64", "vlc" };
         int procIndex;
         string plpath;
 

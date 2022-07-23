@@ -66,9 +66,8 @@ namespace videowallpapers
                 {
                     dwt2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                     isActive = true;
-                    if (Program.cfgdata.player == 5)
+                    if (Program.cfgdata.player == 1)
                     {
-
                         Program.mplayerPr.StartInfo.Arguments = " -fixed-vo -zoom -xy " + Program.widthScreen + " -shuffle -loop 0 -playlist " + Program.cfgdata.plpath + " &> /dev/null";
                         Program.mplayerPr.Start();
                     }
