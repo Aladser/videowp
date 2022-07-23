@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace videowallpapers
@@ -11,7 +10,7 @@ namespace videowallpapers
         UserActivityHook globalHook;// хук глобального движения мыши или клавиатуры
         readonly OpenFileDialog ofd = new OpenFileDialog();
         BackWork backwork;// фоновая задача показа обоев
-        public static VideoPlayer player; //текущий видеоплеер
+        public static VideoPlayerManager player; //текущий видеоплеер
 
         public MainForm()
         {                  
@@ -25,28 +24,17 @@ namespace videowallpapers
             if (File.Exists(Program.cfgdata.plpath))
             {
                 playlistNameLabel.Text = Program.cfgdata.plpath;
-                string ext = Path.GetExtension(Program.cfgdata.plpath);
-                int index;
-                if (VideoPlayer.playerExtensions[VideoPlayer.KMP].Contains(ext))
-                    index = 1;
-                else if (VideoPlayer.playerExtensions[VideoPlayer.VLC].Contains(ext))
-                    index = 2;
-                else if (VideoPlayer.playerExtensions[VideoPlayer.LA].Contains(ext))
-                    index = 3;
-                else
-                    index = 0;
-                playerComboBox.SelectedIndex = index;
+                playerComboBox.SelectedIndex = Program.cfgdata.player;
             }
             else
             {
                 playlistNameLabel.Text = "Не найден плейлист";
                 playerComboBox.SelectedIndex = 0;
-
                 switchPanel.Enabled = false;
                 playlistSelectButton.Enabled = true;
                 offRadioButton.Checked = true;
             }
-            player = new VideoPlayer(playerComboBox.SelectedIndex, Program.cfgdata.plpath);
+            player = new VideoPlayerManager(playerComboBox.SelectedIndex, Program.cfgdata.plpath);
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             ofd.Filter = player.getActivePlayerFilter();
             // показ обоев после запуска программы
@@ -111,14 +99,14 @@ namespace videowallpapers
                 notifyIcon.Visible = true;
             }
         }
-        // Переключение времени простоя на форме и backwork
+        // Переключение времени заставки
         private void TimeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             backwork.setTimePeriod(timeComboBox.SelectedIndex);
             Program.cfgdata.period = timeComboBox.SelectedIndex;
             ConfigStream.Write(Program.cfgpath, Program.cfgdata);
         }
-        // Создание-удаление ярлыка
+        // Переключение автозагрузки
         private void autoLoader_CheckedChanged(object sender, EventArgs e)
         {
             Program.editAutoLoader(autoloaderCheckBox.Checked);
@@ -129,9 +117,11 @@ namespace videowallpapers
             backwork.stop();
             player.setPlaylist("");
             player.setActivePlayer(playerComboBox.SelectedIndex);
+            Program.cfgdata.player = playerComboBox.SelectedIndex;
+            ConfigStream.Write(Program.cfgpath, Program.cfgdata);
 
             playlistNameLabel.Text = "Не выбран плейлист";
-            ofd.Filter = VideoPlayer.playerFilters[playerComboBox.SelectedIndex];
+            ofd.Filter = VideoPlayerManager.playerFilters[playerComboBox.SelectedIndex];
             offRadioButton.Checked = true;
             switchPanel.Enabled = false;
         }
@@ -142,19 +132,6 @@ namespace videowallpapers
             if (ofd.ShowDialog() != DialogResult.OK)
                 return;
             ofd.InitialDirectory = Path.GetDirectoryName(ofd.FileName);
-            string ext = Path.GetExtension(ofd.FileName);
-            int index=0;
-            if (VideoPlayer.playerFilters[VideoPlayer.MPC].Contains(ext))
-                index = 0;
-            else if (VideoPlayer.playerFilters[VideoPlayer.KMP].Contains(ext))
-                index = 1;
-            else if (VideoPlayer.playerFilters[VideoPlayer.VLC].Contains(ext))
-                index = 2;
-            else if (VideoPlayer.playerFilters[VideoPlayer.LA].Contains(ext))
-                index = 3;
-            else
-                return;
-            playerComboBox.SelectedIndex = index;
             player.setPlaylist(ofd.FileName);
             playlistNameLabel.Text = ofd.FileName;
             switchPanel.Enabled = true;

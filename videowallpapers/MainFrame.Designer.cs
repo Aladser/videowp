@@ -171,7 +171,8 @@
             "Media Player Classic",
             "KMP Player",
             "VLC Media Player",
-            "Light Alloy"});
+            "Light Alloy",
+            "SMPlayer"});
             this.playerComboBox.Location = new System.Drawing.Point(340, 34);
             this.playerComboBox.Name = "playerComboBox";
             this.playerComboBox.Size = new System.Drawing.Size(121, 21);
