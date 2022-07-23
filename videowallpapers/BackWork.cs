@@ -23,7 +23,6 @@ namespace videowallpapers
         int inactionInMs;
         long downtime;
         long dwt1, dwt2;
-        public List<string> log = new List<string>();
 
         /// <summary>
         /// Класс фоновой задачи показа обоев
@@ -66,8 +65,6 @@ namespace videowallpapers
                 else if (downtime>=inactionInMs && !isActive)
                 {
                     dwt2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                    //Console.WriteLine((dwt2-dwt1) + " мс");
-                    //log.Add((dwt2 - dwt1) + " мс");
                     isActive = true;
                     if (Program.cfgdata.player == 5)
                     {

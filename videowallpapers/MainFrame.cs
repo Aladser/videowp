@@ -18,7 +18,7 @@ namespace videowallpapers
             if (File.Exists(Program.shortcut)) autoloaderCheckBox.Checked = true; // проверка автозапуска
             backwork = new BackWork(); // фоновая задача показа обоев
             CenterToScreen();
-            timeComboBox.SelectedIndex = Program.cfgdata.period;  // считывание времени бездействия на форму и backwork            
+            timeComboBox.SelectedIndex = Program.cfgdata.period;  // считывание времени заставки            
             autoShowCheckBox.Checked = Program.cfgdata.autoshow == 0 ? false : true; // считывание autoshow
             // считывание playerpath
             if (File.Exists(Program.cfgdata.plpath))
@@ -30,9 +30,19 @@ namespace videowallpapers
             {
                 playlistNameLabel.Text = "Не найден плейлист";
                 playerComboBox.SelectedIndex = 0;
+                Program.cfgdata.player = 0;
+                ConfigStream.Write(Program.cfgpath, Program.cfgdata);
                 switchPanel.Enabled = false;
                 playlistSelectButton.Enabled = true;
                 offRadioButton.Checked = true;
+            }
+            if (playerComboBox.SelectedIndex == 5)
+            {
+                if (!File.Exists(Program.mplayer))
+                {
+                    MessageBox.Show("Проигрыватель MPlayer не найден. Разместите папку видеоплеера рядом с исполняемым файлом");
+                    playerComboBox.SelectedIndex = 0;
+                }
             }
             player = new VideoPlayerManager(playerComboBox.SelectedIndex, Program.cfgdata.plpath);
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -70,7 +80,7 @@ namespace videowallpapers
         {
             if (onRadioButton.Checked)
             {
-                this.Text = "Видеобои 1.82: АКТИВНО";
+                this.Text = "Видеобои 1.83: АКТИВНО";
                 notifyIcon.Text = "Видеообои ВКЛ";
                 notifyIcon.Visible = true;
                 backwork.start( player.getPlaylist() );
@@ -78,7 +88,7 @@ namespace videowallpapers
             }
             else
             {
-                this.Text = "Видеобои 1.82";
+                this.Text = "Видеобои 1.83";
                 notifyIcon.Text = "Видеообои ВЫКЛ";
                 notifyIcon.Visible = false;
                 backwork.stop();
@@ -88,7 +98,7 @@ namespace videowallpapers
         // Информация о программе
         private void aboutImage_MouseHover(object sender, EventArgs e)
         {
-            toolTip.SetToolTip(aboutImage, "Видеобом 1.82\n(c) Aladser\n2022");
+            toolTip.SetToolTip(aboutImage, "Видеобом 1.83\n(c) Aladser\n2022");
         }
         // Сворачивание в трей
         private void MainForm_SizeChanged(object sender, EventArgs e)
@@ -116,6 +126,16 @@ namespace videowallpapers
         {
             backwork.stop();
             player.setPlaylist("");
+            Program.cfgdata.plpath = "";
+            if (playerComboBox.SelectedIndex == 5)
+            {
+                if (!File.Exists(Program.mplayer))
+                {
+                    MessageBox.Show("Проигрыватель MPlayer не найден. Разместите папку видеоплеера рядом с исполняемым файлом");
+                    Program.cfgdata.player = 0;
+                    playerComboBox.SelectedIndex = 0;
+                }                    
+            }
             player.setActivePlayer(playerComboBox.SelectedIndex);
             Program.cfgdata.player = playerComboBox.SelectedIndex;
             ConfigStream.Write(Program.cfgpath, Program.cfgdata);
@@ -156,8 +176,8 @@ namespace videowallpapers
         {
             /*
             //лог
-            StreamWriter writer = new StreamWriter(logpath, false);
-            foreach(string elem in backwork.log)
+            StreamWriter writer = new StreamWriter(Program.logpath, false);
+            foreach(string elem in Program.log)
             {
                 Console.WriteLine(elem);
                 writer.WriteLine(elem + "\n");
