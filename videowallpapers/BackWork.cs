@@ -68,8 +68,17 @@ namespace videowallpapers
                     isActive = true;
                     if (Program.cfgdata.player == 1)
                     {
-                        Program.mplayerPr.StartInfo.Arguments = " -fixed-vo -zoom -xy " + Program.widthScreen + " -shuffle -loop 0 -playlist " + Program.cfgdata.plpath + " &> /dev/null";
-                        Program.mplayerPr.Start();
+                        try
+                        {
+                            Program.mplayerPr.StartInfo.Arguments = " -fixed-vo -zoom -xy " + Program.widthScreen + " -shuffle -loop 0 -playlist " + Program.cfgdata.plpath + " &> /dev/null";
+                            Program.mplayerPr.Start();
+                        }
+                        catch (System.ComponentModel.Win32Exception)
+                        {
+                            MessageBox.Show("MPlayer не найден. Установить плеер рядом с исполняемым файлом");
+                            this.stop();
+                            Process.GetCurrentProcess().Kill();
+                        }
                     }
                     else
                         Process.Start(MainForm.player.getPlaylist());
