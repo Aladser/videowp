@@ -23,7 +23,7 @@ namespace videowallpapers
 
         public static readonly string[][] playerExtensions = { mpcExtensions, mpExtensions, mpExtensions, laExtensions, kmpExtensions, vlcExtensions };
 
-        string[] playerProcesses = { "mpc-hc64", "mplayer", "smplayer", "LA", "KMPlayer64", "vlc" };
+        string[] playerProcesses = { "mpc-hc64", "smplayer", "LA", "KMPlayer64", "vlc" };
         int procIndex;
         string plpath;
 

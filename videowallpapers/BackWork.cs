@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -17,7 +16,7 @@ namespace videowallpapers
         [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();
 
-        readonly BackgroundWorker bw = new BackgroundWorker();
+        readonly BackgroundWorker bw = new BackgroundWorker();                      
         readonly double[] inactionTime = { 0.05, 1, 3, 5, 10, 15 }; // массив периодов бездействия
         int inactionNumber;
         int inactionInMs;
@@ -35,6 +34,7 @@ namespace videowallpapers
             this.inactionNumber = inactionNumber;
             setTimePeriod(inactionNumber);
         }
+
         public BackWork()
         {
             bw.DoWork += BW_DoWork;
@@ -66,22 +66,7 @@ namespace videowallpapers
                 {
                     dwt2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                     isActive = true;
-                    if (Program.cfgdata.player == 1)
-                    {
-                        try
-                        {
-                            Program.mplayerPr.StartInfo.Arguments = " -fixed-vo -zoom -xy " + Program.widthScreen + " -shuffle -loop 0 -playlist " + Program.cfgdata.plpath + " &> /dev/null";
-                            Program.mplayerPr.Start();
-                        }
-                        catch (System.ComponentModel.Win32Exception)
-                        {
-                            MessageBox.Show("MPlayer не найден. Установить плеер рядом с исполняемым файлом");
-                            this.stop();
-                            Process.GetCurrentProcess().Kill();
-                        }
-                    }
-                    else
-                        Process.Start(MainForm.player.getPlaylist());
+                    Process.Start(MainForm.player.getPlaylist());
                 }
                 // пробуждение после запуска приложения
                 else if (downtime<inactionInMs && isActive)
@@ -144,7 +129,7 @@ namespace videowallpapers
         {
             dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
         }
-        // Опеределение запуска фуллэкрана
+        // Определение запуска фуллэкрана
         [StructLayout(LayoutKind.Sequential)]
         private struct RECT
         {

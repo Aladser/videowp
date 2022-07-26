@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -12,31 +10,23 @@ namespace videowallpapers
     {
         [DllImport("gdi32.dll")]
         static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
-        public static int widthScreen = Screen.PrimaryScreen.Bounds.Size.Width;
-        public static string mplayer = Path.GetDirectoryName(Application.ExecutablePath) + "\\MPlayer\\mplayer.exe";
-        public static Process mplayerPr = new Process();
-        public static readonly string cfgpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\config.cfg"; // путь конфига
-        public static ConfigData cfgdata;
-        public static readonly string logpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\log.txt"; // путь лога
         public static readonly string shortcut = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\videowallpapers.lnk"; // ярлык автозагрузки 
+        public static readonly string cfgpath = "config.cfg"; // конфиг
+        public static string mplayer = Path.GetDirectoryName(Application.ExecutablePath) + "\\MPlayer\\mplayer.exe";
+        public static ConfigData cfgdata;
+        static UserActivityHook globalHook;// хук глобального движения мыши или клавиатуры
+        public static MainForm mainform;
+        public static BackWork bcgwork;
         /// <summary>
         /// Главная точка входа для приложения.
         /// </summary>
         [STAThread]
-        static void Main()
-        {
-            // Опеределение настоящей ширины экрана
-            Graphics g = Graphics.FromHwnd(IntPtr.Zero);
-            IntPtr desktop = g.GetHdc();
-            int LogicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCap.VERTRES);
-            int PhysicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCap.DESKTOPVERTRES);
-            float ScreenScalingFactor = (float)PhysicalScreenHeight / (float)LogicalScreenHeight;
-            widthScreen = (int)((float)(Screen.PrimaryScreen.Bounds.Size.Width) * ScreenScalingFactor);
-            Console.WriteLine(widthScreen);
+        static void Main()   
+        {           
             // Считывание конфигурационного файла
             if (!File.Exists(Program.cfgpath))
             {
-                MessageBox.Show("Файл не найден. Установлены стандартные настройки");
+                MessageBox.Show("Файл "+ Program.cfgpath + " не найден. Установлены стандартные настройки");
                 cfgdata = new ConfigData();
                 ConfigStream.Write(cfgpath, cfgdata);
             }
@@ -44,26 +34,26 @@ namespace videowallpapers
                 cfgdata = ConfigStream.Read(Program.cfgpath);
             if (cfgdata == null)
             {
-                MessageBox.Show("Ошибка чтения конфиг.файла. Установлены стандартные настройки", "", MessageBoxButtons.OK);
+                MessageBox.Show("Ошибка чтения "+ Program.cfgpath + ". Установлены стандартные настройки", "", MessageBoxButtons.OK);
                 cfgdata = new ConfigData();
                 ConfigStream.Write(cfgpath, cfgdata);
             }
-            // Процесс плеера
-            mplayerPr.StartInfo.FileName = Program.mplayer;
-            // предотвращение запуска второй копии
-            if (System.Diagnostics.Process.GetProcessesByName(Application.ProductName).Length > 1) return;
+            // Создание хука
+            globalHook = new UserActivityHook();
+            globalHook.KeyPress += GlobalKeyPress;
+            globalHook.OnMouseActivity += GlobalMouseActivity;
+            globalHook.Start(true, true);
+            if (Process.GetProcessesByName(Application.ProductName).Length > 1) return;// предотвращение запуска второй копии
             // запуск программы
-            else
-            {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                new MainForm();
-                Application.Run();
-            }
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            bcgwork = new BackWork(cfgdata.period);
+            mainform = new MainForm();
+            Application.Run();
         }
 
         /// <summary>
-        /// Изменить автозапуск
+        /// Изменить автозагрузку
         /// </summary>
         /// <param name="isAutoLoader">флаг</param>
         public static void editAutoLoader(bool isAutoLoader)
@@ -84,34 +74,27 @@ namespace videowallpapers
                     }
                     finally
                     {
-                        System.Runtime.InteropServices.Marshal.FinalReleaseComObject(lnk);
+                        Marshal.FinalReleaseComObject(lnk);
                     }
                 }
                 finally
                 {
-                    System.Runtime.InteropServices.Marshal.FinalReleaseComObject(shell);
+                    Marshal.FinalReleaseComObject(shell);
                 }
             }
             // Удаление ярлыка
             else
                 File.Delete(Program.shortcut);
         }
-        // Получение настоящей ширины экрана
-        public enum DeviceCap
+        // глобальное нажатие клавиатуры
+        public static void GlobalKeyPress(object sender, KeyPressEventArgs e)
         {
-            VERTRES = 10,
-            DESKTOPVERTRES = 117,
+            Program.bcgwork.stopShowWallpaper();
         }
-        private static float getScalingFactor()
+        // глобальное движение мыши
+        public static void GlobalMouseActivity(object sender, MouseEventArgs e)
         {
-            Graphics g = Graphics.FromHwnd(IntPtr.Zero);
-            IntPtr desktop = g.GetHdc();
-            int LogicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCap.VERTRES);
-            int PhysicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCap.DESKTOPVERTRES);
-
-            float ScreenScalingFactor = (float)PhysicalScreenHeight / (float)LogicalScreenHeight;
-
-            return ScreenScalingFactor;
+            Program.bcgwork.stopShowWallpaper();
         }
     }
 }
