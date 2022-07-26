@@ -6,10 +6,8 @@ using System.Windows.Forms;
 namespace videowallpapers
 {
     public partial class MainForm : Form
-    {
-        
-        readonly OpenFileDialog ofd = new OpenFileDialog();
-        public static VideoPlayerManager player; //текущий видеоплеер       
+    {       
+        readonly OpenFileDialog ofd = new OpenFileDialog();      
 
         public MainForm()
         {                  
@@ -22,26 +20,22 @@ namespace videowallpapers
             if (File.Exists(Program.cfgdata.plpath))
             {
                 playlistNameLabel.Text = Program.cfgdata.plpath;
-                playerComboBox.SelectedIndex = Program.cfgdata.player;
             }
             else
             {
                 playlistNameLabel.Text = "Не найден плейлист";
-                playerComboBox.SelectedIndex = 0;
-                Program.cfgdata.player = 0;
                 ConfigStream.Write(Program.cfgpath, Program.cfgdata);
                 switchPanel.Enabled = false;
                 playlistSelectButton.Enabled = true;
                 offRadioButton.Checked = true;
             }
-            player = new VideoPlayerManager(playerComboBox.SelectedIndex, Program.cfgdata.plpath);
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            ofd.Filter = player.getActivePlayerFilter();
+            ofd.Filter = Program.filefilter;
             // показ обоев после запуска программы
-            if (autoShowCheckBox.Checked && !player.getPlaylist().Equals(""))
+            if (autoShowCheckBox.Checked && !Program.cfgdata.plpath.Equals(""))
             {
                 onRadioButton.Checked = true;
-                Program.bcgwork.start(player.getPlaylist());
+                Program.bcgwork.start();
                 notifyIcon.Visible = true;
             }
             else
@@ -57,14 +51,14 @@ namespace videowallpapers
         {
             if (onRadioButton.Checked)
             {
-                this.Text = "Видеобои 1.88: АКТИВНО";
+                this.Text = "Видеобои 1.10: АКТИВНО";
                 notifyIcon.Text = "Видеообои ВКЛ";
-                Program.bcgwork.start( player.getPlaylist() );
+                Program.bcgwork.start();
                 playlistSelectButton.Enabled = false;
             }
             else
             {
-                this.Text = "Видеобои 1.88";
+                this.Text = "Видеобои 1.10";
                 notifyIcon.Text = "Видеообои ВЫКЛ";
                 Program.bcgwork.stop();
                 playlistSelectButton.Enabled = true;
@@ -73,13 +67,30 @@ namespace videowallpapers
         // Информация о программе
         private void aboutImage_MouseHover(object sender, EventArgs e)
         {
-            toolTip.SetToolTip(aboutImage, "Видеобом 1.88\n(c) Aladser\n2022");
+            toolTip.SetToolTip(aboutImage, "Видеобом 1.10\n(c) Aladser\n2022");
+        }
+        // Переключение автозагрузки
+        private void autoLoader_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.editAutoLoader(autoloaderCheckBox.Checked);
         }
         // Сворачивание в трей
         private void MainForm_SizeChanged(object sender, EventArgs e)
         {
-            notifyIcon.Visible = true;
             Hide();
+            notifyIcon.Visible = true;
+        }
+        // смена плейлиста
+        private void playlistSelectButton_Click(object sender, EventArgs e)
+        {
+            ofd.InitialDirectory = Program.cfgdata.plpath;
+            if (ofd.ShowDialog() != DialogResult.OK)
+                return;
+            ofd.InitialDirectory = Path.GetDirectoryName(ofd.FileName);
+            Program.cfgdata.plpath = ofd.FileName;
+            playlistNameLabel.Text = ofd.FileName;
+            ConfigStream.Write(Program.cfgpath, Program.cfgdata);
+            switchPanel.Enabled = true;
         }
         // Переключение времени заставки
         private void TimeComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -88,46 +99,10 @@ namespace videowallpapers
             Program.cfgdata.period = timeComboBox.SelectedIndex;
             ConfigStream.Write(Program.cfgpath, Program.cfgdata);
         }
-        // Переключение автозагрузки
-        private void autoLoader_CheckedChanged(object sender, EventArgs e)
+        // Переключение автопоказа обоев
+        private void autoShowCheckBoxCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            Program.editAutoLoader(autoloaderCheckBox.Checked);
-        }
-        // переключение видеоплеера
-        private void playerComboBox_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            Program.bcgwork.stop();
-            player.setPlaylist("");
-            Program.cfgdata.plpath = "";
-            if (playerComboBox.SelectedIndex == 5)
-            {
-                if (!File.Exists(Program.mplayer))
-                {
-                    MessageBox.Show("Проигрыватель MPlayer не найден. Разместите папку видеоплеера рядом с исполняемым файлом");
-                    Program.cfgdata.player = 0;
-                    playerComboBox.SelectedIndex = 0;
-                }                    
-            }
-            player.setActivePlayer(playerComboBox.SelectedIndex);
-            Program.cfgdata.player = playerComboBox.SelectedIndex;
-            ConfigStream.Write(Program.cfgpath, Program.cfgdata);
-
-            playlistNameLabel.Text = "Не выбран плейлист";
-            ofd.Filter = VideoPlayerManager.playerFilters[playerComboBox.SelectedIndex];
-            offRadioButton.Checked = true;
-            switchPanel.Enabled = false;
-        }
-        // смена плейлиста
-        private void playlistSelectButton_Click(object sender, EventArgs e)
-        {
-            ofd.InitialDirectory = player.getPlaylist();
-            if (ofd.ShowDialog() != DialogResult.OK)
-                return;
-            ofd.InitialDirectory = Path.GetDirectoryName(ofd.FileName);
-            player.setPlaylist(ofd.FileName);
-            playlistNameLabel.Text = ofd.FileName;
-            switchPanel.Enabled = true;
-            Program.cfgdata.plpath = player.getPlaylist();
+            Program.cfgdata.autoshow = autoShowCheckBox.Checked ? 1 : 0;
             ConfigStream.Write(Program.cfgpath, Program.cfgdata);
         }
         // Разворачивание окна
@@ -136,23 +111,9 @@ namespace videowallpapers
             Show();
             notifyIcon.Visible = false;
         }
-        // Переключение автопоказа обоев
-        private void autoShowCheckBoxCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            Program.cfgdata.autoshow = autoShowCheckBox.Checked ? 1 : 0;
-            ConfigStream.Write(Program.cfgpath, Program.cfgdata);
-        }
         // Скрытие или закрытие программы
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            /*            
-            //лог
-            StreamWriter writer = new StreamWriter(Program.logpath, false);
-            Console.WriteLine(log);
-            writer.WriteLine(log + "\n");
-            writer.Close();
-            */
-            // Закрытие или сворачивание приложения
             if (!Program.bcgwork.isActive())
                 Process.GetCurrentProcess().Kill();
             else

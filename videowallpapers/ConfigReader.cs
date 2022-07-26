@@ -8,17 +8,15 @@ namespace videowallpapers
     /// </summary>
     internal class ConfigData
     {
-        public int autoshow;
-        public int player;
         public string plpath;
+        public int period;
+        public int autoshow;
         public ConfigData()
         {           
-            autoshow = 0;
-            player = 0;
             plpath = "";
             period = 0;
+            autoshow = 0;
         }
-        public int period;
     }
     /// <summary>
     /// Класс доступа к конфиг файлу
@@ -38,13 +36,11 @@ namespace videowallpapers
             {
                 rslt = new ConfigData();                
                 string line = reader.ReadLine();
-                rslt.autoshow = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
-                line = reader.ReadLine();
-                rslt.player = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
-                line = reader.ReadLine();
                 rslt.plpath = line.Substring(line.IndexOf("= ") + 2);
                 line = reader.ReadLine();
                 rslt.period = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
+                line = reader.ReadLine();
+                rslt.autoshow = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
             }
             catch (Exception)
             {
@@ -61,10 +57,9 @@ namespace videowallpapers
         public static void Write(string path, ConfigData data)
         {
             StreamWriter writer = new StreamWriter(path, false);
-            String text = "autoshow = " + data.autoshow + "\n";
-            text += "player = " + data.player + "\n";
-            text += "playerpath = " + data.plpath + "\n";
+            string text = "playerpath = " + data.plpath + "\n";
             text += "period = " + data.period + "\n";
+            text += "autoshow = " + data.autoshow + "\n";
             writer.WriteLine(text);
             writer.Close();
         }

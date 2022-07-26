@@ -22,6 +22,9 @@ namespace videowallpapers
         int inactionInMs;
         long downtime;
         long dwt1, dwt2;
+        // Процесс видеоплеера
+        Process procCommand;
+        ProcessStartInfo command = new ProcessStartInfo(@"cmd.exe", @"");
 
         /// <summary>
         /// Класс фоновой задачи показа обоев
@@ -29,18 +32,24 @@ namespace videowallpapers
         /// <param name="inActionNumber">время, номер берется из Combobox</param>
         public BackWork(int inactionNumber)
         {
-            bw.DoWork += BW_DoWork;
-            bw.WorkerSupportsCancellation = true;
+            initialise();
             this.inactionNumber = inactionNumber;
             setTimePeriod(inactionNumber);
         }
-
         public BackWork()
         {
-            bw.DoWork += BW_DoWork;
-            bw.WorkerSupportsCancellation = true;
+            initialise();
             this.inactionNumber = 0;
             setTimePeriod(0);
+        }
+        private void initialise()
+        {
+            command.WindowStyle = ProcessWindowStyle.Hidden;
+            command.RedirectStandardOutput = true;
+            command.UseShellExecute = false;
+            command.CreateNoWindow = true;
+            bw.DoWork += BW_DoWork;
+            bw.WorkerSupportsCancellation = true;
         }
         // фоновая задача
         private void BW_DoWork(object sender, DoWorkEventArgs e)
@@ -48,6 +57,7 @@ namespace videowallpapers
             bool isActive = false;
             dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
             downtime = 0;
+            command.Arguments = @"/C " + Program.mpv + " --playlist=" + Program.cfgdata.plpath;
             while (true)
             {               
                 // послана команда на выключение фоновой задачи
@@ -66,14 +76,14 @@ namespace videowallpapers
                 {
                     dwt2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                     isActive = true;
-                    Process.Start(MainForm.player.getPlaylist());
+                    procCommand = Process.Start(command);
                 }
                 // пробуждение после запуска приложения
                 else if (downtime<inactionInMs && isActive)
                 {
                     dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                     isActive = false;
-                    Process[] processes = Process.GetProcessesByName( MainForm.player.getActivePlayer() );
+                    Process[] processes = Process.GetProcessesByName( "mpv" );
                     foreach (Process elem in processes)
                         elem.Kill();
                 }
@@ -86,7 +96,7 @@ namespace videowallpapers
         /// старт фоновой задачи
         /// </summary>
         /// <param name="plpath"></param>
-        public void start(String plpath)
+        public void start()
         {
             bw.RunWorkerAsync(); 
         }
@@ -154,7 +164,7 @@ namespace videowallpapers
             string proc = Process.GetProcessById((int)procId).ToString();
             if (screen.Bounds.Width == (rect.right - rect.left) 
                 && screen.Bounds.Height == (rect.bottom - rect.top) 
-                && !proc.Contains( MainForm.player.getActivePlayer() ) 
+                && !proc.Contains( "mpv" ) 
                 && !proc.Contains("explorer")
                 )
                 return true;

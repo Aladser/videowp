@@ -12,7 +12,8 @@ namespace videowallpapers
         static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
         public static readonly string shortcut = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\videowallpapers.lnk"; // ярлык автозагрузки 
         public static readonly string cfgpath = "config.cfg"; // конфиг
-        public static string mplayer = Path.GetDirectoryName(Application.ExecutablePath) + "\\MPlayer\\mplayer.exe";
+        public static string mpv = Path.GetDirectoryName(Application.ExecutablePath) + "\\mpv\\mpv.exe"; // mpv плеер
+        public static string filefilter = "MPV плейлист (*.m3u;*.m3u8;*.pls;*.pls;*.xspf)|*.m3u;*.m3u8;*.pls;*.pls;*.xspf";
         public static ConfigData cfgdata;
         static UserActivityHook globalHook;// хук глобального движения мыши или клавиатуры
         public static MainForm mainform;

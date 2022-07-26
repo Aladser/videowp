@@ -41,7 +41,6 @@
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.playlistLabel = new System.Windows.Forms.Label();
             this.autoloaderCheckBox = new System.Windows.Forms.CheckBox();
-            this.playerComboBox = new System.Windows.Forms.ComboBox();
             this.autoShowCheckBox = new System.Windows.Forms.CheckBox();
             this.aboutImage = new System.Windows.Forms.PictureBox();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
@@ -55,16 +54,16 @@
             this.playlistNameLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.playlistNameLabel.Location = new System.Drawing.Point(12, 34);
             this.playlistNameLabel.Name = "playlistNameLabel";
-            this.playlistNameLabel.Size = new System.Drawing.Size(322, 21);
+            this.playlistNameLabel.Size = new System.Drawing.Size(415, 21);
             this.playlistNameLabel.TabIndex = 3;
             this.playlistNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // playlistSelectButton
             // 
             this.playlistSelectButton.Enabled = false;
-            this.playlistSelectButton.Location = new System.Drawing.Point(467, 34);
+            this.playlistSelectButton.Location = new System.Drawing.Point(443, 34);
             this.playlistSelectButton.Name = "playlistSelectButton";
-            this.playlistSelectButton.Size = new System.Drawing.Size(59, 22);
+            this.playlistSelectButton.Size = new System.Drawing.Size(78, 22);
             this.playlistSelectButton.TabIndex = 4;
             this.playlistSelectButton.Text = "Выбор";
             this.playlistSelectButton.UseVisualStyleBackColor = true;
@@ -163,22 +162,6 @@
             this.autoloaderCheckBox.UseVisualStyleBackColor = true;
             this.autoloaderCheckBox.CheckedChanged += new System.EventHandler(this.autoLoader_CheckedChanged);
             // 
-            // playerComboBox
-            // 
-            this.playerComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.playerComboBox.FormattingEnabled = true;
-            this.playerComboBox.Items.AddRange(new object[] {
-            "Media Player Classic",
-            "SMPlayer",
-            "Light Alloy",
-            "VLC Media Player",
-            "KMP Player"});
-            this.playerComboBox.Location = new System.Drawing.Point(340, 34);
-            this.playerComboBox.Name = "playerComboBox";
-            this.playerComboBox.Size = new System.Drawing.Size(121, 21);
-            this.playerComboBox.TabIndex = 14;
-            this.playerComboBox.SelectionChangeCommitted += new System.EventHandler(this.playerComboBox_SelectionChangeCommitted);
-            // 
             // autoShowCheckBox
             // 
             this.autoShowCheckBox.AutoSize = true;
@@ -209,7 +192,6 @@
             this.ClientSize = new System.Drawing.Size(533, 111);
             this.Controls.Add(this.aboutImage);
             this.Controls.Add(this.autoShowCheckBox);
-            this.Controls.Add(this.playerComboBox);
             this.Controls.Add(this.autoloaderCheckBox);
             this.Controls.Add(this.playlistLabel);
             this.Controls.Add(this.switchPanel);
@@ -222,7 +204,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Видеобои 1.88";
+            this.Text = "Видеобои 1.10";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             this.switchPanel.ResumeLayout(false);
@@ -245,7 +227,6 @@
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.Label playlistLabel;
         private System.Windows.Forms.CheckBox autoloaderCheckBox;
-        private System.Windows.Forms.ComboBox playerComboBox;
         private System.Windows.Forms.CheckBox autoShowCheckBox;
         private System.Windows.Forms.PictureBox aboutImage;
         private System.Windows.Forms.ToolTip toolTip;
