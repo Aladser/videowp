@@ -39,6 +39,11 @@ namespace videowallpapers
                 cfgdata = new ConfigData();
                 ConfigStream.Write(cfgpath, cfgdata);
             }
+            if (!File.Exists(mpv))
+            {
+                MessageBox.Show("Папка mpv не найдена. Программа будет закрыта");
+                Process.GetCurrentProcess().Kill();
+            }
             // Создание хука
             globalHook = new UserActivityHook();
             globalHook.KeyPress += GlobalKeyPress;

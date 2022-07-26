@@ -22,8 +22,6 @@ namespace videowallpapers
         int inactionInMs;
         long downtime;
         long dwt1, dwt2;
-        // Процесс видеоплеера
-        Process procCommand;
         ProcessStartInfo command = new ProcessStartInfo(@"cmd.exe", @"");
 
         /// <summary>
@@ -76,7 +74,7 @@ namespace videowallpapers
                 {
                     dwt2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                     isActive = true;
-                    procCommand = Process.Start(command);
+                    Process.Start(command);
                 }
                 // пробуждение после запуска приложения
                 else if (downtime<inactionInMs && isActive)
