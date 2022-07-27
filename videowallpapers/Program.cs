@@ -11,7 +11,7 @@ namespace videowallpapers
         [DllImport("gdi32.dll")]
         static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
         public static readonly string shortcut = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\videowallpapers.lnk"; // ярлык автозагрузки 
-        public static readonly string cfgpath = "config.cfg"; // конфиг
+        public static readonly string cfgpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\config.cfg"; // конфиг
         public static string mpv = Path.GetDirectoryName(Application.ExecutablePath) + "\\mpv\\mpv.exe"; // mpv плеер
         public static string filefilter = "MPV плейлист (*.m3u;*.m3u8;*.pls;*.pls;*.xspf)|*.m3u;*.m3u8;*.pls;*.pls;*.xspf";
         public static ConfigData cfgdata;
@@ -23,7 +23,10 @@ namespace videowallpapers
         /// </summary>
         [STAThread]
         static void Main()   
-        {           
+        {
+            Console.WriteLine(Application.ExecutablePath);
+            Console.WriteLine(cfgpath);
+
             // Считывание конфигурационного файла
             if (!File.Exists(Program.cfgpath))
             {
