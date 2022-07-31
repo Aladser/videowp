@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace vwp
+namespace videowp
 {
     /// <summary>
     /// Данные конфиг.файла

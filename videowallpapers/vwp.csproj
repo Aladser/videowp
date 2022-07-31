@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A863CD81-460A-467F-8CB3-384164A2A209}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>vwp</RootNamespace>
-    <AssemblyName>vwp</AssemblyName>
+    <RootNamespace>videowp</RootNamespace>
+    <AssemblyName>videowp</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

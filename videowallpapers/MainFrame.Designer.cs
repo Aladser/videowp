@@ -1,4 +1,4 @@
-﻿namespace vwp
+﻿namespace videowp
 {
     partial class MainForm
     {
@@ -176,8 +176,8 @@
             // aboutImage
             // 
             this.aboutImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.aboutImage.Image = global::vwp.Properties.Resources.info;
-            this.aboutImage.InitialImage = global::vwp.Properties.Resources.info;
+            this.aboutImage.Image = global::videowp.Properties.Resources.info;
+            this.aboutImage.InitialImage = global::videowp.Properties.Resources.info;
             this.aboutImage.Location = new System.Drawing.Point(508, 9);
             this.aboutImage.Name = "aboutImage";
             this.aboutImage.Size = new System.Drawing.Size(18, 17);

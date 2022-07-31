@@ -4,14 +4,14 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace vwp
+namespace videowp
 {
     internal static class Program
     {
         [DllImport("gdi32.dll")]
         static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
-        public static readonly string shortcut = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\vwp.lnk"; // ярлык автозагрузки 
-        public static readonly string cfgpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\vwp.cfg"; // конфиг
+        public static readonly string shortcut = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\videowp.lnk"; // ярлык автозагрузки 
+        public static readonly string cfgpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\videowp.cfg"; // конфиг
         public static string mpv = Path.GetDirectoryName(Application.ExecutablePath) + "\\mpv\\mpv.exe"; // mpv плеер
         public static string filefilter = "MPV плейлист (*.m3u;*.m3u8;*.pls;*)|*.m3u;*.m3u8;*.pls";
         public static ConfigData cfgdata;
