@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.ComponentModel;
 
-namespace videowallpapers
+namespace vwp
 {
     /// <summary>
     /// Этот класс позволяет вам считывать нажатия клавиатуры и мыши и/или обнаруживать их активность, даже когда приложение работает в фоновом режиме 

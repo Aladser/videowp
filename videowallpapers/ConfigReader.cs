@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace videowallpapers
+namespace vwp
 {
     /// <summary>
     /// Данные конфиг.файла

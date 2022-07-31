@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
-namespace videowallpapers
+namespace vwp
 {
     public partial class MainForm : Form
     {       
