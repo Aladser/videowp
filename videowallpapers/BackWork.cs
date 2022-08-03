@@ -55,7 +55,9 @@ namespace videowp
             bool isActive = false;
             dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
             downtime = 0;
+            // /C C:\Projects\videowallpapers\videowallpapers\bin\Debug\mpv\mpv.exe --playlist=D:\VideoWP\PL.m3u
             command.Arguments = @"/C " + Program.mpv + " --playlist=" + Program.cfgdata.plpath;
+            Console.WriteLine(command.Arguments);
             while (true)
             {               
                 // послана команда на выключение фоновой задачи

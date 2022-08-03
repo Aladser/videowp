@@ -41,6 +41,8 @@ namespace videowp
                 rslt.period = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
                 line = reader.ReadLine();
                 rslt.autoshow = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
+                if (!File.Exists(rslt.plpath))
+                    rslt.plpath = "";
             }
             catch (Exception)
             {
