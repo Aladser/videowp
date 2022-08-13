@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace videowp
@@ -18,6 +19,14 @@ namespace videowp
         static UserActivityHook globalHook;// хук глобального движения мыши или клавиатуры
         public static MainForm mainform;
         public static BackWork bcgwork;
+        // Проверка запуска второй копии приложения
+        static Mutex InstanceCheckMutex;
+        static bool InstanceCheck()
+        {
+            bool isNew;
+            InstanceCheckMutex = new Mutex(true, "videowp", out isNew);
+            return isNew;
+        }
         /// <summary>
         /// Главная точка входа для приложения.
         /// </summary>
@@ -58,7 +67,11 @@ namespace videowp
             Application.SetCompatibleTextRenderingDefault(false);
             bcgwork = new BackWork(cfgdata.period);
             mainform = new MainForm();
-            Application.Run();
+            if (InstanceCheck())
+            {
+                Application.Run();
+            }
+            
         }
 
         /// <summary>
