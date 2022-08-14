@@ -15,6 +15,15 @@ namespace videowp
         private static extern bool GetWindowRect(HandleRef hWnd, [In, Out] ref RECT rect);
         [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, int dwExtraInfo);
+
+        [Flags]
+        enum MouseFlags
+        {
+            Move = 0x0001, LeftDown = 0x0002, LeftUp = 0x0004, RightDown = 0x0008,
+            RightUp = 0x0010, Absolute = 0x8000
+        };
 
         readonly BackgroundWorker bw = new BackgroundWorker();                      
         readonly double[] inactionTime = { 0.05, 1, 3, 5, 10, 15 }; // массив периодов бездействия
@@ -56,7 +65,7 @@ namespace videowp
             dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
             downtime = 0;
             // /C C:\Projects\videowallpapers\videowallpapers\bin\Debug\mpv\mpv.exe --playlist=D:\VideoWP\PL.m3u
-            command.Arguments = @"/C " + Program.mpv + " --playlist=" + Program.cfgdata.plpath;
+            command.Arguments = @"/C " + Program.mpv + " --fs --playlist=" + Program.cfgdata.plpath;
             Console.WriteLine(command.Arguments);
             while (true)
             {               
@@ -83,9 +92,14 @@ namespace videowp
                 {
                     dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                     isActive = false;
-                    Process[] processes = Process.GetProcessesByName( "mpv" );
-                    foreach (Process elem in processes)
-                        elem.Kill();
+                    //Process[] processes = Process.GetProcessesByName( "mpv" );
+                    //foreach (Process elem in processes)
+                    //  elem.Kill();
+                    // Двойное нажатие мыши
+                    mouse_event((uint)MouseFlags.LeftDown, 0, 0, 0, 0);
+                    mouse_event((uint)MouseFlags.LeftUp, 0, 0, 0, 0);
+                    mouse_event((uint)MouseFlags.LeftDown, 0, 0, 0, 0);
+                    mouse_event((uint)MouseFlags.LeftUp, 0, 0, 0, 0);
                 }
                 Thread.Sleep(100);
                 dwt2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;

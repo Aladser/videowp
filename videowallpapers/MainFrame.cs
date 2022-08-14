@@ -42,10 +42,8 @@ namespace videowp
             {
                 Show();
                 offRadioButton.Checked = true;
-            }               
+            }
         }
-
-
         //Включить фоновую задачу
         private void OnRadioButton_CheckedChanged(object sender, EventArgs e)
         {
