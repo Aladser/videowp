@@ -66,7 +66,7 @@ namespace videowp
             downtime = 0;
             // /C C:\Projects\videowallpapers\videowallpapers\bin\Debug\mpv\mpv.exe --playlist=D:\VideoWP\PL.m3u
             command.Arguments = @"/C " + Program.mpv + " --fs --playlist=" + Program.cfgdata.plpath;
-            Console.WriteLine(command.Arguments);
+            //Console.WriteLine(command.Arguments);
             while (true)
             {               
                 // послана команда на выключение фоновой задачи
