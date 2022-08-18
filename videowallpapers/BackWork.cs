@@ -2,8 +2,6 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Threading;
-using System.Windows.Forms;
 
 namespace videowp
 {
@@ -17,13 +15,6 @@ namespace videowp
         private static extern IntPtr GetForegroundWindow();
         [DllImport("user32.dll", SetLastError = true)]
         public static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, int dwExtraInfo);
-
-        [Flags]
-        enum MouseFlags
-        {
-            Move = 0x0001, LeftDown = 0x0002, LeftUp = 0x0004, RightDown = 0x0008,
-            RightUp = 0x0010, Absolute = 0x8000
-        };
 
         readonly BackgroundWorker bw = new BackgroundWorker();                      
         readonly double[] inactionTime = { 0.05, 1, 3, 5, 10, 15 }; // массив периодов бездействия
@@ -61,49 +52,58 @@ namespace videowp
         // фоновая задача
         private void BW_DoWork(object sender, DoWorkEventArgs e)
         {
+            Process[] processes;
             bool isActive = false;
-            dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+            long startBWTime = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+            dwt1 = startBWTime;
             downtime = 0;
-            // /C C:\Projects\videowallpapers\videowallpapers\bin\Debug\mpv\mpv.exe --playlist=D:\VideoWP\PL.m3u
-            command.Arguments = @"/C " + Program.mpv + " --fs --playlist=" + Program.cfgdata.plpath;
+            // C:\Projects\videowallpapers\videowallpapers\bin\Debug\mpv\mpv.exe --playlist=D:\VideoWP\PL.m3u
             //Console.WriteLine(command.Arguments);
+            command.Arguments = @"/C " + Program.mpv + " --playlist=" + Program.cfgdata.plpath;
             while (true)
             {               
-                // послана команда на выключение фоновой задачи
+                // выключение фоновой задачи
                 if (bw.CancellationPending)
                 {
                     e.Cancel = true;
                     break;
                 }
-                // если работает приложение в полном экране
+                // поиск другого запущенного приложения в фуллскрине
                 if (IsForegroundFullScreen())
                 {
                     dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                 }
-                // таймер закончился
+                // запуск обоев
                 else if (downtime>=inactionInMs && !isActive)
                 {
                     dwt2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                     isActive = true;
                     Process.Start(command);
                 }
-                // пробуждение после запуска приложения
+                // прерывание показа обоев
                 else if (downtime<inactionInMs && isActive)
                 {
                     dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                     isActive = false;
-                    //Process[] processes = Process.GetProcessesByName( "mpv" );
-                    //foreach (Process elem in processes)
-                    //  elem.Kill();
-                    // Двойное нажатие мыши
-                    mouse_event((uint)MouseFlags.LeftDown, 0, 0, 0, 0);
-                    mouse_event((uint)MouseFlags.LeftUp, 0, 0, 0, 0);
-                    mouse_event((uint)MouseFlags.LeftDown, 0, 0, 0, 0);
-                    mouse_event((uint)MouseFlags.LeftUp, 0, 0, 0, 0);
+                    processes = Process.GetProcessesByName( "mpv" );
+                    foreach (Process elem in processes)
+                      elem.Kill();
                 }
-                Thread.Sleep(100);
+                System.Threading.Thread.Sleep(100);
                 dwt2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                 downtime = dwt2 - dwt1;
+                // перезапуск обоев каждый час
+                if( (dwt2-startBWTime) > 3600000 )
+                {
+                    if (isActive)
+                    {
+                        processes = Process.GetProcessesByName("mpv");
+                        foreach (Process elem in processes)
+                            elem.Kill();
+                        Process.Start(command);
+                    }
+                    startBWTime = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                }
             }
         }
         /// <summary>
@@ -168,7 +168,7 @@ namespace videowp
         /// <returns></returns>
         public bool IsForegroundFullScreen()
         {
-            Screen screen = Screen.PrimaryScreen;
+            System.Windows.Forms.Screen screen = System.Windows.Forms.Screen.PrimaryScreen;
             RECT rect = new RECT();
             IntPtr hWnd = (IntPtr)GetForegroundWindow();
             GetWindowRect(new HandleRef(null, hWnd), ref rect);

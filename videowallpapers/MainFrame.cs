@@ -49,14 +49,14 @@ namespace videowp
         {
             if (onRadioButton.Checked)
             {
-                this.Text = "Видеобои 1.13: АКТИВНО";
+                this.Text = "Видеобои 1.12: АКТИВНО";
                 notifyIcon.Text = "Видеообои ВКЛ";
                 Program.bcgwork.start();
                 playlistSelectButton.Enabled = false;
             }
             else
             {
-                this.Text = "Видеобои 1.13";
+                this.Text = "Видеобои 1.12";
                 notifyIcon.Text = "Видеообои ВЫКЛ";
                 Program.bcgwork.stop();
                 playlistSelectButton.Enabled = true;
@@ -65,7 +65,7 @@ namespace videowp
         // Информация о программе
         private void aboutImage_MouseHover(object sender, EventArgs e)
         {
-            toolTip.SetToolTip(aboutImage, "Видеобом 1.13\n(c) Aladser\n2022");
+            toolTip.SetToolTip(aboutImage, "Видеобом 1.12\n(c) Aladser\n2022");
         }
         // Переключение автозагрузки
         private void autoLoader_CheckedChanged(object sender, EventArgs e)
