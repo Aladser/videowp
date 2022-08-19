@@ -57,7 +57,7 @@ namespace videowp
             long startBWTime = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
             dwt1 = startBWTime;
             downtime = 0;
-            // C:\Projects\videowallpapers\videowallpapers\bin\Debug\mpv\mpv.exe --playlist=D:\VideoWP\PL.m3u
+            // mpv.exe --playlist=D:\VideoWP\PL.m3u
             //Console.WriteLine(command.Arguments);
             command.Arguments = @"/C " + Program.mpv + " --playlist=" + Program.cfgdata.plpath;
             while (true)
@@ -77,6 +77,7 @@ namespace videowp
                 else if (downtime>=inactionInMs && !isActive)
                 {
                     dwt2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                    //Console.WriteLine((dwt2-dwt1) + " мс");
                     isActive = true;
                     Process.Start(command);
                 }
