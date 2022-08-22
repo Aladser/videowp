@@ -24,6 +24,22 @@ namespace videowp
         long dwt1, dwt2;
         ProcessStartInfo command = new ProcessStartInfo(@"cmd.exe", @"");
 
+
+        private enum MouseFlags : uint
+        {
+            MOUSEEVENTF_ABSOLUTE = 0x8000,   // If set, dx and dy contain normalized absolute coordinates between 0 and 65535. The event procedure maps these coordinates onto the display surface. Coordinate (0,0) maps onto the upper-left corner of the display surface, (65535,65535) maps onto the lower-right corner.
+            MOUSEEVENTF_LEFTDOWN = 0x0002,   // The left button is down.
+            MOUSEEVENTF_LEFTUP = 0x0004,     // The left button is up.
+            MOUSEEVENTF_MIDDLEDOWN = 0x0020, // The middle button is down.
+            MOUSEEVENTF_MIDDLEUP = 0x0040,   // The middle button is up.
+            MOUSEEVENTF_MOVE = 0x0001,       // Movement occurred.
+            MOUSEEVENTF_RIGHTDOWN = 0x0008,  // The right button is down.
+            MOUSEEVENTF_RIGHTUP = 0x0010,    // The right button is up.
+            MOUSEEVENTF_WHEEL = 0x0800,      // The wheel has been moved, if the mouse has a wheel.The amount of movement is specified in dwData
+            MOUSEEVENTF_XDOWN = 0x0080,      // An X button was pressed.
+            MOUSEEVENTF_XUP = 0x0100,        // An X button was released.
+            MOUSEEVENTF_HWHEEL = 0x01000     // The wheel button is tilted.
+        }
         /// <summary>
         /// Класс фоновой задачи показа обоев
         /// </summary>
@@ -52,14 +68,15 @@ namespace videowp
         // фоновая задача
         private void BW_DoWork(object sender, DoWorkEventArgs e)
         {
-            Process[] processes;
             bool isActive = false;
             long startBWTime = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
             dwt1 = startBWTime;
             downtime = 0;
-            // mpv.exe --playlist=D:\VideoWP\PL.m3u
+            if(Program.cfgdata.player.Equals("mpv"))
+                command.Arguments = @"/C " + Program.mpvPath + " --playlist=" + Program.cfgdata.plpath; // MPV
+            else
+                command.Arguments = @"/C " + Program.cfgdata.plpath; // VLC
             //Console.WriteLine(command.Arguments);
-            command.Arguments = @"/C " + Program.mpv + " --playlist=" + Program.cfgdata.plpath;
             while (true)
             {               
                 // выключение фоновой задачи
@@ -77,7 +94,6 @@ namespace videowp
                 else if (downtime>=inactionInMs && !isActive)
                 {
                     dwt2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                    //Console.WriteLine((dwt2-dwt1) + " мс");
                     isActive = true;
                     Process.Start(command);
                 }
@@ -86,9 +102,7 @@ namespace videowp
                 {
                     dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                     isActive = false;
-                    processes = Process.GetProcessesByName( "mpv" );
-                    foreach (Process elem in processes)
-                      elem.Kill();
+                    Process.GetProcessesByName(Program.cfgdata.player)[0].Kill();
                 }
                 System.Threading.Thread.Sleep(100);
                 dwt2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
@@ -97,12 +111,7 @@ namespace videowp
                 if( (dwt2-startBWTime) > 3600000 )
                 {
                     if (isActive)
-                    {
-                        processes = Process.GetProcessesByName("mpv");
-                        foreach (Process elem in processes)
-                            elem.Kill();
-                        Process.Start(command);
-                    }
+                        Process.GetProcessesByName(Program.cfgdata.player)[0].Kill();
                     startBWTime = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                 }
             }
@@ -178,8 +187,8 @@ namespace videowp
             GetWindowThreadProcessId(hWnd, out procId);
             string proc = Process.GetProcessById((int)procId).ToString();
             if (screen.Bounds.Width == (rect.right - rect.left) 
-                && screen.Bounds.Height == (rect.bottom - rect.top) 
-                && !proc.Contains( "mpv" ) 
+                && screen.Bounds.Height == (rect.bottom - rect.top)
+                && !proc.Contains(Program.cfgdata.player)
                 && !proc.Contains("explorer")
                 )
                 return true;

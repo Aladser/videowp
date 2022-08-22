@@ -13,12 +13,12 @@ namespace videowp
         static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
         public static readonly string shortcut = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\videowp.lnk"; // ярлык автозагрузки 
         public static readonly string cfgpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\videowp.cfg"; // конфиг
-        public static string mpv = Path.GetDirectoryName(Application.ExecutablePath) + "\\mpv\\mpv.exe"; // mpv плеер
+        public static string mpvPath = Path.GetDirectoryName(Application.ExecutablePath) + "\\mpv\\mpv.exe"; // mpv плеер
         public static string filefilter = "MPV плейлист (*.m3u;*.m3u8;*.pls;*)|*.m3u;*.m3u8;*.pls";
         public static ConfigData cfgdata;
         static UserActivityHook globalHook;// хук глобального движения мыши или клавиатуры
         public static MainForm mainform;
-        public static BackWork bcgwork;
+        public static BackWork bcgwork;      
         // Проверка запуска второй копии приложения
         static Mutex InstanceCheckMutex;
         static bool InstanceCheck()
@@ -51,7 +51,7 @@ namespace videowp
                 cfgdata = new ConfigData();
                 ConfigStream.Write(cfgpath, cfgdata);
             }
-            if (!File.Exists(mpv))
+            if (!File.Exists(mpvPath))
             {
                 MessageBox.Show("Папка mpv не найдена. Программа будет закрыта");
                 Process.GetCurrentProcess().Kill();

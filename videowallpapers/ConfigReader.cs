@@ -9,11 +9,13 @@ namespace videowp
     internal class ConfigData
     {
         public string plpath;
+        public string player;
         public int period;
         public int autoshow;
         public ConfigData()
         {           
             plpath = "";
+            player = "mpv";
             period = 0;
             autoshow = 0;
         }
@@ -38,6 +40,8 @@ namespace videowp
                 string line = reader.ReadLine();
                 rslt.plpath = line.Substring(line.IndexOf("= ") + 2);
                 line = reader.ReadLine();
+                rslt.player = line.Substring(line.IndexOf("= ") + 2);
+                line = reader.ReadLine();
                 rslt.period = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
                 line = reader.ReadLine();
                 rslt.autoshow = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
@@ -60,6 +64,7 @@ namespace videowp
         {
             StreamWriter writer = new StreamWriter(path, false);
             string text = "playerpath = " + data.plpath + "\n";
+            text += "player = " + data.player + "\n";
             text += "period = " + data.period + "\n";
             text += "autoshow = " + data.autoshow + "\n";
             writer.WriteLine(text);

@@ -16,6 +16,10 @@ namespace videowp
             if (File.Exists(Program.shortcut)) autoloaderCheckBox.Checked = true; // проверка автозапуска
             timeComboBox.SelectedIndex = Program.cfgdata.period;  // считывание времени заставки            
             autoShowCheckBox.Checked = Program.cfgdata.autoshow==0 ? false : true; // считывание autoshow
+            if (Program.cfgdata.player.Equals("mpv"))
+                mpvRB.Checked = true;
+            else
+                vlcRB.Checked = true;
             // считывание playerpath
             if (File.Exists(Program.cfgdata.plpath))
             {
@@ -49,15 +53,19 @@ namespace videowp
         {
             if (onRadioButton.Checked)
             {
-                this.Text = "Видеобои 1.12: АКТИВНО";
+                this.Text = "Видеобои 1.2 Тест: АКТИВНО";
                 notifyIcon.Text = "Видеообои ВКЛ";
+                this.mpvRB.Enabled = false;
+                this.vlcRB.Enabled = false;
                 Program.bcgwork.start();
                 playlistSelectButton.Enabled = false;
             }
             else
             {
-                this.Text = "Видеобои 1.12";
+                this.Text = "Видеобои 1.2 Тест";
                 notifyIcon.Text = "Видеообои ВЫКЛ";
+                this.mpvRB.Enabled = true;
+                this.vlcRB.Enabled = true;
                 Program.bcgwork.stop();
                 playlistSelectButton.Enabled = true;
             }               
@@ -65,7 +73,7 @@ namespace videowp
         // Информация о программе
         private void aboutImage_MouseHover(object sender, EventArgs e)
         {
-            toolTip.SetToolTip(aboutImage, "Видеобом 1.12\n(c) Aladser\n2022");
+            toolTip.SetToolTip(aboutImage, "Aladser Видеобом 1.2\n2022");
         }
         // Переключение автозагрузки
         private void autoLoader_CheckedChanged(object sender, EventArgs e)
@@ -120,6 +128,12 @@ namespace videowp
                 Hide();
                 notifyIcon.Visible = true;
             }
+        }
+        // Переключение плеера
+        private void mpvRB_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.cfgdata.player = mpvRB.Checked ? "mpv" : "vlc";
+            ConfigStream.Write(Program.cfgpath, Program.cfgdata);
         }
     }
 }
