@@ -53,7 +53,7 @@ namespace videowp
         {
             if (onRadioButton.Checked)
             {
-                this.Text = "Видеобои 1.2 Тест: АКТИВНО";
+                this.Text = "Видеобои 1.20: АКТИВНО";
                 notifyIcon.Text = "Видеообои ВКЛ";
                 this.mpvRB.Enabled = false;
                 this.vlcRB.Enabled = false;
@@ -62,7 +62,7 @@ namespace videowp
             }
             else
             {
-                this.Text = "Видеобои 1.2 Тест";
+                this.Text = "Видеобои 1.20";
                 notifyIcon.Text = "Видеообои ВЫКЛ";
                 this.mpvRB.Enabled = true;
                 this.vlcRB.Enabled = true;
@@ -73,7 +73,7 @@ namespace videowp
         // Информация о программе
         private void aboutImage_MouseHover(object sender, EventArgs e)
         {
-            toolTip.SetToolTip(aboutImage, "Aladser Видеобом 1.2\n2022");
+            toolTip.SetToolTip(aboutImage, "Aladser Видеобом 1.20\n2022");
         }
         // Переключение автозагрузки
         private void autoLoader_CheckedChanged(object sender, EventArgs e)
