@@ -47,18 +47,20 @@
             this.mpvRB = new System.Windows.Forms.RadioButton();
             this.vlcRB = new System.Windows.Forms.RadioButton();
             this.playerPanel = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.switchPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.aboutImage)).BeginInit();
             this.playerPanel.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // playlistNameLabel
             // 
             this.playlistNameLabel.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.playlistNameLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.playlistNameLabel.Location = new System.Drawing.Point(12, 34);
+            this.playlistNameLabel.Location = new System.Drawing.Point(15, 34);
             this.playlistNameLabel.Name = "playlistNameLabel";
-            this.playlistNameLabel.Size = new System.Drawing.Size(415, 21);
+            this.playlistNameLabel.Size = new System.Drawing.Size(412, 21);
             this.playlistNameLabel.TabIndex = 3;
             this.playlistNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -84,7 +86,7 @@
             "5",
             "10",
             "15 "});
-            this.timeComboBox.Location = new System.Drawing.Point(275, 81);
+            this.timeComboBox.Location = new System.Drawing.Point(140, 21);
             this.timeComboBox.Name = "timeComboBox";
             this.timeComboBox.Size = new System.Drawing.Size(48, 21);
             this.timeComboBox.TabIndex = 5;
@@ -92,7 +94,7 @@
             // 
             // periodLabel
             // 
-            this.periodLabel.Location = new System.Drawing.Point(156, 80);
+            this.periodLabel.Location = new System.Drawing.Point(21, 20);
             this.periodLabel.Name = "periodLabel";
             this.periodLabel.Size = new System.Drawing.Size(113, 21);
             this.periodLabel.TabIndex = 6;
@@ -101,7 +103,7 @@
             // 
             // minLabel
             // 
-            this.minLabel.Location = new System.Drawing.Point(329, 80);
+            this.minLabel.Location = new System.Drawing.Point(194, 21);
             this.minLabel.Name = "minLabel";
             this.minLabel.Size = new System.Drawing.Size(33, 21);
             this.minLabel.TabIndex = 7;
@@ -112,14 +114,14 @@
             // 
             this.switchPanel.Controls.Add(this.offRadioButton);
             this.switchPanel.Controls.Add(this.onRadioButton);
-            this.switchPanel.Location = new System.Drawing.Point(454, 106);
+            this.switchPanel.Location = new System.Drawing.Point(438, 133);
             this.switchPanel.Name = "switchPanel";
-            this.switchPanel.Size = new System.Drawing.Size(67, 56);
+            this.switchPanel.Size = new System.Drawing.Size(88, 56);
             this.switchPanel.TabIndex = 8;
             // 
             // offRadioButton
             // 
-            this.offRadioButton.Location = new System.Drawing.Point(3, 29);
+            this.offRadioButton.Location = new System.Drawing.Point(27, 27);
             this.offRadioButton.Name = "offRadioButton";
             this.offRadioButton.Size = new System.Drawing.Size(58, 21);
             this.offRadioButton.TabIndex = 1;
@@ -131,7 +133,7 @@
             // onRadioButton
             // 
             this.onRadioButton.Checked = true;
-            this.onRadioButton.Location = new System.Drawing.Point(3, 6);
+            this.onRadioButton.Location = new System.Drawing.Point(27, 8);
             this.onRadioButton.Name = "onRadioButton";
             this.onRadioButton.Size = new System.Drawing.Size(58, 21);
             this.onRadioButton.TabIndex = 0;
@@ -161,7 +163,7 @@
             // autoloaderCheckBox
             // 
             this.autoloaderCheckBox.AutoSize = true;
-            this.autoloaderCheckBox.Location = new System.Drawing.Point(12, 106);
+            this.autoloaderCheckBox.Location = new System.Drawing.Point(15, 164);
             this.autoloaderCheckBox.Name = "autoloaderCheckBox";
             this.autoloaderCheckBox.Size = new System.Drawing.Size(96, 17);
             this.autoloaderCheckBox.TabIndex = 13;
@@ -172,7 +174,7 @@
             // autoShowCheckBox
             // 
             this.autoShowCheckBox.AutoSize = true;
-            this.autoShowCheckBox.Location = new System.Drawing.Point(12, 133);
+            this.autoShowCheckBox.Location = new System.Drawing.Point(15, 141);
             this.autoShowCheckBox.Name = "autoShowCheckBox";
             this.autoShowCheckBox.Size = new System.Drawing.Size(135, 17);
             this.autoShowCheckBox.TabIndex = 15;
@@ -196,7 +198,7 @@
             // 
             this.mpvRB.AutoSize = true;
             this.mpvRB.Checked = true;
-            this.mpvRB.Location = new System.Drawing.Point(3, 6);
+            this.mpvRB.Location = new System.Drawing.Point(3, 8);
             this.mpvRB.Name = "mpvRB";
             this.mpvRB.Size = new System.Drawing.Size(48, 17);
             this.mpvRB.TabIndex = 17;
@@ -210,7 +212,7 @@
             // vlcRB
             // 
             this.vlcRB.AutoSize = true;
-            this.vlcRB.Location = new System.Drawing.Point(3, 31);
+            this.vlcRB.Location = new System.Drawing.Point(57, 8);
             this.vlcRB.Name = "vlcRB";
             this.vlcRB.Size = new System.Drawing.Size(45, 17);
             this.vlcRB.TabIndex = 18;
@@ -224,38 +226,48 @@
             // 
             this.playerPanel.Controls.Add(this.mpvRB);
             this.playerPanel.Controls.Add(this.vlcRB);
-            this.playerPanel.Location = new System.Drawing.Point(369, 106);
+            this.playerPanel.Location = new System.Drawing.Point(337, 13);
             this.playerPanel.Name = "playerPanel";
-            this.playerPanel.Size = new System.Drawing.Size(58, 56);
+            this.playerPanel.Size = new System.Drawing.Size(104, 29);
             this.playerPanel.TabIndex = 19;
+            // 
+            // panel1
+            // 
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.periodLabel);
+            this.panel1.Controls.Add(this.playerPanel);
+            this.panel1.Controls.Add(this.timeComboBox);
+            this.panel1.Controls.Add(this.minLabel);
+            this.panel1.Location = new System.Drawing.Point(15, 62);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(506, 60);
+            this.panel1.TabIndex = 20;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(533, 169);
-            this.Controls.Add(this.playerPanel);
+            this.ClientSize = new System.Drawing.Size(533, 201);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.aboutImage);
             this.Controls.Add(this.autoShowCheckBox);
             this.Controls.Add(this.autoloaderCheckBox);
             this.Controls.Add(this.playlistLabel);
             this.Controls.Add(this.switchPanel);
-            this.Controls.Add(this.minLabel);
-            this.Controls.Add(this.periodLabel);
-            this.Controls.Add(this.timeComboBox);
             this.Controls.Add(this.playlistSelectButton);
             this.Controls.Add(this.playlistNameLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Видеобои 1.20";
+            this.Text = "Видеобои 1.21";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             this.switchPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.aboutImage)).EndInit();
             this.playerPanel.ResumeLayout(false);
             this.playerPanel.PerformLayout();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -280,6 +292,7 @@
         private System.Windows.Forms.RadioButton mpvRB;
         private System.Windows.Forms.RadioButton vlcRB;
         private System.Windows.Forms.Panel playerPanel;
+        private System.Windows.Forms.Panel panel1;
     }
 }
 

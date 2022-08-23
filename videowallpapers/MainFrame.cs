@@ -53,7 +53,7 @@ namespace videowp
         {
             if (onRadioButton.Checked)
             {
-                this.Text = "Видеобои 1.20: АКТИВНО";
+                this.Text = "Видеобои 1.21: АКТИВНО";
                 notifyIcon.Text = "Видеообои ВКЛ";
                 this.mpvRB.Enabled = false;
                 this.vlcRB.Enabled = false;
@@ -62,7 +62,7 @@ namespace videowp
             }
             else
             {
-                this.Text = "Видеобои 1.20";
+                this.Text = "Видеобои 1.21";
                 notifyIcon.Text = "Видеообои ВЫКЛ";
                 this.mpvRB.Enabled = true;
                 this.vlcRB.Enabled = true;
@@ -73,7 +73,7 @@ namespace videowp
         // Информация о программе
         private void aboutImage_MouseHover(object sender, EventArgs e)
         {
-            toolTip.SetToolTip(aboutImage, "Aladser Видеобом 1.20\n2022");
+            toolTip.SetToolTip(aboutImage, "Aladser Видеобом 1.21\n2022");
         }
         // Переключение автозагрузки
         private void autoLoader_CheckedChanged(object sender, EventArgs e)
@@ -111,6 +111,12 @@ namespace videowp
             Program.cfgdata.autoshow = autoShowCheckBox.Checked ? 1 : 0;
             ConfigStream.Write(Program.cfgpath, Program.cfgdata);
         }
+        // Переключение плеера
+        private void mpvRB_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.cfgdata.player = mpvRB.Checked ? "mpv" : "vlc";
+            ConfigStream.Write(Program.cfgpath, Program.cfgdata);
+        }
         // Разворачивание окна
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -128,12 +134,6 @@ namespace videowp
                 Hide();
                 notifyIcon.Visible = true;
             }
-        }
-        // Переключение плеера
-        private void mpvRB_CheckedChanged(object sender, EventArgs e)
-        {
-            Program.cfgdata.player = mpvRB.Checked ? "mpv" : "vlc";
-            ConfigStream.Write(Program.cfgpath, Program.cfgdata);
         }
     }
 }
