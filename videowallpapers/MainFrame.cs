@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
@@ -40,7 +39,6 @@ namespace videowp
             {
                 onRadioButton.Checked = true;
                 Program.bcgwork.start();
-                notifyIcon.Visible = true;
                 mpvRB.Enabled = false;
                 vlcRB.Enabled = false;
             }
@@ -55,27 +53,27 @@ namespace videowp
         {
             if (onRadioButton.Checked)
             {
-                this.Text = "Видеобои 1.21: АКТИВНО";
+                this.Text = "Видеобои 1.23: АКТИВНО";
                 notifyIcon.Text = "Видеообои ВКЛ";
-                this.mpvRB.Enabled = false;
-                this.vlcRB.Enabled = false;
-                Program.bcgwork.start();
                 playlistSelectButton.Enabled = false;
+                this.mpvRB.Enabled = false;
+                this.vlcRB.Enabled = false;             
+                Program.bcgwork.start();
             }
             else
             {
-                this.Text = "Видеобои 1.21";
+                this.Text = "Видеобои 1.23";
                 notifyIcon.Text = "Видеообои ВЫКЛ";
-                this.mpvRB.Enabled = true;
-                this.vlcRB.Enabled = true;
-                Program.bcgwork.stop();
                 playlistSelectButton.Enabled = true;
+                this.mpvRB.Enabled = true;
+                this.vlcRB.Enabled = true;                                
+                Program.bcgwork.stop();
             }               
         }
         // Информация о программе
         private void aboutImage_MouseHover(object sender, EventArgs e)
         {
-            toolTip.SetToolTip(aboutImage, "Aladser Видеобом 1.21\n2022");
+            toolTip.SetToolTip(aboutImage, "Aladser Видеобом 1.23\n2022");
         }
         // Переключение автозагрузки
         private void autoLoader_CheckedChanged(object sender, EventArgs e)
@@ -122,19 +120,19 @@ namespace videowp
         // Разворачивание окна
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            Show();
-            notifyIcon.Visible = false;
+            this.Show();
         }
         // Скрытие или закрытие программы
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!Program.bcgwork.isActive())
-                Process.GetCurrentProcess().Kill();
+            {
+                Application.Exit();
+            }
             else
             {
                 e.Cancel = true;
-                Hide();
-                notifyIcon.Visible = true;
+                this.Hide();
             }
         }
     }

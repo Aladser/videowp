@@ -104,16 +104,19 @@ namespace videowp
                     isActive = false;
                     Process.GetProcessesByName(Program.cfgdata.player)[0].Kill();
                 }
-                System.Threading.Thread.Sleep(100);
-                dwt2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                downtime = dwt2 - dwt1;
                 // перезапуск обоев каждый час
                 if( (dwt2-startBWTime) > 3600000 )
                 {
                     if (isActive)
+                    {
                         Process.GetProcessesByName(Program.cfgdata.player)[0].Kill();
+                        Process.Start(command);
+                    }                  
                     startBWTime = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                 }
+                System.Threading.Thread.Sleep(100);
+                dwt2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                downtime = dwt2 - dwt1;
             }
         }
         /// <summary>
@@ -186,14 +189,15 @@ namespace videowp
             uint procId = 0;
             GetWindowThreadProcessId(hWnd, out procId);
             string proc = Process.GetProcessById((int)procId).ToString();
-            if (screen.Bounds.Width == (rect.right - rect.left) 
-                && screen.Bounds.Height == (rect.bottom - rect.top)
-                && !proc.Contains(Program.cfgdata.player)
-                && !proc.Contains("explorer")
-                )
-                return true;
+            if (
+                screen.Bounds.Width == (rect.right - rect.left) && 
+                screen.Bounds.Height == (rect.bottom - rect.top) && 
+                !proc.Contains(Program.cfgdata.player) && 
+                !proc.Contains("explorer")
+               )
+               return true;
             else
-                return false;
+               return false;
         }
     }
 }
