@@ -41,10 +41,12 @@ namespace videowp
                 onRadioButton.Checked = true;
                 Program.bcgwork.start();
                 notifyIcon.Visible = true;
+                mpvRB.Enabled = false;
+                vlcRB.Enabled = false;
             }
             else
             {
-                Show();
+                this.Show();
                 offRadioButton.Checked = true;
             }
         }
