@@ -12,12 +12,14 @@ namespace videowp
         public string player;
         public int period;
         public int autoshow;
+        public int overWindows;
         public ConfigData()
         {           
             plpath = "";
             player = "mpv";
             period = 0;
             autoshow = 0;
+            overWindows = 0;
         }
     }
     /// <summary>
@@ -45,8 +47,9 @@ namespace videowp
                 rslt.period = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
                 line = reader.ReadLine();
                 rslt.autoshow = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
-                if (!File.Exists(rslt.plpath))
-                    rslt.plpath = "";
+                line = reader.ReadLine();
+                rslt.overWindows = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
+                if (!File.Exists(rslt.plpath)) rslt.plpath = "";
             }
             catch (Exception)
             {
@@ -64,9 +67,10 @@ namespace videowp
         {
             StreamWriter writer = new StreamWriter(path, false);
             string text = "playerpath = " + data.plpath + "\n";
-            text += "player = " + data.player + "\n";
-            text += "period = " + data.period + "\n";
-            text += "autoshow = " + data.autoshow + "\n";
+            text += "player = " + data.player + '\n';
+            text += "period = " + data.period + '\n';
+            text += "autoshow = " + data.autoshow + '\n';
+            text += "overWindows = " + data.overWindows + '\n';
             writer.WriteLine(text);
             writer.Close();
         }

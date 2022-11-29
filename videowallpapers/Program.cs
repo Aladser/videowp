@@ -33,8 +33,6 @@ namespace videowp
         [STAThread]
         static void Main()   
         {
-            Console.WriteLine(Application.ExecutablePath);
-            Console.WriteLine(cfgpath);
 
             // Считывание конфигурационного файла
             if (!File.Exists(Program.cfgpath))
@@ -65,13 +63,17 @@ namespace videowp
             // запуск программы
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            bcgwork = new BackWork(cfgdata.period);
+            bcgwork = new BackWork(cfgdata);
             mainform = new MainForm();
+            Console.WriteLine();
+            Console.WriteLine(Application.ExecutablePath);
+            Console.WriteLine(cfgpath);
+            Console.WriteLine();
             if (InstanceCheck())
             {
                 Application.Run();
             }
-            
+
         }
 
         /// <summary>

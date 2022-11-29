@@ -48,6 +48,7 @@
             this.vlcRB = new System.Windows.Forms.RadioButton();
             this.playerPanel = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.overWindowCheckBox = new System.Windows.Forms.CheckBox();
             this.switchPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.aboutImage)).BeginInit();
             this.playerPanel.SuspendLayout();
@@ -114,9 +115,9 @@
             // 
             this.switchPanel.Controls.Add(this.offRadioButton);
             this.switchPanel.Controls.Add(this.onRadioButton);
-            this.switchPanel.Location = new System.Drawing.Point(438, 133);
+            this.switchPanel.Location = new System.Drawing.Point(438, 141);
             this.switchPanel.Name = "switchPanel";
-            this.switchPanel.Size = new System.Drawing.Size(88, 56);
+            this.switchPanel.Size = new System.Drawing.Size(88, 61);
             this.switchPanel.TabIndex = 8;
             // 
             // offRadioButton
@@ -244,11 +245,25 @@
             this.panel1.Size = new System.Drawing.Size(506, 60);
             this.panel1.TabIndex = 20;
             // 
+            // overWindowCheckBox
+            // 
+            this.overWindowCheckBox.AutoSize = true;
+            this.overWindowCheckBox.Checked = true;
+            this.overWindowCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.overWindowCheckBox.Location = new System.Drawing.Point(15, 187);
+            this.overWindowCheckBox.Name = "overWindowCheckBox";
+            this.overWindowCheckBox.Size = new System.Drawing.Size(116, 17);
+            this.overWindowCheckBox.TabIndex = 21;
+            this.overWindowCheckBox.Text = "Поверх всех окон";
+            this.overWindowCheckBox.UseVisualStyleBackColor = true;
+            this.overWindowCheckBox.CheckedChanged += new System.EventHandler(this.overWindowCheckBox_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(533, 201);
+            this.ClientSize = new System.Drawing.Size(533, 214);
+            this.Controls.Add(this.overWindowCheckBox);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.aboutImage);
             this.Controls.Add(this.autoShowCheckBox);
@@ -261,7 +276,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Видеобои 1.23";
+            this.Text = "Видеобои 1.24";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             this.switchPanel.ResumeLayout(false);
@@ -294,6 +309,7 @@
         private System.Windows.Forms.RadioButton vlcRB;
         private System.Windows.Forms.Panel playerPanel;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.CheckBox overWindowCheckBox;
     }
 }
 

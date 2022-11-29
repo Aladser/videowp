@@ -12,9 +12,10 @@ namespace videowp
         {                  
             InitializeComponent();
             CenterToScreen();
-            if (File.Exists(Program.shortcut)) autoloaderCheckBox.Checked = true; // проверка автозапуска
-            timeComboBox.SelectedIndex = Program.cfgdata.period;  // считывание времени заставки            
-            autoShowCheckBox.Checked = Program.cfgdata.autoshow==0 ? false : true; // считывание autoshow
+            if (File.Exists(Program.shortcut)) autoloaderCheckBox.Checked = true;         // проверка автозапуска
+            timeComboBox.SelectedIndex = Program.cfgdata.period;                          // считывание времени заставки            
+            autoShowCheckBox.Checked = Program.cfgdata.autoshow==0 ? false : true;        // считывание autoshow
+            overWindowCheckBox.Checked = Program.cfgdata.overWindows == 0 ? false : true; // флаг Поверх всех окон
             if (Program.cfgdata.player.Equals("mpv"))
                 mpvRB.Checked = true;
             else
@@ -53,7 +54,7 @@ namespace videowp
         {
             if (onRadioButton.Checked)
             {
-                this.Text = "Видеобои 1.23: АКТИВНО";
+                this.Text = "Видеобои 1.24: АКТИВНО";
                 notifyIcon.Text = "Видеообои ВКЛ";
                 playlistSelectButton.Enabled = false;
                 this.mpvRB.Enabled = false;
@@ -62,7 +63,7 @@ namespace videowp
             }
             else
             {
-                this.Text = "Видеобои 1.23";
+                this.Text = "Видеобои 1.24";
                 notifyIcon.Text = "Видеообои ВЫКЛ";
                 playlistSelectButton.Enabled = true;
                 this.mpvRB.Enabled = true;
@@ -73,7 +74,7 @@ namespace videowp
         // Информация о программе
         private void aboutImage_MouseHover(object sender, EventArgs e)
         {
-            toolTip.SetToolTip(aboutImage, "Aladser Видеобом 1.23\n2022");
+            toolTip.SetToolTip(aboutImage, "Aladser Видеобом 1.24\n2022");
         }
         // Переключение автозагрузки
         private void autoLoader_CheckedChanged(object sender, EventArgs e)
@@ -98,17 +99,23 @@ namespace videowp
             ConfigStream.Write(Program.cfgpath, Program.cfgdata);
             switchPanel.Enabled = true;
         }
-        // Переключение времени заставки
+        // переключение времени заставки
         private void TimeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             Program.bcgwork.setTimePeriod(timeComboBox.SelectedIndex);
             Program.cfgdata.period = timeComboBox.SelectedIndex;
             ConfigStream.Write(Program.cfgpath, Program.cfgdata);
         }
-        // Переключение автопоказа обоев
+        // переключение автопоказа обоев
         private void autoShowCheckBoxCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             Program.cfgdata.autoshow = autoShowCheckBox.Checked ? 1 : 0;
+            ConfigStream.Write(Program.cfgpath, Program.cfgdata);
+        }
+        // переключение Поверх всех окон
+        private void overWindowCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.cfgdata.overWindows = overWindowCheckBox.Checked ? 1 : 0;
             ConfigStream.Write(Program.cfgpath, Program.cfgdata);
         }
         // Переключение плеера

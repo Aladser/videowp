@@ -18,10 +18,11 @@ namespace videowp
 
         readonly BackgroundWorker bw = new BackgroundWorker();                      
         readonly double[] inactionTime = { 0.05, 1, 3, 5, 10, 15 }; // массив периодов бездействия
-        int inactionNumber;
-        int inactionInMs;
+        int inactionNumber; // номер период бездействия
+        int inactionInMs; // время бездействия в мс
         long downtime;
         long dwt1, dwt2;
+        bool isOverWindows;
         ProcessStartInfo command = new ProcessStartInfo(@"cmd.exe", @"");
 
 
@@ -44,11 +45,14 @@ namespace videowp
         /// Класс фоновой задачи показа обоев
         /// </summary>
         /// <param name="inActionNumber">время, номер берется из Combobox</param>
-        public BackWork(int inactionNumber)
+        public BackWork(ConfigData cfgdata)
         {
             initialise();
-            this.inactionNumber = inactionNumber;
+            
+            inactionNumber = cfgdata.period;
             setTimePeriod(inactionNumber);
+
+            isOverWindows = cfgdata.overWindows == 1 ? true : false;
         }
         public BackWork()
         {
@@ -85,8 +89,9 @@ namespace videowp
                     e.Cancel = true;
                     break;
                 }
-                // поиск другого запущенного приложения в фуллскрине
-                if (IsForegroundFullScreen())
+
+                //поиск другого запущенного приложения в фуллскрине
+                if (IsForegroundFullScreen() && !isOverWindows)
                 {
                     dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                 }
@@ -145,7 +150,6 @@ namespace videowp
         /// <summary>
         /// установка времнеи простоя системы
         /// </summary>
-        /// <param name="inActionNumber"></param>
         public void setTimePeriod(int inActionNumber)
         {
             this.inactionNumber = inActionNumber;
