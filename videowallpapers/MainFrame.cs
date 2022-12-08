@@ -75,7 +75,7 @@ namespace videowp
         // Информация о программе
         private void aboutImage_MouseHover(object sender, EventArgs e)
         {
-            toolTip.SetToolTip(aboutImage, "Aladser's Видеобом 1.25\n2022");
+            toolTip.SetToolTip(aboutImage, "Aladser's Видеобои 1.25\n2022");
         }
         // Переключение автозагрузки
         private void autoLoader_CheckedChanged(object sender, EventArgs e)
