@@ -9,7 +9,8 @@ namespace videowp
         readonly OpenFileDialog ofd = new OpenFileDialog();      
 
         public MainForm()
-        {                  
+        {
+            TopMost = true;
             InitializeComponent();
             CenterToScreen();
             if (File.Exists(Program.shortcut)) autoloaderCheckBox.Checked = true;         // проверка автозапуска
@@ -54,7 +55,7 @@ namespace videowp
         {
             if (onRadioButton.Checked)
             {
-                this.Text = "Видеобои 1.24: АКТИВНО";
+                this.Text = "Видеобои 1.25: АКТИВНО";
                 notifyIcon.Text = "Видеообои ВКЛ";
                 playlistSelectButton.Enabled = false;
                 this.mpvRB.Enabled = false;
@@ -63,7 +64,7 @@ namespace videowp
             }
             else
             {
-                this.Text = "Видеобои 1.24";
+                this.Text = "Видеобои 1.25";
                 notifyIcon.Text = "Видеообои ВЫКЛ";
                 playlistSelectButton.Enabled = true;
                 this.mpvRB.Enabled = true;
@@ -74,7 +75,7 @@ namespace videowp
         // Информация о программе
         private void aboutImage_MouseHover(object sender, EventArgs e)
         {
-            toolTip.SetToolTip(aboutImage, "Aladser Видеобом 1.24\n2022");
+            toolTip.SetToolTip(aboutImage, "Aladser's Видеобом 1.25\n2022");
         }
         // Переключение автозагрузки
         private void autoLoader_CheckedChanged(object sender, EventArgs e)
