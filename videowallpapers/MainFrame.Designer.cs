@@ -83,7 +83,7 @@
             "5",
             "10",
             "15 "});
-            this.timeComboBox.Location = new System.Drawing.Point(140, 21);
+            this.timeComboBox.Location = new System.Drawing.Point(259, 22);
             this.timeComboBox.Name = "timeComboBox";
             this.timeComboBox.Size = new System.Drawing.Size(48, 21);
             this.timeComboBox.TabIndex = 5;
@@ -91,7 +91,7 @@
             // 
             // periodLabel
             // 
-            this.periodLabel.Location = new System.Drawing.Point(21, 20);
+            this.periodLabel.Location = new System.Drawing.Point(140, 22);
             this.periodLabel.Name = "periodLabel";
             this.periodLabel.Size = new System.Drawing.Size(113, 21);
             this.periodLabel.TabIndex = 6;
@@ -100,7 +100,7 @@
             // 
             // minLabel
             // 
-            this.minLabel.Location = new System.Drawing.Point(194, 21);
+            this.minLabel.Location = new System.Drawing.Point(313, 21);
             this.minLabel.Name = "minLabel";
             this.minLabel.Size = new System.Drawing.Size(33, 21);
             this.minLabel.TabIndex = 7;

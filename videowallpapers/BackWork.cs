@@ -23,8 +23,8 @@ namespace videowp
         long downtime;
         long dwt1, dwt2;
         bool isOverWindows;
+        // процесс видеоплеера
         ProcessStartInfo playerProc = new ProcessStartInfo(Program.mpvPath, @"--playlist=" + Program.cfgdata.plpath);
-
 
         private enum MouseFlags : uint
         {
@@ -69,7 +69,7 @@ namespace videowp
         private void BW_DoWork(object sender, DoWorkEventArgs e)
         {
             bool isActive = false;
-            long startBWTime = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+            long startBWTime = getTimeNow();
             dwt1 = startBWTime;
             downtime = 0;
             //Console.WriteLine(command.Arguments);
@@ -85,34 +85,24 @@ namespace videowp
                 //поиск другого запущенного приложения в фуллскрине
                 if (IsForegroundFullScreen() && !isOverWindows)
                 {
-                    dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                    dwt1 = getTimeNow();
                 }
                 // запуск обоев
                 else if (downtime>=inactionInMs && !isActive)
                 {
-                    dwt2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                    dwt2 = getTimeNow();
                     isActive = true;
                     Process.Start(playerProc);
                 }
                 // прерывание показа обоев
                 else if (downtime<inactionInMs && isActive)
                 {
-                    dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                    dwt1 = getTimeNow();
                     isActive = false;
                     Process.GetProcessesByName("mpv")[0].Kill();
                 }
-                // перезапуск обоев каждый час
-                if( (dwt2-startBWTime) > 3600000 )
-                {
-                    if (isActive)
-                    {
-                        Process.GetProcessesByName("mpv")[0].Kill();
-                        Process.Start(playerProc);
-                    }                  
-                    startBWTime = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                }
-                System.Threading.Thread.Sleep(100);
-                dwt2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                System.Threading.Thread.Sleep(150);
+                dwt2 = getTimeNow();
                 downtime = dwt2 - dwt1;
             }
         }
@@ -130,6 +120,14 @@ namespace videowp
         public void stop()
         {
             bw.CancelAsync();
+        }
+        /// <summary>
+        /// получить текущее время в мс
+        /// </summary>
+        /// <returns></returns>
+        private long getTimeNow()
+        {
+            return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
         }
         /// <summary>
         /// Возравращает, работает ли фоновая задача
