@@ -14,7 +14,7 @@ namespace videowp
         public static readonly string shortcut = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\videowp.lnk"; // ярлык автозагрузки 
         public static readonly string cfgpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\videowp.cfg"; // конфиг
         public static string mpvPath = Path.GetDirectoryName(Application.ExecutablePath) + "\\mpv\\mpv.exe"; // mpv плеер
-        public static string filefilter = "MPV плейлист (*.m3u;*.m3u8;*.pls;*)|*.m3u;*.m3u8;*.pls";
+        public static string filefilter = "видеоплейлисты (*.m3u;*.m3u8;*.pls;*)|*.m3u;*.m3u8;*.pls";
         public static ConfigData cfgdata;
         static UserActivityHook globalHook;// хук глобального движения мыши или клавиатуры
         public static MainForm mainform;
@@ -69,11 +69,7 @@ namespace videowp
             Console.WriteLine(Application.ExecutablePath);
             Console.WriteLine(cfgpath);
             Console.WriteLine();
-            if (InstanceCheck())
-            {
-                Application.Run();
-            }
-
+            if (InstanceCheck()) Application.Run();
         }
 
         /// <summary>

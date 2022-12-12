@@ -10,7 +10,6 @@ namespace videowp
 
         public MainForm()
         {
-            TopMost = true;
             InitializeComponent();
             CenterToScreen();
             if (File.Exists(Program.shortcut)) autoloaderCheckBox.Checked = true;         // проверка автозапуска
