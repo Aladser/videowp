@@ -44,14 +44,10 @@
             this.autoShowCheckBox = new System.Windows.Forms.CheckBox();
             this.aboutImage = new System.Windows.Forms.PictureBox();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.mpvRB = new System.Windows.Forms.RadioButton();
-            this.vlcRB = new System.Windows.Forms.RadioButton();
-            this.playerPanel = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.overWindowCheckBox = new System.Windows.Forms.CheckBox();
             this.switchPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.aboutImage)).BeginInit();
-            this.playerPanel.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -196,48 +192,10 @@
             this.aboutImage.TabStop = false;
             this.aboutImage.MouseHover += new System.EventHandler(this.aboutImage_MouseHover);
             // 
-            // mpvRB
-            // 
-            this.mpvRB.AutoSize = true;
-            this.mpvRB.Checked = true;
-            this.mpvRB.Location = new System.Drawing.Point(3, 8);
-            this.mpvRB.Name = "mpvRB";
-            this.mpvRB.Size = new System.Drawing.Size(48, 17);
-            this.mpvRB.TabIndex = 17;
-            this.mpvRB.TabStop = true;
-            this.mpvRB.Text = "MPV";
-            this.mpvRB.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            this.mpvRB.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.mpvRB.UseVisualStyleBackColor = true;
-            this.mpvRB.CheckedChanged += new System.EventHandler(this.mpvRB_CheckedChanged);
-            // 
-            // vlcRB
-            // 
-            this.vlcRB.AutoSize = true;
-            this.vlcRB.Location = new System.Drawing.Point(57, 8);
-            this.vlcRB.Name = "vlcRB";
-            this.vlcRB.Size = new System.Drawing.Size(45, 17);
-            this.vlcRB.TabIndex = 18;
-            this.vlcRB.TabStop = true;
-            this.vlcRB.Text = "VLC";
-            this.vlcRB.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            this.vlcRB.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.vlcRB.UseVisualStyleBackColor = true;
-            // 
-            // playerPanel
-            // 
-            this.playerPanel.Controls.Add(this.mpvRB);
-            this.playerPanel.Controls.Add(this.vlcRB);
-            this.playerPanel.Location = new System.Drawing.Point(337, 13);
-            this.playerPanel.Name = "playerPanel";
-            this.playerPanel.Size = new System.Drawing.Size(104, 29);
-            this.playerPanel.TabIndex = 19;
-            // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.periodLabel);
-            this.panel1.Controls.Add(this.playerPanel);
             this.panel1.Controls.Add(this.timeComboBox);
             this.panel1.Controls.Add(this.minLabel);
             this.panel1.Location = new System.Drawing.Point(15, 62);
@@ -276,13 +234,11 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Видеобои 1.24";
+            this.Text = "Видеобои 1.3";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             this.switchPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.aboutImage)).EndInit();
-            this.playerPanel.ResumeLayout(false);
-            this.playerPanel.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -305,9 +261,6 @@
         private System.Windows.Forms.CheckBox autoShowCheckBox;
         private System.Windows.Forms.PictureBox aboutImage;
         private System.Windows.Forms.ToolTip toolTip;
-        private System.Windows.Forms.RadioButton mpvRB;
-        private System.Windows.Forms.RadioButton vlcRB;
-        private System.Windows.Forms.Panel playerPanel;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.CheckBox overWindowCheckBox;
     }

@@ -17,10 +17,6 @@ namespace videowp
             timeComboBox.SelectedIndex = Program.cfgdata.period;                          // считывание времени заставки            
             autoShowCheckBox.Checked = Program.cfgdata.autoshow==0 ? false : true;        // считывание autoshow
             overWindowCheckBox.Checked = Program.cfgdata.overWindows == 0 ? false : true; // флаг Поверх всех окон
-            if (Program.cfgdata.player.Equals("mpv"))
-                mpvRB.Checked = true;
-            else
-                vlcRB.Checked = true;
             // считывание playerpath
             if (File.Exists(Program.cfgdata.plpath))
             {
@@ -41,8 +37,6 @@ namespace videowp
             {
                 onRadioButton.Checked = true;
                 Program.bcgwork.start();
-                mpvRB.Enabled = false;
-                vlcRB.Enabled = false;
             }
             else
             {
@@ -55,27 +49,23 @@ namespace videowp
         {
             if (onRadioButton.Checked)
             {
-                this.Text = "Видеобои 1.25: АКТИВНО";
+                this.Text = "Видеобои 1.3: АКТИВНО";
                 notifyIcon.Text = "Видеообои ВКЛ";
-                playlistSelectButton.Enabled = false;
-                this.mpvRB.Enabled = false;
-                this.vlcRB.Enabled = false;             
+                playlistSelectButton.Enabled = false;            
                 Program.bcgwork.start();
             }
             else
             {
-                this.Text = "Видеобои 1.25";
+                this.Text = "Видеобои 1.3";
                 notifyIcon.Text = "Видеообои ВЫКЛ";
-                playlistSelectButton.Enabled = true;
-                this.mpvRB.Enabled = true;
-                this.vlcRB.Enabled = true;                                
+                playlistSelectButton.Enabled = true;                                
                 Program.bcgwork.stop();
             }               
         }
         // Информация о программе
         private void aboutImage_MouseHover(object sender, EventArgs e)
         {
-            toolTip.SetToolTip(aboutImage, "Aladser's Видеобои 1.25\n2022");
+            toolTip.SetToolTip(aboutImage, "Aladser's Видеобои 1.3\n2022");
         }
         // Переключение автозагрузки
         private void autoLoader_CheckedChanged(object sender, EventArgs e)
@@ -122,7 +112,6 @@ namespace videowp
         // Переключение плеера
         private void mpvRB_CheckedChanged(object sender, EventArgs e)
         {
-            Program.cfgdata.player = mpvRB.Checked ? "mpv" : "vlc";
             ConfigStream.Write(Program.cfgpath, Program.cfgdata);
         }
         // Разворачивание окна

@@ -23,7 +23,7 @@ namespace videowp
         long downtime;
         long dwt1, dwt2;
         bool isOverWindows;
-        ProcessStartInfo command = new ProcessStartInfo(@"cmd.exe", @"");
+        ProcessStartInfo playerProc = new ProcessStartInfo(Program.mpvPath, @"--playlist=" + Program.cfgdata.plpath);
 
 
         private enum MouseFlags : uint
@@ -62,10 +62,6 @@ namespace videowp
         }
         private void initialise()
         {
-            command.WindowStyle = ProcessWindowStyle.Hidden;
-            command.RedirectStandardOutput = true;
-            command.UseShellExecute = false;
-            command.CreateNoWindow = true;
             bw.DoWork += BW_DoWork;
             bw.WorkerSupportsCancellation = true;
         }
@@ -76,10 +72,6 @@ namespace videowp
             long startBWTime = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
             dwt1 = startBWTime;
             downtime = 0;
-            if(Program.cfgdata.player.Equals("mpv"))
-                command.Arguments = @"/C " + Program.mpvPath + " --playlist=" + Program.cfgdata.plpath; // MPV
-            else
-                command.Arguments = @"/C " + Program.cfgdata.plpath; // VLC
             //Console.WriteLine(command.Arguments);
             while (true)
             {               
@@ -100,22 +92,22 @@ namespace videowp
                 {
                     dwt2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                     isActive = true;
-                    Process.Start(command);
+                    Process.Start(playerProc);
                 }
                 // прерывание показа обоев
                 else if (downtime<inactionInMs && isActive)
                 {
                     dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                     isActive = false;
-                    Process.GetProcessesByName(Program.cfgdata.player)[0].Kill();
+                    Process.GetProcessesByName("mpv")[0].Kill();
                 }
                 // перезапуск обоев каждый час
                 if( (dwt2-startBWTime) > 3600000 )
                 {
                     if (isActive)
                     {
-                        Process.GetProcessesByName(Program.cfgdata.player)[0].Kill();
-                        Process.Start(command);
+                        Process.GetProcessesByName("mpv")[0].Kill();
+                        Process.Start(playerProc);
                     }                  
                     startBWTime = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                 }
@@ -196,7 +188,7 @@ namespace videowp
             if (
                 screen.Bounds.Width == (rect.right - rect.left) && 
                 screen.Bounds.Height == (rect.bottom - rect.top) && 
-                !proc.Contains(Program.cfgdata.player) && 
+                !proc.Contains("mpv") && 
                 !proc.Contains("explorer")
                )
                return true;
