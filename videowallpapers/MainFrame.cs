@@ -13,18 +13,17 @@ namespace videowp
             InitializeComponent();
             CenterToScreen();
             if (File.Exists(Program.shortcut)) autoloaderCheckBox.Checked = true;         // проверка автозапуска
-            timeComboBox.SelectedIndex = Program.cfgdata.period;                          // считывание времени заставки            
-            autoShowCheckBox.Checked = Program.cfgdata.autoshow==0 ? false : true;        // считывание autoshow
-            overWindowCheckBox.Checked = Program.cfgdata.overWindows == 0 ? false : true; // флаг Поверх всех окон
+            timeComboBox.SelectedIndex = Program.config.period;                          // считывание времени заставки            
+            autoShowCheckBox.Checked = Program.config.autoshow==0 ? false : true;        // считывание autoshow
+            overWindowCheckBox.Checked = Program.config.overWindows == 0 ? false : true; // флаг Поверх всех окон
             // считывание playerpath
-            if (File.Exists(Program.cfgdata.plpath))
+            if (File.Exists(Program.config.plpath))
             {
-                playlistNameLabel.Text = Program.cfgdata.plpath;
+                playlistNameLabel.Text = Program.config.plpath;
             }
             else
             {
                 playlistNameLabel.Text = "Не найден плейлист";
-                ConfigStream.Write(Program.cfgpath, Program.cfgdata);
                 switchPanel.Enabled = false;
                 playlistSelectButton.Enabled = true;
                 offRadioButton.Checked = true;
@@ -32,7 +31,7 @@ namespace videowp
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             ofd.Filter = Program.filefilter;
             // показ обоев после запуска программы
-            if (autoShowCheckBox.Checked && !Program.cfgdata.plpath.Equals(""))
+            if (autoShowCheckBox.Checked && !Program.config.plpath.Equals(""))
             {
                 onRadioButton.Checked = true;
                 Program.bcgwork.start();
@@ -80,38 +79,38 @@ namespace videowp
         // смена плейлиста
         private void playlistSelectButton_Click(object sender, EventArgs e)
         {
-            ofd.InitialDirectory = Program.cfgdata.plpath;
+            ofd.InitialDirectory = Program.config.plpath;
             if (ofd.ShowDialog() != DialogResult.OK)
                 return;
             ofd.InitialDirectory = Path.GetDirectoryName(ofd.FileName);
-            Program.cfgdata.plpath = ofd.FileName;
+            Program.config.plpath = ofd.FileName;
             playlistNameLabel.Text = ofd.FileName;
-            ConfigStream.Write(Program.cfgpath, Program.cfgdata);
+            Program.config.Write();
             switchPanel.Enabled = true;
         }
         // переключение времени заставки
         private void TimeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             Program.bcgwork.setTimePeriod(timeComboBox.SelectedIndex);
-            Program.cfgdata.period = timeComboBox.SelectedIndex;
-            ConfigStream.Write(Program.cfgpath, Program.cfgdata);
+            Program.config.period = timeComboBox.SelectedIndex;
+            Program.config.Write();
         }
         // переключение автопоказа обоев
         private void autoShowCheckBoxCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            Program.cfgdata.autoshow = autoShowCheckBox.Checked ? 1 : 0;
-            ConfigStream.Write(Program.cfgpath, Program.cfgdata);
+            Program.config.autoshow = autoShowCheckBox.Checked ? 1 : 0;
+            Program.config.Write();
         }
         // переключение Поверх всех окон
         private void overWindowCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            Program.cfgdata.overWindows = overWindowCheckBox.Checked ? 1 : 0;
-            ConfigStream.Write(Program.cfgpath, Program.cfgdata);
+            Program.config.overWindows = overWindowCheckBox.Checked ? 1 : 0;
+            Program.config.Write();
         }
         // Переключение плеера
         private void mpvRB_CheckedChanged(object sender, EventArgs e)
         {
-            ConfigStream.Write(Program.cfgpath, Program.cfgdata);
+            Program.config.Write();
         }
         // Разворачивание окна
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)

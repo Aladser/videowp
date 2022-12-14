@@ -42,11 +42,11 @@ namespace videowp
         /// Класс фоновой задачи показа обоев
         /// </summary>
         /// <param name="inActionNumber">время, номер берется из Combobox</param>
-        public BackWork(ConfigData cfgdata)
+        public BackWork(int period)
         {
             initialise();
             
-            inactionNumber = cfgdata.period;
+            inactionNumber = period;
             setTimePeriod(inactionNumber);
         }
         public BackWork()
@@ -67,7 +67,7 @@ namespace videowp
             long startBWTime = getTimeNow();
             dwt1 = startBWTime;
             downtime = 0;
-            Program.mpvProc.Arguments = @"--playlist=" + Program.cfgdata.plpath;
+            Program.mpvProc.Arguments = @"--playlist=" + Program.config.plpath;
             //Console.WriteLine(command.Arguments);
             while (true)
             {               
@@ -79,7 +79,7 @@ namespace videowp
                 }
 
                 //поиск другого запущенного приложения в фуллскрине
-                if (IsForegroundFullScreen() && Program.cfgdata.overWindows==0)
+                if (IsForegroundFullScreen() && Program.config.overWindows==0)
                 {
                     dwt1 = getTimeNow();
                 }

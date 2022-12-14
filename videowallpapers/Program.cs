@@ -11,18 +11,20 @@ namespace videowp
     {
         [DllImport("gdi32.dll")]
         static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
+
+        /// <summary>
+        /// конфигурационный файл
+        /// </summary>
+        public static ConfigControl config;
         public static readonly string shortcut = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\videowp.lnk"; // ярлык автозагрузки 
-        public static readonly string cfgpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\videowp.cfg"; // конфиг
 
         public static string mpvPath = Path.GetDirectoryName(Application.ExecutablePath) + "\\mpv\\mpv.exe"; // MPV
         public static ProcessStartInfo mpvProc; // MPV процесс в Windows
         public static string filefilter = "видеоплейлисты (*.m3u;*.m3u8;*.pls;*)|*.m3u;*.m3u8;*.pls";
 
-        public static ConfigData cfgdata;
         static UserActivityHook globalHook;// хук глобального движения мыши или клавиатуры
         public static MainForm mainform;
         public static BackWork bcgwork;      
-        public static bool isOverWindows; // поверх окон 
         // Проверка запуска второй копии приложения
         static Mutex InstanceCheckMutex;
         static bool InstanceCheck()
@@ -37,23 +39,8 @@ namespace videowp
         [STAThread]
         static void Main()   
         {
+            config = new ConfigControl();
 
-            // Считывание конфигурационного файла
-            if (!File.Exists(Program.cfgpath))
-            {
-                MessageBox.Show("Файл "+ Program.cfgpath + " не найден. Установлены стандартные настройки");
-                cfgdata = new ConfigData();
-                ConfigStream.Write(cfgpath, cfgdata);
-            }
-            else
-                cfgdata = ConfigStream.Read(Program.cfgpath);
-
-            if (cfgdata == null)
-            {
-                MessageBox.Show("Ошибка чтения "+ Program.cfgpath + ". Установлены стандартные настройки", "", MessageBoxButtons.OK);
-                cfgdata = new ConfigData();
-                ConfigStream.Write(cfgpath, cfgdata);
-            }
             // поиск папки mpv
             if (!File.Exists(mpvPath))
             {
@@ -73,12 +60,8 @@ namespace videowp
             // запуск программы
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            bcgwork = new BackWork(cfgdata);
+            bcgwork = new BackWork(config.period);
             mainform = new MainForm();
-            Console.WriteLine();
-            Console.WriteLine(Application.ExecutablePath);
-            Console.WriteLine(cfgpath);
-            Console.WriteLine();
             if (InstanceCheck()) Application.Run();
         }
 
