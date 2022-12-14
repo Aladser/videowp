@@ -176,7 +176,7 @@
             this.workSwitcher.Size = new System.Drawing.Size(81, 36);
             this.workSwitcher.TabIndex = 22;
             this.workSwitcher.TabStop = false;
-            this.workSwitcher.Click += new System.EventHandler(this.workSwitcher_Click);
+            this.workSwitcher.Click += new System.EventHandler(this.WorkSwitcher_Click);
             // 
             // aboutImage
             // 
