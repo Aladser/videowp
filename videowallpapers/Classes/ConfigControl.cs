@@ -46,7 +46,7 @@ namespace videowp
                 autoshow = value ? 1 : 0;
                 this.WriteToFile();
             }
-            get { return autoshow==1 ? true : false; }
+            get { return autoshow==1; }
         }
         int autoshow;
         /// <summary>

@@ -28,7 +28,7 @@ namespace videowp
                 if (Program.config.AutoShow)
                 {
                     activeSwitchOnSign(true);
-                    Program.bcgwork.start();
+                    Program.bcgwork.Start();
                 }
                 else
                 {
@@ -58,7 +58,7 @@ namespace videowp
                 activeSwitchOnSign(true);
                 playlistSelectButton.Enabled = false;
 
-                Program.bcgwork.start();
+                Program.bcgwork.Start();
             }
             else
             {
@@ -66,7 +66,7 @@ namespace videowp
                 activeSwitchOnSign(false);
                 playlistSelectButton.Enabled = true;
 
-                Program.bcgwork.stop();
+                Program.bcgwork.Stop();
             }
         }
         // Информация о программе
@@ -98,7 +98,7 @@ namespace videowp
         // переключение времени заставки
         private void TimeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Program.bcgwork.setTimePeriod(timeComboBox.SelectedIndex);
+            Program.bcgwork.SetTimePeriod(timeComboBox.SelectedIndex);
             Program.config.InactionNumber = timeComboBox.SelectedIndex;
         }
         // переключение автопоказа обоев
@@ -120,7 +120,7 @@ namespace videowp
         // Скрытие или закрытие программы
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!Program.bcgwork.isActive())
+            if (!Program.bcgwork.IsActive())
             {
                 Application.Exit();
             }

@@ -50,14 +50,14 @@ namespace videowp
             }
             // Создание хука
             globalHook = new UserActivityHook();
-            globalHook.KeyPress += (object sender, KeyPressEventArgs e) => Program.bcgwork.stopShowWallpaper(); // нажатие клавиши
-            globalHook.OnMouseActivity += (object sender, MouseEventArgs e) => Program.bcgwork.stopShowWallpaper(); // движение мыши
+            globalHook.KeyPress += (object sender, KeyPressEventArgs e) => Program.bcgwork.StopShowWallpaper(); // нажатие клавиши
+            globalHook.OnMouseActivity += (object sender, MouseEventArgs e) => Program.bcgwork.StopShowWallpaper(); // движение мыши
             globalHook.Start(true, true);
             if (Process.GetProcessesByName(Application.ProductName).Length > 1) return;// предотвращение запуска второй копии
             // запуск программы
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            bcgwork = new BackWork(config.InactionNumber);
+            bcgwork = new BackWork();
             mainform = new MainForm();
             if (InstanceCheck()) Application.Run();
         }

@@ -18,12 +18,11 @@ namespace videowp
 
         readonly BackgroundWorker bw = new BackgroundWorker();                      
         readonly double[] inactionTime = { 0.05, 1, 3, 5, 10, 15 }; // массив периодов бездействия
-        int inactionNumber; // номер период бездействия
         int inactionInMs; // время бездействия в мс
         long downtime;
         long dwt1, dwt2;
 
-        private enum MouseFlags : uint
+        enum MouseFlags : uint
         {
             MOUSEEVENTF_ABSOLUTE = 0x8000,   // If set, dx and dy contain normalized absolute coordinates between 0 and 65535. The event procedure maps these coordinates onto the display surface. Coordinate (0,0) maps onto the upper-left corner of the display surface, (65535,65535) maps onto the lower-right corner.
             MOUSEEVENTF_LEFTDOWN = 0x0002,   // The left button is down.
@@ -41,26 +40,17 @@ namespace videowp
         /// <summary>
         /// Класс фоновой задачи показа обоев
         /// </summary>
-        /// <param name="inActionNumber">время, номер берется из Combobox</param>
-        public BackWork(int period)
-        {
-            bw.DoWork += BW_DoWork;
-            bw.WorkerSupportsCancellation = true;
-            inactionNumber = period;
-            setTimePeriod(inactionNumber);
-        }
         public BackWork()
         {
             bw.DoWork += BW_DoWork;
             bw.WorkerSupportsCancellation = true;
-            this.inactionNumber = 0;
-            setTimePeriod(0);
+            SetTimePeriod(Program.config.InactionNumber);
         }
         // фоновая задача
-        private void BW_DoWork(object sender, DoWorkEventArgs e)
+        void BW_DoWork(object sender, DoWorkEventArgs e)
         {
             bool isActive = false;
-            long startBWTime = getTimeNow();
+            long startBWTime = GetTimeNow();
             dwt1 = startBWTime;
             downtime = 0;
             Program.mpvProc.Arguments = $"--playlist={Program.config.PlaylistPath}";
@@ -75,24 +65,24 @@ namespace videowp
                 //поиск другого запущенного приложения в фуллскрине
                 if (IsForegroundFullScreen() && !Program.config.OverWindows)
                 {
-                    dwt1 = getTimeNow();
+                    dwt1 = GetTimeNow();
                 }
                 // запуск обоев
                 else if (downtime>=inactionInMs && !isActive)
                 {
-                    dwt2 = getTimeNow();
+                    dwt2 = GetTimeNow();
                     isActive = true;
                     Process.Start(Program.mpvProc);
                 }
                 // прерывание показа обоев
                 else if (downtime<inactionInMs && isActive)
                 {
-                    dwt1 = getTimeNow();
+                    dwt1 = GetTimeNow();
                     isActive = false;
                     foreach (Process proc in Process.GetProcessesByName("mpv")) proc.Kill();
                 }
                 System.Threading.Thread.Sleep(150);
-                dwt2 = getTimeNow();
+                dwt2 = GetTimeNow();
                 downtime = dwt2 - dwt1;
             }
         }
@@ -100,14 +90,14 @@ namespace videowp
         /// старт фоновой задачи
         /// </summary>
         /// <param name="plpath"></param>
-        public void start()
+        public void Start()
         {
             bw.RunWorkerAsync(); 
         }
         /// <summary>
         /// остановка фоновой задачи
         /// </summary>
-        public void stop()
+        public void Stop()
         {
             bw.CancelAsync();
         }
@@ -115,7 +105,7 @@ namespace videowp
         /// получить текущее время в мс
         /// </summary>
         /// <returns></returns>
-        private long getTimeNow()
+        private long GetTimeNow()
         {
             return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
         }
@@ -123,36 +113,28 @@ namespace videowp
         /// Возравращает, работает ли фоновая задача
         /// </summary>
         /// <returns></returns>
-        public bool isActive()
+        public bool IsActive()
         {
             return bw.IsBusy;
         }
         /// <summary>
         /// установка времнеи простоя системы
         /// </summary>
-        public void setTimePeriod(int inActionNumber)
+        public void SetTimePeriod(int inActionNumber)
         {
-            this.inactionNumber = inActionNumber;
             inactionInMs = (int)(inactionTime[inActionNumber] * 60000);
-        }
-        /// <summary>
-        /// возвращает индекс времени для combobox
-        /// </summary>
-        /// <returns></returns>
-        public int getTimePeriod()
-        {
-            return inactionNumber;
         }
         /// <summary>
         /// Событие об остановке показа обоев
         /// </summary>
-        public void stopShowWallpaper()
+        public void StopShowWallpaper()
         {
             dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
         }
+
         // Определение запуска фуллэкрана
         [StructLayout(LayoutKind.Sequential)]
-        private struct RECT
+        struct RECT
         {
             public int left;
             public int top;
