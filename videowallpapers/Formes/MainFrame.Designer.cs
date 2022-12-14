@@ -35,20 +35,18 @@
             this.timeComboBox = new System.Windows.Forms.ComboBox();
             this.periodLabel = new System.Windows.Forms.Label();
             this.minLabel = new System.Windows.Forms.Label();
-            this.switchPanel = new System.Windows.Forms.Panel();
-            this.offRadioButton = new System.Windows.Forms.RadioButton();
-            this.onRadioButton = new System.Windows.Forms.RadioButton();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.playlistLabel = new System.Windows.Forms.Label();
             this.autoloaderCheckBox = new System.Windows.Forms.CheckBox();
             this.autoShowCheckBox = new System.Windows.Forms.CheckBox();
-            this.aboutImage = new System.Windows.Forms.PictureBox();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
             this.overWindowCheckBox = new System.Windows.Forms.CheckBox();
-            this.switchPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.aboutImage)).BeginInit();
+            this.workSwitcher = new System.Windows.Forms.PictureBox();
+            this.aboutImage = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.workSwitcher)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.aboutImage)).BeginInit();
             this.SuspendLayout();
             // 
             // playlistNameLabel
@@ -107,40 +105,6 @@
             this.minLabel.Text = "мин";
             this.minLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // switchPanel
-            // 
-            this.switchPanel.Controls.Add(this.offRadioButton);
-            this.switchPanel.Controls.Add(this.onRadioButton);
-            this.switchPanel.Location = new System.Drawing.Point(438, 141);
-            this.switchPanel.Name = "switchPanel";
-            this.switchPanel.Size = new System.Drawing.Size(88, 61);
-            this.switchPanel.TabIndex = 8;
-            // 
-            // offRadioButton
-            // 
-            this.offRadioButton.Location = new System.Drawing.Point(27, 27);
-            this.offRadioButton.Name = "offRadioButton";
-            this.offRadioButton.Size = new System.Drawing.Size(58, 21);
-            this.offRadioButton.TabIndex = 1;
-            this.offRadioButton.Text = "ВЫКЛ";
-            this.offRadioButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.offRadioButton.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.offRadioButton.UseVisualStyleBackColor = true;
-            // 
-            // onRadioButton
-            // 
-            this.onRadioButton.Checked = true;
-            this.onRadioButton.Location = new System.Drawing.Point(27, 8);
-            this.onRadioButton.Name = "onRadioButton";
-            this.onRadioButton.Size = new System.Drawing.Size(58, 21);
-            this.onRadioButton.TabIndex = 0;
-            this.onRadioButton.TabStop = true;
-            this.onRadioButton.Text = "ВКЛ";
-            this.onRadioButton.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            this.onRadioButton.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.onRadioButton.UseVisualStyleBackColor = true;
-            this.onRadioButton.CheckedChanged += new System.EventHandler(this.OnRadioButton_CheckedChanged);
-            // 
             // notifyIcon
             // 
             this.notifyIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Warning;
@@ -180,18 +144,6 @@
             this.autoShowCheckBox.UseVisualStyleBackColor = true;
             this.autoShowCheckBox.CheckedChanged += new System.EventHandler(this.autoShowCheckBoxCheckBox_CheckedChanged);
             // 
-            // aboutImage
-            // 
-            this.aboutImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.aboutImage.Image = global::videowp.Properties.Resources.info;
-            this.aboutImage.InitialImage = global::videowp.Properties.Resources.info;
-            this.aboutImage.Location = new System.Drawing.Point(508, 9);
-            this.aboutImage.Name = "aboutImage";
-            this.aboutImage.Size = new System.Drawing.Size(18, 17);
-            this.aboutImage.TabIndex = 16;
-            this.aboutImage.TabStop = false;
-            this.aboutImage.MouseHover += new System.EventHandler(this.aboutImage_MouseHover);
-            // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -216,18 +168,40 @@
             this.overWindowCheckBox.UseVisualStyleBackColor = true;
             this.overWindowCheckBox.CheckedChanged += new System.EventHandler(this.overWindowCheckBox_CheckedChanged);
             // 
+            // workSwitcher
+            // 
+            this.workSwitcher.Image = global::videowp.Properties.Resources.offbtn;
+            this.workSwitcher.Location = new System.Drawing.Point(440, 145);
+            this.workSwitcher.Name = "workSwitcher";
+            this.workSwitcher.Size = new System.Drawing.Size(81, 36);
+            this.workSwitcher.TabIndex = 22;
+            this.workSwitcher.TabStop = false;
+            this.workSwitcher.Click += new System.EventHandler(this.workSwitcher_Click);
+            // 
+            // aboutImage
+            // 
+            this.aboutImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.aboutImage.Image = ((System.Drawing.Image)(resources.GetObject("aboutImage.Image")));
+            this.aboutImage.InitialImage = ((System.Drawing.Image)(resources.GetObject("aboutImage.InitialImage")));
+            this.aboutImage.Location = new System.Drawing.Point(508, 9);
+            this.aboutImage.Name = "aboutImage";
+            this.aboutImage.Size = new System.Drawing.Size(18, 17);
+            this.aboutImage.TabIndex = 16;
+            this.aboutImage.TabStop = false;
+            this.aboutImage.MouseHover += new System.EventHandler(this.aboutImage_MouseHover);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(533, 214);
+            this.ClientSize = new System.Drawing.Size(533, 210);
+            this.Controls.Add(this.workSwitcher);
             this.Controls.Add(this.overWindowCheckBox);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.aboutImage);
             this.Controls.Add(this.autoShowCheckBox);
             this.Controls.Add(this.autoloaderCheckBox);
             this.Controls.Add(this.playlistLabel);
-            this.Controls.Add(this.switchPanel);
             this.Controls.Add(this.playlistSelectButton);
             this.Controls.Add(this.playlistNameLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -237,9 +211,9 @@
             this.Text = "Видеобои 1.33";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
-            this.switchPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.aboutImage)).EndInit();
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.workSwitcher)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.aboutImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -252,9 +226,6 @@
         private System.Windows.Forms.ComboBox timeComboBox;
         private System.Windows.Forms.Label periodLabel;
         private System.Windows.Forms.Label minLabel;
-        private System.Windows.Forms.Panel switchPanel;
-        private System.Windows.Forms.RadioButton offRadioButton;
-        private System.Windows.Forms.RadioButton onRadioButton;
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.Label playlistLabel;
         private System.Windows.Forms.CheckBox autoloaderCheckBox;
@@ -263,6 +234,7 @@
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.CheckBox overWindowCheckBox;
+        private System.Windows.Forms.PictureBox workSwitcher;
     }
 }
 

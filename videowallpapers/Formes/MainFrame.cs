@@ -1,17 +1,21 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
 namespace videowp
 {
     public partial class MainForm : Form
-    {       
-        readonly OpenFileDialog ofd = new OpenFileDialog();      
+    {
+        readonly OpenFileDialog ofd = new OpenFileDialog();
+        Bitmap[] switcher = {Properties.Resources.offbtn, Properties.Resources.onbtn}; // переключатель
+        int switcherIndex;                                                             // индекс переключателя  
 
         public MainForm()
         {
             InitializeComponent();
             CenterToScreen();
+
             if (File.Exists(Program.shortcut)) autoloaderCheckBox.Checked = true;// проверка автозапуска
             timeComboBox.SelectedIndex = Program.config.InactionNumber;          // считывание времени заставки            
             autoShowCheckBox.Checked = Program.config.AutoShow;                  // считывание autoshow
@@ -20,45 +24,51 @@ namespace videowp
             if (File.Exists(Program.config.PlaylistPath))
             {
                 playlistNameLabel.Text = Program.config.PlaylistPath;
+
+                if (Program.config.AutoShow)
+                {
+                    activeSwitchOnSign(true);
+                    Program.bcgwork.start();
+                }
+                else
+                {
+                    activeSwitchOnSign(false);
+                    this.Show();
+                }
             }
             else
             {
                 playlistNameLabel.Text = "Не найден плейлист";
-                switchPanel.Enabled = false;
+                activeSwitchOnSign(false);
+                workSwitcher.Enabled = false;
                 playlistSelectButton.Enabled = true;
-                offRadioButton.Checked = true;
             }
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             ofd.Filter = Program.filefilter;
-            // показ обоев после запуска программы
-            if (Program.config.AutoShow && !Program.config.PlaylistPath.Equals(""))
-            {
-                onRadioButton.Checked = true;
-                Program.bcgwork.start();
-            }
-            else
-            {
-                this.Show();
-                offRadioButton.Checked = true;
-            }
         }
-        //Включить фоновую задачу
-        private void OnRadioButton_CheckedChanged(object sender, EventArgs e)
+
+        // переключить показ обоев
+        private void workSwitcher_Click(object sender, EventArgs e)
         {
-            if (onRadioButton.Checked)
+            switcherIndex = switcherIndex == 1 ? 0 : 1;
+            if (switcherIndex == 1)
             {
                 this.Text = "Видеобои 1.33: АКТИВНО";
                 notifyIcon.Text = "Видеообои ВКЛ";
-                playlistSelectButton.Enabled = false;            
+                activeSwitchOnSign(true);
+                playlistSelectButton.Enabled = false;
+
                 Program.bcgwork.start();
             }
             else
             {
                 this.Text = "Видеобои 1.33";
                 notifyIcon.Text = "Видеообои ВЫКЛ";
-                playlistSelectButton.Enabled = true;                                
+                activeSwitchOnSign(false);
+                playlistSelectButton.Enabled = true;
+
                 Program.bcgwork.stop();
-            }               
+            }
         }
         // Информация о программе
         private void aboutImage_MouseHover(object sender, EventArgs e)
@@ -84,7 +94,7 @@ namespace videowp
             ofd.InitialDirectory = Path.GetDirectoryName(ofd.FileName);
             Program.config.PlaylistPath = ofd.FileName;
             playlistNameLabel.Text = ofd.FileName;
-            switchPanel.Enabled = true;
+            workSwitcher.Enabled = true;
         }
         // переключение времени заставки
         private void TimeComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -119,6 +129,12 @@ namespace videowp
                 e.Cancel = true;
                 this.Hide();
             }
+        }
+        // активировать обои
+        private void activeSwitchOnSign(bool index)
+        {
+            switcherIndex = index ? 1 : 0;
+            workSwitcher.Image = switcher[switcherIndex];
         }
     }
 }

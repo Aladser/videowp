@@ -384,6 +384,30 @@
   <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>123, 17</value>
   </metadata>
+  <data name="aboutImage.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        vgAADr4B6kKxwAAAAXxJREFUOE+FU7tOw0AQNAmFi1DZDTKW3LhwojiOHxEUfApYQvkY/0MipYD/oISG
+        h0CAUpGPcGjNzLIxeRAz0kh3s7PrPd+esY04js8Hg8EsSZJPrEuSa2qMqW0XURR1YJrAXMH4kaZpAY6V
+        BTXGwjCcwNfRtB/4vn8E0y1Ydrvd3PO8Qw3VoNbr9fIsy0p6maMhw+j3+1OIX5ZljVQSOI5zTOpWYNv2
+        iF50MhUB7ZyhahUEQS6CAnp7OBw+gI84XltlgXZSMZfGGUxz0zRbGhfgzAc48wXJtcoCelF0zlwDhgU2
+        hcZqQG+B1+ANCmx0QDCHufzSErxSvQaCbfANfP+rAHMQK/8r8AQ+7yvA3KYjNBZgDm5jsfcnaoEX8HW7
+        wOongrP6Gnk1GhegOgvcgfcsprJg7RpPRVgNEodEBAW+4IAnuhWsBok5Kv2OMseU1V3X3Rllaohd0kPv
+        xigTaKfDh4J25TGBfEBjZfNjWgeM2895yTV/GGNqUxjGN1OLm+3RFiRVAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="aboutImage.InitialImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        vgAADr4B6kKxwAAAAXxJREFUOE+FU7tOw0AQNAmFi1DZDTKW3LhwojiOHxEUfApYQvkY/0MipYD/oISG
+        h0CAUpGPcGjNzLIxeRAz0kh3s7PrPd+esY04js8Hg8EsSZJPrEuSa2qMqW0XURR1YJrAXMH4kaZpAY6V
+        BTXGwjCcwNfRtB/4vn8E0y1Ydrvd3PO8Qw3VoNbr9fIsy0p6maMhw+j3+1OIX5ZljVQSOI5zTOpWYNv2
+        iF50MhUB7ZyhahUEQS6CAnp7OBw+gI84XltlgXZSMZfGGUxz0zRbGhfgzAc48wXJtcoCelF0zlwDhgU2
+        hcZqQG+B1+ANCmx0QDCHufzSErxSvQaCbfANfP+rAHMQK/8r8AQ+7yvA3KYjNBZgDm5jsfcnaoEX8HW7
+        wOongrP6Gnk1GhegOgvcgfcsprJg7RpPRVgNEodEBAW+4IAnuhWsBok5Kv2OMseU1V3X3Rllaohd0kPv
+        xigTaKfDh4J25TGBfEBjZfNjWgeM2895yTV/GGNqUxjGN1OLm+3RFiRVAAAAAElFTkSuQmCC
+</value>
+  </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAEAAAAAAAEAIACwOwAAFgAAAIlQTkcNChoKAAAADUlIRFIAAAEAAAABAAgGAAAAXHKoZgAAO3dJ

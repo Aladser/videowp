@@ -88,8 +88,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="resources\offbtn.png" />
+    <None Include="resources\onbtn.png" />
     <None Include="info.ico" />
     <Content Include="mainicon.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
