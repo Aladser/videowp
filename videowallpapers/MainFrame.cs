@@ -12,14 +12,14 @@ namespace videowp
         {
             InitializeComponent();
             CenterToScreen();
-            if (File.Exists(Program.shortcut)) autoloaderCheckBox.Checked = true;         // проверка автозапуска
-            timeComboBox.SelectedIndex = Program.config.period;                          // считывание времени заставки            
-            autoShowCheckBox.Checked = Program.config.autoshow==0 ? false : true;        // считывание autoshow
-            overWindowCheckBox.Checked = Program.config.overWindows == 0 ? false : true; // флаг Поверх всех окон
+            if (File.Exists(Program.shortcut)) autoloaderCheckBox.Checked = true;// проверка автозапуска
+            timeComboBox.SelectedIndex = Program.config.InactionNumber;          // считывание времени заставки            
+            autoShowCheckBox.Checked = Program.config.AutoShow;                  // считывание autoshow
+            overWindowCheckBox.Checked = Program.config.OverWindows;             // флаг Поверх всех окон
             // считывание playerpath
-            if (File.Exists(Program.config.plpath))
+            if (File.Exists(Program.config.PlaylistPath))
             {
-                playlistNameLabel.Text = Program.config.plpath;
+                playlistNameLabel.Text = Program.config.PlaylistPath;
             }
             else
             {
@@ -31,7 +31,7 @@ namespace videowp
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             ofd.Filter = Program.filefilter;
             // показ обоев после запуска программы
-            if (autoShowCheckBox.Checked && !Program.config.plpath.Equals(""))
+            if (Program.config.AutoShow && !Program.config.PlaylistPath.Equals(""))
             {
                 onRadioButton.Checked = true;
                 Program.bcgwork.start();
@@ -47,14 +47,14 @@ namespace videowp
         {
             if (onRadioButton.Checked)
             {
-                this.Text = "Видеобои 1.32: АКТИВНО";
+                this.Text = "Видеобои 1.33: АКТИВНО";
                 notifyIcon.Text = "Видеообои ВКЛ";
                 playlistSelectButton.Enabled = false;            
                 Program.bcgwork.start();
             }
             else
             {
-                this.Text = "Видеобои 1.32";
+                this.Text = "Видеобои 1.33";
                 notifyIcon.Text = "Видеообои ВЫКЛ";
                 playlistSelectButton.Enabled = true;                                
                 Program.bcgwork.stop();
@@ -63,7 +63,7 @@ namespace videowp
         // Информация о программе
         private void aboutImage_MouseHover(object sender, EventArgs e)
         {
-            toolTip.SetToolTip(aboutImage, "Aladser's Видеобои 1.32\n2022");
+            toolTip.SetToolTip(aboutImage, "Aladser's Видеобои 1.33\n2022");
         }
         // Переключение автозагрузки
         private void autoLoader_CheckedChanged(object sender, EventArgs e)
@@ -79,38 +79,28 @@ namespace videowp
         // смена плейлиста
         private void playlistSelectButton_Click(object sender, EventArgs e)
         {
-            ofd.InitialDirectory = Program.config.plpath;
             if (ofd.ShowDialog() != DialogResult.OK)
                 return;
             ofd.InitialDirectory = Path.GetDirectoryName(ofd.FileName);
-            Program.config.plpath = ofd.FileName;
+            Program.config.PlaylistPath = ofd.FileName;
             playlistNameLabel.Text = ofd.FileName;
-            Program.config.Write();
             switchPanel.Enabled = true;
         }
         // переключение времени заставки
         private void TimeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             Program.bcgwork.setTimePeriod(timeComboBox.SelectedIndex);
-            Program.config.period = timeComboBox.SelectedIndex;
-            Program.config.Write();
+            Program.config.InactionNumber = timeComboBox.SelectedIndex;
         }
         // переключение автопоказа обоев
         private void autoShowCheckBoxCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            Program.config.autoshow = autoShowCheckBox.Checked ? 1 : 0;
-            Program.config.Write();
+            Program.config.AutoShow = autoShowCheckBox.Checked;
         }
         // переключение Поверх всех окон
         private void overWindowCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            Program.config.overWindows = overWindowCheckBox.Checked ? 1 : 0;
-            Program.config.Write();
-        }
-        // Переключение плеера
-        private void mpvRB_CheckedChanged(object sender, EventArgs e)
-        {
-            Program.config.Write();
+            Program.config.OverWindows = overWindowCheckBox.Checked;
         }
         // Разворачивание окна
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)

@@ -5,7 +5,7 @@ using System.Windows.Forms;
 namespace videowp
 {
     /// <summary>
-    /// Конфигурационный файл
+    /// Конфигурационный Control
     /// </summary>
     public class ConfigControl
     {
@@ -13,22 +13,66 @@ namespace videowp
         /// путь к конфигурационному файлу
         /// </summary>
         readonly string CONFIG_PATH = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\videowp.cfg";
-
-        public string plpath;
-        public int period;
-        public int autoshow;
-        public int overWindows;
+        /// <summary>
+        /// путь плейлиста
+        /// </summary>
+        public string PlaylistPath
+        {
+            set {
+                plpath = value;
+                this.writeToFile();
+            }
+            get { return plpath; }
+        }
+        private string plpath;
+        /// <summary>
+        /// Время бездействия
+        /// </summary>
+        public int InactionNumber
+        {
+            set {
+                period = value;
+                this.writeToFile();
+            }
+            get { return period; }
+        }
+        private int period;
+        /// <summary>
+        /// автозапуск обоев
+        /// </summary>
+        public bool AutoShow
+        {
+            set {
+                autoshow = value ? 1 : 0;
+                this.writeToFile();
+            }
+            get { return autoshow==1 ? true : false; }
+        }
+        private int autoshow;
+        /// <summary>
+        /// повех всех окон
+        /// </summary>
+        public bool OverWindows
+        {
+            set
+            {
+                overwindows = value ? 1 : 0;
+                this.writeToFile();
+            }
+            get { return overwindows == 1 ? true : false; }
+        }
+        private int overwindows;
 
         public ConfigControl()
         {
             if (!File.Exists(CONFIG_PATH))
             {
-                MessageBox.Show($"Файл {CONFIG_PATH} не найден. Установлены стандартные настройки");
+                MessageBox.Show($"Файл {CONFIG_PATH} не найден. Будут установлены стандартные настройки");
                 plpath = "";
                 period = 0;
                 autoshow = 0;
-                overWindows = 0;
-                this.Write();
+                overwindows = 0;
+                this.writeToFile();
             }
             else
                 this.Read();
@@ -53,7 +97,7 @@ namespace videowp
                 autoshow = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
 
                 line = reader.ReadLine();
-                overWindows = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));         
+                overwindows = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));         
             }
             catch (Exception exc)
             {
@@ -64,13 +108,13 @@ namespace videowp
         /// <summary>
         /// Запись данных в конфиг.файл
         /// </summary>
-        public void Write()
+        private void writeToFile()
         {
             StreamWriter writer = new StreamWriter(CONFIG_PATH, false);
-            string text = "playerpath = " + plpath + "\n";
-            text += "period = " + period + '\n';
-            text += "autoshow = " + autoshow + '\n';
-            text += "overWindows = " + overWindows + '\n';
+            string text = $"playerpath = {plpath}\n";
+            text += $"period = {period}\n";
+            text += $"autoshow = {autoshow}\n";
+            text += $"overWindows = {overwindows}\n";
             writer.WriteLine(text);
             writer.Close();
         }

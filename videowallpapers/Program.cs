@@ -60,7 +60,7 @@ namespace videowp
             // запуск программы
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            bcgwork = new BackWork(config.period);
+            bcgwork = new BackWork(config.InactionNumber);
             mainform = new MainForm();
             if (InstanceCheck()) Application.Run();
         }

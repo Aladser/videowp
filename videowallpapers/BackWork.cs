@@ -67,7 +67,7 @@ namespace videowp
             long startBWTime = getTimeNow();
             dwt1 = startBWTime;
             downtime = 0;
-            Program.mpvProc.Arguments = @"--playlist=" + Program.config.plpath;
+            Program.mpvProc.Arguments = @"--playlist=" + Program.config.PlaylistPath;
             //Console.WriteLine(command.Arguments);
             while (true)
             {               
@@ -79,7 +79,7 @@ namespace videowp
                 }
 
                 //поиск другого запущенного приложения в фуллскрине
-                if (IsForegroundFullScreen() && Program.config.overWindows==0)
+                if (IsForegroundFullScreen() && !Program.config.OverWindows)
                 {
                     dwt1 = getTimeNow();
                 }
