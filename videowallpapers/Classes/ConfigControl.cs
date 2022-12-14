@@ -20,11 +20,11 @@ namespace videowp
         {
             set {
                 plpath = value;
-                this.writeToFile();
+                this.WriteToFile();
             }
             get { return plpath; }
         }
-        private string plpath;
+        string plpath;
         /// <summary>
         /// Время бездействия
         /// </summary>
@@ -32,11 +32,11 @@ namespace videowp
         {
             set {
                 period = value;
-                this.writeToFile();
+                this.WriteToFile();
             }
             get { return period; }
         }
-        private int period;
+        int period;
         /// <summary>
         /// автозапуск обоев
         /// </summary>
@@ -44,11 +44,11 @@ namespace videowp
         {
             set {
                 autoshow = value ? 1 : 0;
-                this.writeToFile();
+                this.WriteToFile();
             }
             get { return autoshow==1 ? true : false; }
         }
-        private int autoshow;
+        int autoshow;
         /// <summary>
         /// повех всех окон
         /// </summary>
@@ -57,31 +57,31 @@ namespace videowp
             set
             {
                 overwindows = value ? 1 : 0;
-                this.writeToFile();
+                this.WriteToFile();
             }
-            get { return overwindows == 1 ? true : false; }
+            get { return overwindows == 1; }
         }
-        private int overwindows;
+        int overwindows;
 
         public ConfigControl()
         {
             if (!File.Exists(CONFIG_PATH))
             {
-                MessageBox.Show($"Файл {CONFIG_PATH} не найден. Будут установлены стандартные настройки");
+                MessageBox.Show("Конфигурационный файл не найден. Будут установлены стандартные настройки");
                 plpath = "";
                 period = 0;
                 autoshow = 0;
                 overwindows = 0;
-                this.writeToFile();
+                this.WriteToFile();
             }
             else
-                this.Read();
+                this.ReadFromFile();
         }
 
         /// <summary>
         /// Чтение данных из конфиг.файла
         /// </summary>
-        public void Read()
+        void ReadFromFile()
         {
             StreamReader reader = new StreamReader(CONFIG_PATH);
             try
@@ -108,7 +108,7 @@ namespace videowp
         /// <summary>
         /// Запись данных в конфиг.файл
         /// </summary>
-        private void writeToFile()
+        void WriteToFile()
         {
             StreamWriter writer = new StreamWriter(CONFIG_PATH, false);
             string text = $"playerpath = {plpath}\n";

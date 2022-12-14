@@ -15,10 +15,10 @@ namespace videowp
         /// <summary>
         /// конфигурационный файл
         /// </summary>
-        public static ConfigControl config;
-        public static readonly string shortcut = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\videowp.lnk"; // ярлык автозагрузки 
+        public static ConfigControl config = new ConfigControl();
+        public static readonly string shortcut = $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}\\videowp.lnk"; // ярлык автозагрузки 
 
-        public static string mpvPath = Path.GetDirectoryName(Application.ExecutablePath) + "\\mpv\\mpv.exe"; // MPV
+        public static string mpvPath = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\mpv\\mpv.exe"; // MPV
         public static ProcessStartInfo mpvProc; // MPV процесс в Windows
         public static string filefilter = "видеоплейлисты (*.m3u;*.m3u8;*.pls;*)|*.m3u;*.m3u8;*.pls";
 
@@ -29,8 +29,7 @@ namespace videowp
         static Mutex InstanceCheckMutex;
         static bool InstanceCheck()
         {
-            bool isNew;
-            InstanceCheckMutex = new Mutex(true, "videowp", out isNew);
+            InstanceCheckMutex = new Mutex(true, "videowp", out bool isNew);
             return isNew;
         }
         /// <summary>
@@ -39,8 +38,6 @@ namespace videowp
         [STAThread]
         static void Main()   
         {
-            config = new ConfigControl();
-
             // поиск папки mpv
             if (!File.Exists(mpvPath))
             {
@@ -53,8 +50,8 @@ namespace videowp
             }
             // Создание хука
             globalHook = new UserActivityHook();
-            globalHook.KeyPress += GlobalKeyPress;
-            globalHook.OnMouseActivity += GlobalMouseActivity;
+            globalHook.KeyPress += (object sender, KeyPressEventArgs e) => Program.bcgwork.stopShowWallpaper(); // нажатие клавиши
+            globalHook.OnMouseActivity += (object sender, MouseEventArgs e) => Program.bcgwork.stopShowWallpaper(); // движение мыши
             globalHook.Start(true, true);
             if (Process.GetProcessesByName(Application.ProductName).Length > 1) return;// предотвращение запуска второй копии
             // запуск программы
@@ -98,16 +95,6 @@ namespace videowp
             // Удаление ярлыка
             else
                 File.Delete(Program.shortcut);
-        }
-        // глобальное нажатие клавиатуры
-        public static void GlobalKeyPress(object sender, KeyPressEventArgs e)
-        {
-            Program.bcgwork.stopShowWallpaper();
-        }
-        // глобальное движение мыши
-        public static void GlobalMouseActivity(object sender, MouseEventArgs e)
-        {
-            Program.bcgwork.stopShowWallpaper();
         }
     }
 }

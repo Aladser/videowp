@@ -44,21 +44,17 @@ namespace videowp
         /// <param name="inActionNumber">время, номер берется из Combobox</param>
         public BackWork(int period)
         {
-            initialise();
-            
+            bw.DoWork += BW_DoWork;
+            bw.WorkerSupportsCancellation = true;
             inactionNumber = period;
             setTimePeriod(inactionNumber);
         }
         public BackWork()
         {
-            initialise();
-            this.inactionNumber = 0;
-            setTimePeriod(0);
-        }
-        private void initialise()
-        {
             bw.DoWork += BW_DoWork;
             bw.WorkerSupportsCancellation = true;
+            this.inactionNumber = 0;
+            setTimePeriod(0);
         }
         // фоновая задача
         private void BW_DoWork(object sender, DoWorkEventArgs e)
@@ -67,8 +63,7 @@ namespace videowp
             long startBWTime = getTimeNow();
             dwt1 = startBWTime;
             downtime = 0;
-            Program.mpvProc.Arguments = @"--playlist=" + Program.config.PlaylistPath;
-            //Console.WriteLine(command.Arguments);
+            Program.mpvProc.Arguments = $"--playlist={Program.config.PlaylistPath}";
             while (true)
             {               
                 // выключение фоновой задачи
@@ -77,7 +72,6 @@ namespace videowp
                     e.Cancel = true;
                     break;
                 }
-
                 //поиск другого запущенного приложения в фуллскрине
                 if (IsForegroundFullScreen() && !Program.config.OverWindows)
                 {

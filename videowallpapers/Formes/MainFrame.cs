@@ -8,7 +8,7 @@ namespace videowp
     public partial class MainForm : Form
     {
         readonly OpenFileDialog ofd = new OpenFileDialog();
-        Bitmap[] switcher = {Properties.Resources.offbtn, Properties.Resources.onbtn}; // переключатель
+        readonly Bitmap[] switcher = {Properties.Resources.offbtn, Properties.Resources.onbtn}; // переключатель
         int switcherIndex;                                                             // индекс переключателя  
 
         public MainForm()
@@ -42,6 +42,7 @@ namespace videowp
                 activeSwitchOnSign(false);
                 workSwitcher.Enabled = false;
                 playlistSelectButton.Enabled = true;
+                this.Show();
             }
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             ofd.Filter = Program.filefilter;
@@ -53,7 +54,6 @@ namespace videowp
             switcherIndex = switcherIndex == 1 ? 0 : 1;
             if (switcherIndex == 1)
             {
-                this.Text = "Видеобои 1.33: АКТИВНО";
                 notifyIcon.Text = "Видеообои ВКЛ";
                 activeSwitchOnSign(true);
                 playlistSelectButton.Enabled = false;
@@ -62,7 +62,6 @@ namespace videowp
             }
             else
             {
-                this.Text = "Видеобои 1.33";
                 notifyIcon.Text = "Видеообои ВЫКЛ";
                 activeSwitchOnSign(false);
                 playlistSelectButton.Enabled = true;
@@ -117,6 +116,7 @@ namespace videowp
         {
             this.Show();
         }
+
         // Скрытие или закрытие программы
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
