@@ -13,8 +13,11 @@ namespace videowp
         static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
         public static readonly string shortcut = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\videowp.lnk"; // ярлык автозагрузки 
         public static readonly string cfgpath = Path.GetDirectoryName(Application.ExecutablePath) + "\\videowp.cfg"; // конфиг
-        public static string mpvPath = Path.GetDirectoryName(Application.ExecutablePath) + "\\mpv\\mpv.exe"; // mpv плеер
+
+        public static string mpvPath = Path.GetDirectoryName(Application.ExecutablePath) + "\\mpv\\mpv.exe"; // MPV
+        public static ProcessStartInfo mpvProc; // MPV процесс в Windows
         public static string filefilter = "видеоплейлисты (*.m3u;*.m3u8;*.pls;*)|*.m3u;*.m3u8;*.pls";
+
         public static ConfigData cfgdata;
         static UserActivityHook globalHook;// хук глобального движения мыши или клавиатуры
         public static MainForm mainform;
@@ -44,16 +47,22 @@ namespace videowp
             }
             else
                 cfgdata = ConfigStream.Read(Program.cfgpath);
+
             if (cfgdata == null)
             {
                 MessageBox.Show("Ошибка чтения "+ Program.cfgpath + ". Установлены стандартные настройки", "", MessageBoxButtons.OK);
                 cfgdata = new ConfigData();
                 ConfigStream.Write(cfgpath, cfgdata);
             }
+            // поиск папки mpv
             if (!File.Exists(mpvPath))
             {
                 MessageBox.Show("Папка mpv не найдена. Программа будет закрыта");
                 Process.GetCurrentProcess().Kill();
+            }
+            else
+            {
+                mpvProc = new ProcessStartInfo(Program.mpvPath, @"");
             }
             // Создание хука
             globalHook = new UserActivityHook();

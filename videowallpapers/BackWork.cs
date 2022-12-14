@@ -22,8 +22,6 @@ namespace videowp
         int inactionInMs; // время бездействия в мс
         long downtime;
         long dwt1, dwt2;
-        // процесс видеоплеера
-        ProcessStartInfo playerProc = new ProcessStartInfo(Program.mpvPath, @"");
 
         private enum MouseFlags : uint
         {
@@ -69,7 +67,7 @@ namespace videowp
             long startBWTime = getTimeNow();
             dwt1 = startBWTime;
             downtime = 0;
-            playerProc.Arguments = @"--playlist=" + Program.cfgdata.plpath;
+            Program.mpvProc.Arguments = @"--playlist=" + Program.cfgdata.plpath;
             //Console.WriteLine(command.Arguments);
             while (true)
             {               
@@ -90,7 +88,7 @@ namespace videowp
                 {
                     dwt2 = getTimeNow();
                     isActive = true;
-                    Process.Start(playerProc);
+                    Process.Start(Program.mpvProc);
                 }
                 // прерывание показа обоев
                 else if (downtime<inactionInMs && isActive)
