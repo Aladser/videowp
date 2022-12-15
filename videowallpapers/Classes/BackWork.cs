@@ -67,7 +67,7 @@ namespace videowp
                     break;
                 }
                 //поиск другого запущенного приложения в фуллскрине
-                if (IsForegroundFullScreen() && !Program.config.OverWindows)
+                if (IsForegroundFullScreen() && Program.config.OverWindows==0)
                 {
                     dwt1 = GetTimeNow();
                 }

@@ -32,19 +32,23 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.playlistNameLabel = new System.Windows.Forms.Label();
             this.playlistSelectButton = new System.Windows.Forms.Button();
-            this.timeComboBox = new System.Windows.Forms.ComboBox();
-            this.periodLabel = new System.Windows.Forms.Label();
-            this.minLabel = new System.Windows.Forms.Label();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.playlistLabel = new System.Windows.Forms.Label();
-            this.autoloaderCheckBox = new System.Windows.Forms.CheckBox();
-            this.autoShowCheckBox = new System.Windows.Forms.CheckBox();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.overWindowCheckBox = new System.Windows.Forms.CheckBox();
+            this.autoShowLabel = new System.Windows.Forms.Label();
+            this.autoLoaderLabel = new System.Windows.Forms.Label();
+            this.overWindowLabel = new System.Windows.Forms.Label();
+            this.minLabel = new System.Windows.Forms.Label();
+            this.timeComboBox = new System.Windows.Forms.ComboBox();
+            this.periodLabel = new System.Windows.Forms.Label();
+            this.overWindowPictureBox = new System.Windows.Forms.PictureBox();
+            this.autoLoaderPictureBox = new System.Windows.Forms.PictureBox();
+            this.autoShowPictureBox = new System.Windows.Forms.PictureBox();
             this.showWallpaperSwitcher = new System.Windows.Forms.PictureBox();
             this.aboutImage = new System.Windows.Forms.PictureBox();
-            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.overWindowPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.autoLoaderPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.autoShowPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.showWallpaperSwitcher)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.aboutImage)).BeginInit();
             this.SuspendLayout();
@@ -53,57 +57,23 @@
             // 
             this.playlistNameLabel.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.playlistNameLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.playlistNameLabel.Location = new System.Drawing.Point(15, 34);
+            this.playlistNameLabel.Font = new System.Drawing.Font("Anonymous Pro", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.playlistNameLabel.Location = new System.Drawing.Point(17, 36);
             this.playlistNameLabel.Name = "playlistNameLabel";
-            this.playlistNameLabel.Size = new System.Drawing.Size(412, 21);
+            this.playlistNameLabel.Size = new System.Drawing.Size(480, 23);
             this.playlistNameLabel.TabIndex = 3;
             this.playlistNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // playlistSelectButton
             // 
-            this.playlistSelectButton.Enabled = false;
-            this.playlistSelectButton.Location = new System.Drawing.Point(443, 34);
+            this.playlistSelectButton.Font = new System.Drawing.Font("Anonymous Pro", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.playlistSelectButton.Location = new System.Drawing.Point(516, 36);
             this.playlistSelectButton.Name = "playlistSelectButton";
-            this.playlistSelectButton.Size = new System.Drawing.Size(78, 22);
+            this.playlistSelectButton.Size = new System.Drawing.Size(91, 24);
             this.playlistSelectButton.TabIndex = 4;
             this.playlistSelectButton.Text = "Выбор";
             this.playlistSelectButton.UseVisualStyleBackColor = true;
             this.playlistSelectButton.Click += new System.EventHandler(this.playlistSelectButton_Click);
-            // 
-            // timeComboBox
-            // 
-            this.timeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.timeComboBox.FormattingEnabled = true;
-            this.timeComboBox.Items.AddRange(new object[] {
-            "0.05",
-            "1",
-            "3",
-            "5",
-            "10",
-            "15 "});
-            this.timeComboBox.Location = new System.Drawing.Point(259, 22);
-            this.timeComboBox.Name = "timeComboBox";
-            this.timeComboBox.Size = new System.Drawing.Size(48, 21);
-            this.timeComboBox.TabIndex = 5;
-            this.timeComboBox.SelectedIndexChanged += new System.EventHandler(this.TimeComboBox_SelectedIndexChanged);
-            // 
-            // periodLabel
-            // 
-            this.periodLabel.Location = new System.Drawing.Point(140, 22);
-            this.periodLabel.Name = "periodLabel";
-            this.periodLabel.Size = new System.Drawing.Size(113, 21);
-            this.periodLabel.TabIndex = 6;
-            this.periodLabel.Text = "Время бездействия:";
-            this.periodLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // minLabel
-            // 
-            this.minLabel.Location = new System.Drawing.Point(313, 21);
-            this.minLabel.Name = "minLabel";
-            this.minLabel.Size = new System.Drawing.Size(33, 21);
-            this.minLabel.TabIndex = 7;
-            this.minLabel.Text = "мин";
-            this.minLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // notifyIcon
             // 
@@ -116,64 +86,115 @@
             // playlistLabel
             // 
             this.playlistLabel.AutoSize = true;
-            this.playlistLabel.Location = new System.Drawing.Point(12, 9);
+            this.playlistLabel.Font = new System.Drawing.Font("Anonymous Pro", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.playlistLabel.Location = new System.Drawing.Point(14, 13);
             this.playlistLabel.Name = "playlistLabel";
-            this.playlistLabel.Size = new System.Drawing.Size(59, 13);
+            this.playlistLabel.Size = new System.Drawing.Size(70, 14);
             this.playlistLabel.TabIndex = 10;
             this.playlistLabel.Text = "Плейлист:";
             // 
-            // autoloaderCheckBox
+            // autoShowLabel
             // 
-            this.autoloaderCheckBox.AutoSize = true;
-            this.autoloaderCheckBox.Location = new System.Drawing.Point(15, 164);
-            this.autoloaderCheckBox.Name = "autoloaderCheckBox";
-            this.autoloaderCheckBox.Size = new System.Drawing.Size(96, 17);
-            this.autoloaderCheckBox.TabIndex = 13;
-            this.autoloaderCheckBox.Text = "Автозагрузка";
-            this.autoloaderCheckBox.UseVisualStyleBackColor = true;
-            this.autoloaderCheckBox.CheckedChanged += new System.EventHandler(this.autoLoader_CheckedChanged);
+            this.autoShowLabel.Font = new System.Drawing.Font("Anonymous Pro", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.autoShowLabel.Location = new System.Drawing.Point(48, 111);
+            this.autoShowLabel.Name = "autoShowLabel";
+            this.autoShowLabel.Size = new System.Drawing.Size(166, 21);
+            this.autoShowLabel.TabIndex = 26;
+            this.autoShowLabel.Text = "Автозапуск заставки";
+            this.autoShowLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // autoShowCheckBox
+            // autoLoaderLabel
             // 
-            this.autoShowCheckBox.AutoSize = true;
-            this.autoShowCheckBox.Location = new System.Drawing.Point(15, 141);
-            this.autoShowCheckBox.Name = "autoShowCheckBox";
-            this.autoShowCheckBox.Size = new System.Drawing.Size(135, 17);
-            this.autoShowCheckBox.TabIndex = 15;
-            this.autoShowCheckBox.Text = "Автозапуск заставки";
-            this.autoShowCheckBox.UseVisualStyleBackColor = true;
-            this.autoShowCheckBox.CheckedChanged += new System.EventHandler(this.autoShowCheckBoxCheckBox_CheckedChanged);
+            this.autoLoaderLabel.Font = new System.Drawing.Font("Anonymous Pro", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.autoLoaderLabel.Location = new System.Drawing.Point(48, 139);
+            this.autoLoaderLabel.Name = "autoLoaderLabel";
+            this.autoLoaderLabel.Size = new System.Drawing.Size(142, 21);
+            this.autoLoaderLabel.TabIndex = 27;
+            this.autoLoaderLabel.Text = "Автозагрузка";
+            this.autoLoaderLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // panel1
+            // overWindowLabel
             // 
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.periodLabel);
-            this.panel1.Controls.Add(this.timeComboBox);
-            this.panel1.Controls.Add(this.minLabel);
-            this.panel1.Location = new System.Drawing.Point(15, 62);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(506, 60);
-            this.panel1.TabIndex = 20;
+            this.overWindowLabel.Font = new System.Drawing.Font("Anonymous Pro", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.overWindowLabel.Location = new System.Drawing.Point(48, 167);
+            this.overWindowLabel.Name = "overWindowLabel";
+            this.overWindowLabel.Size = new System.Drawing.Size(142, 21);
+            this.overWindowLabel.TabIndex = 28;
+            this.overWindowLabel.Text = "Поверх всех окон";
+            this.overWindowLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // overWindowCheckBox
+            // minLabel
             // 
-            this.overWindowCheckBox.AutoSize = true;
-            this.overWindowCheckBox.Checked = true;
-            this.overWindowCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.overWindowCheckBox.Location = new System.Drawing.Point(15, 187);
-            this.overWindowCheckBox.Name = "overWindowCheckBox";
-            this.overWindowCheckBox.Size = new System.Drawing.Size(116, 17);
-            this.overWindowCheckBox.TabIndex = 21;
-            this.overWindowCheckBox.Text = "Поверх всех окон";
-            this.overWindowCheckBox.UseVisualStyleBackColor = true;
-            this.overWindowCheckBox.CheckedChanged += new System.EventHandler(this.overWindowCheckBox_CheckedChanged);
+            this.minLabel.Font = new System.Drawing.Font("Cascadia Code", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.minLabel.Location = new System.Drawing.Point(434, 73);
+            this.minLabel.Name = "minLabel";
+            this.minLabel.Size = new System.Drawing.Size(39, 22);
+            this.minLabel.TabIndex = 7;
+            this.minLabel.Text = "мин";
+            this.minLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // timeComboBox
+            // 
+            this.timeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.timeComboBox.Font = new System.Drawing.Font("Cascadia Code", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.timeComboBox.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.timeComboBox.FormattingEnabled = true;
+            this.timeComboBox.Items.AddRange(new object[] {
+            "0.05",
+            "1",
+            "3",
+            "5",
+            "10",
+            "15 "});
+            this.timeComboBox.Location = new System.Drawing.Point(358, 72);
+            this.timeComboBox.Name = "timeComboBox";
+            this.timeComboBox.Size = new System.Drawing.Size(68, 25);
+            this.timeComboBox.TabIndex = 5;
+            this.timeComboBox.SelectedIndexChanged += new System.EventHandler(this.TimeComboBox_SelectedIndexChanged);
+            // 
+            // periodLabel
+            // 
+            this.periodLabel.Font = new System.Drawing.Font("Cascadia Code", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.periodLabel.Location = new System.Drawing.Point(170, 72);
+            this.periodLabel.Name = "periodLabel";
+            this.periodLabel.Size = new System.Drawing.Size(180, 22);
+            this.periodLabel.TabIndex = 6;
+            this.periodLabel.Text = "Время бездействия:";
+            this.periodLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // overWindowPictureBox
+            // 
+            this.overWindowPictureBox.Location = new System.Drawing.Point(17, 167);
+            this.overWindowPictureBox.Name = "overWindowPictureBox";
+            this.overWindowPictureBox.Size = new System.Drawing.Size(23, 21);
+            this.overWindowPictureBox.TabIndex = 25;
+            this.overWindowPictureBox.TabStop = false;
+            this.overWindowPictureBox.Click += new System.EventHandler(this.overWindowPictureBox_Click);
+            // 
+            // autoLoaderPictureBox
+            // 
+            this.autoLoaderPictureBox.Location = new System.Drawing.Point(17, 139);
+            this.autoLoaderPictureBox.Name = "autoLoaderPictureBox";
+            this.autoLoaderPictureBox.Size = new System.Drawing.Size(23, 21);
+            this.autoLoaderPictureBox.TabIndex = 24;
+            this.autoLoaderPictureBox.TabStop = false;
+            this.autoLoaderPictureBox.Click += new System.EventHandler(this.autoLoaderPictureBox_Click);
+            // 
+            // autoShowPictureBox
+            // 
+            this.autoShowPictureBox.Location = new System.Drawing.Point(17, 111);
+            this.autoShowPictureBox.Name = "autoShowPictureBox";
+            this.autoShowPictureBox.Size = new System.Drawing.Size(23, 21);
+            this.autoShowPictureBox.TabIndex = 23;
+            this.autoShowPictureBox.TabStop = false;
+            this.autoShowPictureBox.Click += new System.EventHandler(this.autoShowPictureBox_Click);
             // 
             // showWallpaperSwitcher
             // 
             this.showWallpaperSwitcher.Image = global::videowp.Properties.Resources.offbtn;
-            this.showWallpaperSwitcher.Location = new System.Drawing.Point(440, 145);
+            this.showWallpaperSwitcher.Location = new System.Drawing.Point(513, 139);
             this.showWallpaperSwitcher.Name = "showWallpaperSwitcher";
-            this.showWallpaperSwitcher.Size = new System.Drawing.Size(81, 36);
+            this.showWallpaperSwitcher.Size = new System.Drawing.Size(95, 39);
             this.showWallpaperSwitcher.TabIndex = 22;
             this.showWallpaperSwitcher.TabStop = false;
             this.showWallpaperSwitcher.Click += new System.EventHandler(this.showWallpaperSwitcher_Click);
@@ -183,28 +204,34 @@
             this.aboutImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.aboutImage.Image = ((System.Drawing.Image)(resources.GetObject("aboutImage.Image")));
             this.aboutImage.InitialImage = ((System.Drawing.Image)(resources.GetObject("aboutImage.InitialImage")));
-            this.aboutImage.Location = new System.Drawing.Point(508, 9);
+            this.aboutImage.Location = new System.Drawing.Point(593, 10);
             this.aboutImage.Name = "aboutImage";
-            this.aboutImage.Size = new System.Drawing.Size(18, 17);
+            this.aboutImage.Size = new System.Drawing.Size(21, 18);
             this.aboutImage.TabIndex = 16;
             this.aboutImage.TabStop = false;
             this.aboutImage.MouseHover += new System.EventHandler(this.aboutImage_MouseHover);
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(533, 210);
+            this.ClientSize = new System.Drawing.Size(622, 202);
+            this.Controls.Add(this.minLabel);
+            this.Controls.Add(this.timeComboBox);
+            this.Controls.Add(this.periodLabel);
+            this.Controls.Add(this.overWindowLabel);
+            this.Controls.Add(this.autoLoaderLabel);
+            this.Controls.Add(this.autoShowLabel);
+            this.Controls.Add(this.overWindowPictureBox);
+            this.Controls.Add(this.autoLoaderPictureBox);
+            this.Controls.Add(this.autoShowPictureBox);
             this.Controls.Add(this.showWallpaperSwitcher);
-            this.Controls.Add(this.overWindowCheckBox);
-            this.Controls.Add(this.panel1);
             this.Controls.Add(this.aboutImage);
-            this.Controls.Add(this.autoShowCheckBox);
-            this.Controls.Add(this.autoloaderCheckBox);
             this.Controls.Add(this.playlistLabel);
             this.Controls.Add(this.playlistSelectButton);
             this.Controls.Add(this.playlistNameLabel);
+            this.Font = new System.Drawing.Font("Anonymous Pro", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -212,7 +239,9 @@
             this.Text = "Видеобои 1.33";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
-            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.overWindowPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.autoLoaderPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.autoShowPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.showWallpaperSwitcher)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.aboutImage)).EndInit();
             this.ResumeLayout(false);
@@ -224,18 +253,20 @@
 
         private System.Windows.Forms.Label playlistNameLabel;
         private System.Windows.Forms.Button playlistSelectButton;
-        private System.Windows.Forms.ComboBox timeComboBox;
-        private System.Windows.Forms.Label periodLabel;
-        private System.Windows.Forms.Label minLabel;
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.Label playlistLabel;
-        private System.Windows.Forms.CheckBox autoloaderCheckBox;
-        private System.Windows.Forms.CheckBox autoShowCheckBox;
         private System.Windows.Forms.PictureBox aboutImage;
         private System.Windows.Forms.ToolTip toolTip;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.CheckBox overWindowCheckBox;
         private System.Windows.Forms.PictureBox showWallpaperSwitcher;
+        private System.Windows.Forms.PictureBox autoShowPictureBox;
+        private System.Windows.Forms.PictureBox autoLoaderPictureBox;
+        private System.Windows.Forms.PictureBox overWindowPictureBox;
+        private System.Windows.Forms.Label autoShowLabel;
+        private System.Windows.Forms.Label autoLoaderLabel;
+        private System.Windows.Forms.Label overWindowLabel;
+        private System.Windows.Forms.Label minLabel;
+        private System.Windows.Forms.ComboBox timeComboBox;
+        private System.Windows.Forms.Label periodLabel;
     }
 }
 

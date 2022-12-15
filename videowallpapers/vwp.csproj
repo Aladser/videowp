@@ -88,6 +88,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="resources\disabledbtn.png" />
+    <None Include="resources\onSelectImg.png" />
+    <None Include="resources\offSelectImg.png" />
     <None Include="resources\offbtn.png" />
     <None Include="resources\onbtn.png" />
     <None Include="info.ico" />

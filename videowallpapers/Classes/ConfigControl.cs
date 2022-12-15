@@ -52,26 +52,26 @@ namespace videowp
         /// <summary>
         /// автозапуск обоев
         /// </summary>
-        public bool AutoShow
+        public int AutoShow
         {
             set {
-                autoshow = value ? 1 : 0;
+                autoshow = value;
                 this.WriteToFile();
             }
-            get { return autoshow==1; }
+            get { return autoshow; }
         }
         int autoshow;
         /// <summary>
         /// повех всех окон
         /// </summary>
-        public bool OverWindows
+        public int OverWindows
         {
             set
             {
-                overwindows = value ? 1 : 0;
+                overwindows = value;
                 this.WriteToFile();
             }
-            get { return overwindows == 1; }
+            get { return overwindows; }
         }
         int overwindows;
 

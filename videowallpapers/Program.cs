@@ -66,7 +66,7 @@ namespace videowp
         /// Изменить автозагрузку
         /// </summary>
         /// <param name="isAutoLoader">флаг</param>
-        public static void editAutoLoader(bool isAutoLoader)
+        public static void EditAutoLoader(bool isAutoLoader)
         {
             // Создание ярлыка
             if (isAutoLoader)
