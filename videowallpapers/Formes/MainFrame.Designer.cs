@@ -42,10 +42,10 @@
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
             this.overWindowCheckBox = new System.Windows.Forms.CheckBox();
-            this.workSwitcher = new System.Windows.Forms.PictureBox();
+            this.showWallpaperSwitcher = new System.Windows.Forms.PictureBox();
             this.aboutImage = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.workSwitcher)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.showWallpaperSwitcher)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.aboutImage)).BeginInit();
             this.SuspendLayout();
             // 
@@ -168,15 +168,15 @@
             this.overWindowCheckBox.UseVisualStyleBackColor = true;
             this.overWindowCheckBox.CheckedChanged += new System.EventHandler(this.overWindowCheckBox_CheckedChanged);
             // 
-            // workSwitcher
+            // showWallpaperSwitcher
             // 
-            this.workSwitcher.Image = global::videowp.Properties.Resources.offbtn;
-            this.workSwitcher.Location = new System.Drawing.Point(440, 145);
-            this.workSwitcher.Name = "workSwitcher";
-            this.workSwitcher.Size = new System.Drawing.Size(81, 36);
-            this.workSwitcher.TabIndex = 22;
-            this.workSwitcher.TabStop = false;
-            this.workSwitcher.Click += new System.EventHandler(this.WorkSwitcher_Click);
+            this.showWallpaperSwitcher.Image = global::videowp.Properties.Resources.offbtn;
+            this.showWallpaperSwitcher.Location = new System.Drawing.Point(440, 145);
+            this.showWallpaperSwitcher.Name = "showWallpaperSwitcher";
+            this.showWallpaperSwitcher.Size = new System.Drawing.Size(81, 36);
+            this.showWallpaperSwitcher.TabIndex = 22;
+            this.showWallpaperSwitcher.TabStop = false;
+            this.showWallpaperSwitcher.Click += new System.EventHandler(this.showWallpaperSwitcher_Click);
             // 
             // aboutImage
             // 
@@ -194,8 +194,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ClientSize = new System.Drawing.Size(533, 210);
-            this.Controls.Add(this.workSwitcher);
+            this.Controls.Add(this.showWallpaperSwitcher);
             this.Controls.Add(this.overWindowCheckBox);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.aboutImage);
@@ -212,7 +213,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.workSwitcher)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.showWallpaperSwitcher)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.aboutImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -234,7 +235,7 @@
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.CheckBox overWindowCheckBox;
-        private System.Windows.Forms.PictureBox workSwitcher;
+        private System.Windows.Forms.PictureBox showWallpaperSwitcher;
     }
 }
 

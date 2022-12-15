@@ -16,12 +16,6 @@ namespace videowp
         [DllImport("user32.dll", SetLastError = true)]
         public static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, int dwExtraInfo);
 
-        readonly BackgroundWorker bw = new BackgroundWorker();                      
-        readonly double[] inactionTime = { 0.05, 1, 3, 5, 10, 15 }; // массив периодов бездействия
-        int inactionInMs; // время бездействия в мс
-        long downtime;
-        long dwt1, dwt2;
-
         enum MouseFlags : uint
         {
             MOUSEEVENTF_ABSOLUTE = 0x8000,   // If set, dx and dy contain normalized absolute coordinates between 0 and 65535. The event procedure maps these coordinates onto the display surface. Coordinate (0,0) maps onto the upper-left corner of the display surface, (65535,65535) maps onto the lower-right corner.
@@ -37,6 +31,11 @@ namespace videowp
             MOUSEEVENTF_XUP = 0x0100,        // An X button was released.
             MOUSEEVENTF_HWHEEL = 0x01000     // The wheel button is tilted.
         }
+
+        readonly BackgroundWorker bw = new BackgroundWorker();
+        long downtime;
+        long dwt1, dwt2;
+
         /// <summary>
         /// Класс фоновой задачи показа обоев
         /// </summary>
@@ -44,16 +43,21 @@ namespace videowp
         {
             bw.DoWork += BW_DoWork;
             bw.WorkerSupportsCancellation = true;
-            SetTimePeriod(Program.config.InactionNumber);
         }
-        // фоновая задача
+
+        /// <summary>
+        /// фоновая задача
+        /// </summary>
         void BW_DoWork(object sender, DoWorkEventArgs e)
         {
             bool isActive = false;
+
             long startBWTime = GetTimeNow();
             dwt1 = startBWTime;
             downtime = 0;
+
             Program.mpvProc.Arguments = $"--playlist={Program.config.PlaylistPath}";
+
             while (true)
             {               
                 // выключение фоновой задачи
@@ -68,14 +72,14 @@ namespace videowp
                     dwt1 = GetTimeNow();
                 }
                 // запуск обоев
-                else if (downtime>=inactionInMs && !isActive)
+                else if (downtime >= Program.config.GetInactionTime() && !isActive)
                 {
                     dwt2 = GetTimeNow();
                     isActive = true;
                     Process.Start(Program.mpvProc);
                 }
                 // прерывание показа обоев
-                else if (downtime<inactionInMs && isActive)
+                else if (downtime < Program.config.GetInactionTime() && isActive)
                 {
                     dwt1 = GetTimeNow();
                     isActive = false;
@@ -86,6 +90,7 @@ namespace videowp
                 downtime = dwt2 - dwt1;
             }
         }
+
         /// <summary>
         /// старт фоновой задачи
         /// </summary>
@@ -94,6 +99,7 @@ namespace videowp
         {
             bw.RunWorkerAsync(); 
         }
+
         /// <summary>
         /// остановка фоновой задачи
         /// </summary>
@@ -101,6 +107,7 @@ namespace videowp
         {
             bw.CancelAsync();
         }
+
         /// <summary>
         /// получить текущее время в мс
         /// </summary>
@@ -109,23 +116,18 @@ namespace videowp
         {
             return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
         }
+
         /// <summary>
-        /// Возравращает, работает ли фоновая задача
+        /// Возвращает активность фоновой задачи
         /// </summary>
         /// <returns></returns>
         public bool IsActive()
         {
             return bw.IsBusy;
         }
+
         /// <summary>
-        /// установка времнеи простоя системы
-        /// </summary>
-        public void SetTimePeriod(int inActionNumber)
-        {
-            inactionInMs = (int)(inactionTime[inActionNumber] * 60000);
-        }
-        /// <summary>
-        /// Событие об остановке показа обоев
+        /// Событие остановки показа обоев
         /// </summary>
         public void StopShowWallpaper()
         {

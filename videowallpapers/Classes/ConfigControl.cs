@@ -13,6 +13,7 @@ namespace videowp
         /// путь к конфигурационному файлу
         /// </summary>
         readonly string CONFIG_PATH = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\videowp.cfg";
+
         /// <summary>
         /// путь плейлиста
         /// </summary>
@@ -25,18 +26,29 @@ namespace videowp
             get { return plpath; }
         }
         string plpath;
+
         /// <summary>
-        /// Время бездействия
+        /// индекс времени бездействия
         /// </summary>
-        public int InactionNumber
+        public int InactionIndex
         {
             set {
-                period = value;
+                inactonIndex = value;
                 this.WriteToFile();
             }
-            get { return period; }
+            get { return inactonIndex; }
         }
-        int period;
+        int inactonIndex;
+        /// <summary>
+        /// получить время бездействия в мс
+        /// </summary>
+        /// <returns></returns>
+        public int GetInactionTime()
+        {
+            double[] inactionTimeNumberList = { 0.05, 1, 3, 5, 10, 15 };
+            return (int)(inactionTimeNumberList[inactonIndex] * 60000);
+        }
+
         /// <summary>
         /// автозапуск обоев
         /// </summary>
@@ -69,7 +81,7 @@ namespace videowp
             {
                 MessageBox.Show("Конфигурационный файл не найден. Будут установлены стандартные настройки");
                 plpath = "";
-                period = 0;
+                inactonIndex = 0;
                 autoshow = 0;
                 overwindows = 0;
                 this.WriteToFile();
@@ -91,7 +103,7 @@ namespace videowp
                 if (!File.Exists(plpath)) plpath = "";
 
                 line = reader.ReadLine();
-                period = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
+                inactonIndex = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
 
                 line = reader.ReadLine();
                 autoshow = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
@@ -112,11 +124,13 @@ namespace videowp
         {
             StreamWriter writer = new StreamWriter(CONFIG_PATH, false);
             string text = $"playerpath = {plpath}\n";
-            text += $"period = {period}\n";
+            text += $"period = {inactonIndex}\n";
             text += $"autoshow = {autoshow}\n";
             text += $"overWindows = {overwindows}\n";
             writer.WriteLine(text);
             writer.Close();
         }
+
+        
     }
 }

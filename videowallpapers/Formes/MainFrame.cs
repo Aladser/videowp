@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -11,7 +10,7 @@ namespace videowp
         /// <summary>
         /// переключатель
         /// </summary>
-        readonly Bitmap[] switcher = {Properties.Resources.offbtn, Properties.Resources.onbtn};
+        readonly System.Drawing.Bitmap[] switcher = {Properties.Resources.offbtn, Properties.Resources.onbtn};
         /// <summary>
         /// индекс переключателя  
         /// </summary>
@@ -21,9 +20,10 @@ namespace videowp
         {
             InitializeComponent();
             CenterToScreen();
+            notifyIcon.Text = "Aladser Видеообои";
 
             if (File.Exists(Program.shortcut)) autoloaderCheckBox.Checked = true;// проверка автозапуска
-            timeComboBox.SelectedIndex = Program.config.InactionNumber;          // считывание времени заставки            
+            timeComboBox.SelectedIndex = Program.config.InactionIndex;          // считывание времени заставки            
             autoShowCheckBox.Checked = Program.config.AutoShow;                  // считывание autoshow
             overWindowCheckBox.Checked = Program.config.OverWindows;             // флаг Поверх всех окон
 
@@ -34,20 +34,20 @@ namespace videowp
 
                 if (Program.config.AutoShow)
                 {
-                    activeSwitchOnSign(true);
+                    showOnBtn(true);
                     Program.bcgwork.Start();
                 }
                 else
                 {
-                    activeSwitchOnSign(false);
+                    showOnBtn(false);
                     this.Show();
                 }
             }
             else
             {
                 playlistNameLabel.Text = "Не найден плейлист";
-                activeSwitchOnSign(false);
-                workSwitcher.Enabled = false;
+                showOnBtn(false);
+                showWallpaperSwitcher.Enabled = false;
                 playlistSelectButton.Enabled = true;
                 this.Show();
             }
@@ -57,30 +57,35 @@ namespace videowp
         }
 
         // переключить показ обоев
-        void WorkSwitcher_Click(object sender, EventArgs e)
+        void showWallpaperSwitcher_Click(object sender, EventArgs e)
         {
             switcherIndex = switcherIndex == 1 ? 0 : 1;
             if (switcherIndex == 1)
             {
-                notifyIcon.Text = "Видеообои ВКЛ";
-                activeSwitchOnSign(true);
+                showOnBtn(true);
                 playlistSelectButton.Enabled = false;
 
                 Program.bcgwork.Start();
             }
             else
             {
-                notifyIcon.Text = "Видеообои ВЫКЛ";
-                activeSwitchOnSign(false);
+                showOnBtn(false);
                 playlistSelectButton.Enabled = true;
 
                 Program.bcgwork.Stop();
             }
         }
+        // активировать обои
+        void showOnBtn(bool index)
+        {
+            switcherIndex = index ? 1 : 0;
+            showWallpaperSwitcher.Image = switcher[switcherIndex];
+        }
+
         // Информация о программе
         void aboutImage_MouseHover(object sender, EventArgs e)
         {
-            toolTip.SetToolTip(aboutImage, "Aladser's Видеобои 1.33\n2022");
+            toolTip.SetToolTip(aboutImage, "Видеобои 1.33\nAladser ©\n2022");
         }
         // Переключение автозагрузки
         void autoLoader_CheckedChanged(object sender, EventArgs e)
@@ -90,24 +95,24 @@ namespace videowp
         // Сворачивание в трей
         void MainForm_SizeChanged(object sender, EventArgs e)
         {
-            Hide();
+            this.Hide();
             notifyIcon.Visible = true;
         }
         // смена плейлиста
         void playlistSelectButton_Click(object sender, EventArgs e)
         {
-            if (ofd.ShowDialog() != DialogResult.OK)
-                return;
+            if (ofd.ShowDialog() != DialogResult.OK) return;
+
             ofd.InitialDirectory = Path.GetDirectoryName(ofd.FileName);
             Program.config.PlaylistPath = ofd.FileName;
             playlistNameLabel.Text = ofd.FileName;
-            workSwitcher.Enabled = true;
+
+            showWallpaperSwitcher.Enabled = true;
         }
         // переключение времени заставки
         void TimeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Program.bcgwork.SetTimePeriod(timeComboBox.SelectedIndex);
-            Program.config.InactionNumber = timeComboBox.SelectedIndex;
+            Program.config.InactionIndex = timeComboBox.SelectedIndex;
         }
         // переключение автопоказа обоев
         void autoShowCheckBoxCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -129,20 +134,11 @@ namespace videowp
         void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!Program.bcgwork.IsActive())
-            {
                 Application.Exit();
-            }
             else
-            {
                 e.Cancel = true;
                 this.Hide();
-            }
         }
-        // активировать обои
-        void activeSwitchOnSign(bool index)
-        {
-            switcherIndex = index ? 1 : 0;
-            workSwitcher.Image = switcher[switcherIndex];
-        }
+
     }
 }
