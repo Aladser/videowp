@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -11,7 +12,7 @@ namespace videowp
         /// <summary>
         /// переключатель
         /// </summary>
-        readonly System.Drawing.Bitmap[] switcher = {Properties.Resources.offbtn, Properties.Resources.onbtn, Properties.Resources.disabledbtn};
+        readonly Bitmap[] switcher = {Properties.Resources.offbtn, Properties.Resources.onbtn, Properties.Resources.disabledbtn};
         /// <summary>
         /// индекс переключателя  
         /// </summary>
@@ -20,7 +21,7 @@ namespace videowp
         /// <summary>
         /// Флажки опций
         /// </summary>
-        readonly System.Drawing.Bitmap[] checkBoxPictures = { Properties.Resources.offSelectImg, Properties.Resources.onSelectImg };
+        readonly Bitmap[] checkBoxPictures = { Properties.Resources.offSelectImg, Properties.Resources.onSelectImg };
 
         public MainForm()
         {
@@ -28,7 +29,13 @@ namespace videowp
             CenterToScreen();
             notifyIcon.Text = "Aladser Видеообои";
 
-            timeComboBox.ForeColor = System.Drawing.Color.Black;
+            // цвет элементов выбора цвета
+            timeComboBox.DrawMode = DrawMode.OwnerDrawVariable;
+            startPeriodLabel.ForeColor = Color.Green;
+            endPeriodLabel.ForeColor = Color.Green;
+
+            playlistSelectButton.BackColor = Color.White;
+            this.BackColor = Color.White;
 
             timeComboBox.SelectedIndex = Program.config.InactionIndex;          // считывание времени заставки
                                                                                 
@@ -65,6 +72,12 @@ namespace videowp
 
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             ofd.Filter = Program.filefilter;
+        }
+
+        private string[] animals = new string[]{"Elephant", "c r o c o d i l e", "lion"};
+        private void ComboBox1_DrawItem(object sender,DrawItemEventArgs e)
+        {
+
         }
 
         // переключить показ обоев
@@ -155,6 +168,16 @@ namespace videowp
             toolTip.SetToolTip(aboutImage, "Видеобои 1.33\nAladser ©\n2022");
         }
 
+        private void timeComboBox_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            var cmb = (ComboBox)sender;
+            e.DrawBackground();
 
+            // change background color
+            e.Graphics.FillRectangle(Brushes.White, e.Bounds);
+
+            e.Graphics.DrawString(cmb.Items[e.Index].ToString(), cmb.Font, new SolidBrush(Color.Green), e.Bounds);
+            e.DrawFocusRectangle();
+        }
     }
 }

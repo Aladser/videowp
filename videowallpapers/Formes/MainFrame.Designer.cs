@@ -38,9 +38,9 @@
             this.autoShowLabel = new System.Windows.Forms.Label();
             this.autoLoaderLabel = new System.Windows.Forms.Label();
             this.overWindowLabel = new System.Windows.Forms.Label();
-            this.minLabel = new System.Windows.Forms.Label();
+            this.endPeriodLabel = new System.Windows.Forms.Label();
             this.timeComboBox = new System.Windows.Forms.ComboBox();
-            this.periodLabel = new System.Windows.Forms.Label();
+            this.startPeriodLabel = new System.Windows.Forms.Label();
             this.overWindowPictureBox = new System.Windows.Forms.PictureBox();
             this.autoLoaderPictureBox = new System.Windows.Forms.PictureBox();
             this.autoShowPictureBox = new System.Windows.Forms.PictureBox();
@@ -123,15 +123,15 @@
             this.overWindowLabel.Text = "Поверх всех окон";
             this.overWindowLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // minLabel
+            // endPeriodLabel
             // 
-            this.minLabel.Font = new System.Drawing.Font("Cascadia Code", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.minLabel.Location = new System.Drawing.Point(434, 73);
-            this.minLabel.Name = "minLabel";
-            this.minLabel.Size = new System.Drawing.Size(39, 22);
-            this.minLabel.TabIndex = 7;
-            this.minLabel.Text = "мин";
-            this.minLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.endPeriodLabel.Font = new System.Drawing.Font("Cascadia Code", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.endPeriodLabel.Location = new System.Drawing.Point(434, 73);
+            this.endPeriodLabel.Name = "endPeriodLabel";
+            this.endPeriodLabel.Size = new System.Drawing.Size(39, 22);
+            this.endPeriodLabel.TabIndex = 7;
+            this.endPeriodLabel.Text = "мин";
+            this.endPeriodLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // timeComboBox
             // 
@@ -150,17 +150,18 @@
             this.timeComboBox.Name = "timeComboBox";
             this.timeComboBox.Size = new System.Drawing.Size(68, 25);
             this.timeComboBox.TabIndex = 5;
+            this.timeComboBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.timeComboBox_DrawItem);
             this.timeComboBox.SelectedIndexChanged += new System.EventHandler(this.TimeComboBox_SelectedIndexChanged);
             // 
-            // periodLabel
+            // startPeriodLabel
             // 
-            this.periodLabel.Font = new System.Drawing.Font("Cascadia Code", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.periodLabel.Location = new System.Drawing.Point(170, 72);
-            this.periodLabel.Name = "periodLabel";
-            this.periodLabel.Size = new System.Drawing.Size(180, 22);
-            this.periodLabel.TabIndex = 6;
-            this.periodLabel.Text = "Время бездействия:";
-            this.periodLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.startPeriodLabel.Font = new System.Drawing.Font("Cascadia Code", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.startPeriodLabel.Location = new System.Drawing.Point(197, 72);
+            this.startPeriodLabel.Name = "startPeriodLabel";
+            this.startPeriodLabel.Size = new System.Drawing.Size(153, 22);
+            this.startPeriodLabel.TabIndex = 6;
+            this.startPeriodLabel.Text = "Время бездействия:";
+            this.startPeriodLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // overWindowPictureBox
             // 
@@ -217,9 +218,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(622, 202);
-            this.Controls.Add(this.minLabel);
+            this.Controls.Add(this.endPeriodLabel);
             this.Controls.Add(this.timeComboBox);
-            this.Controls.Add(this.periodLabel);
+            this.Controls.Add(this.startPeriodLabel);
             this.Controls.Add(this.overWindowLabel);
             this.Controls.Add(this.autoLoaderLabel);
             this.Controls.Add(this.autoShowLabel);
@@ -264,9 +265,9 @@
         private System.Windows.Forms.Label autoShowLabel;
         private System.Windows.Forms.Label autoLoaderLabel;
         private System.Windows.Forms.Label overWindowLabel;
-        private System.Windows.Forms.Label minLabel;
+        private System.Windows.Forms.Label endPeriodLabel;
         private System.Windows.Forms.ComboBox timeComboBox;
-        private System.Windows.Forms.Label periodLabel;
+        private System.Windows.Forms.Label startPeriodLabel;
     }
 }
 
