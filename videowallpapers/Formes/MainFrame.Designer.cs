@@ -135,9 +135,9 @@
             // 
             // timeComboBox
             // 
+            this.timeComboBox.BackColor = System.Drawing.SystemColors.Control;
             this.timeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.timeComboBox.Font = new System.Drawing.Font("Cascadia Code", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.timeComboBox.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.timeComboBox.FormattingEnabled = true;
             this.timeComboBox.Items.AddRange(new object[] {
             "0.05",
@@ -215,7 +215,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(622, 202);
             this.Controls.Add(this.minLabel);
             this.Controls.Add(this.timeComboBox);

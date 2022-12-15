@@ -27,10 +27,11 @@ namespace videowp
             InitializeComponent();
             CenterToScreen();
             notifyIcon.Text = "Aladser Видеообои";
+
             timeComboBox.ForeColor = System.Drawing.Color.Black;
 
             timeComboBox.SelectedIndex = Program.config.InactionIndex;          // считывание времени заставки
-                                                                                // 
+                                                                                
             autoShowPictureBox.Image = checkBoxPictures[Program.config.AutoShow];
             autoLoaderPictureBox.Image = File.Exists(Program.shortcut) ? checkBoxPictures[1] : checkBoxPictures[0];
             overWindowPictureBox.Image = checkBoxPictures[Program.config.OverWindows];
