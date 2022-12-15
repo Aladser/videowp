@@ -73,7 +73,7 @@
             this.playlistSelectButton.TabIndex = 4;
             this.playlistSelectButton.Text = "Выбор";
             this.playlistSelectButton.UseVisualStyleBackColor = true;
-            this.playlistSelectButton.Click += new System.EventHandler(this.playlistSelectButton_Click);
+            this.playlistSelectButton.Click += new System.EventHandler(this.PlaylistSelectButton_Click);
             // 
             // notifyIcon
             // 
@@ -81,7 +81,7 @@
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
             this.notifyIcon.Text = "Видео обои";
             this.notifyIcon.Visible = true;
-            this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
+            this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.NotifyIcon_MouseDoubleClick);
             // 
             // playlistLabel
             // 
@@ -170,7 +170,7 @@
             this.overWindowPictureBox.Size = new System.Drawing.Size(23, 21);
             this.overWindowPictureBox.TabIndex = 25;
             this.overWindowPictureBox.TabStop = false;
-            this.overWindowPictureBox.Click += new System.EventHandler(this.overWindowPictureBox_Click);
+            this.overWindowPictureBox.Click += new System.EventHandler(this.OverWindowPictureBox_Click);
             // 
             // autoLoaderPictureBox
             // 
@@ -179,7 +179,7 @@
             this.autoLoaderPictureBox.Size = new System.Drawing.Size(23, 21);
             this.autoLoaderPictureBox.TabIndex = 24;
             this.autoLoaderPictureBox.TabStop = false;
-            this.autoLoaderPictureBox.Click += new System.EventHandler(this.autoLoaderPictureBox_Click);
+            this.autoLoaderPictureBox.Click += new System.EventHandler(this.AutoLoaderPictureBox_Click);
             // 
             // autoShowPictureBox
             // 
@@ -188,7 +188,7 @@
             this.autoShowPictureBox.Size = new System.Drawing.Size(23, 21);
             this.autoShowPictureBox.TabIndex = 23;
             this.autoShowPictureBox.TabStop = false;
-            this.autoShowPictureBox.Click += new System.EventHandler(this.autoShowPictureBox_Click);
+            this.autoShowPictureBox.Click += new System.EventHandler(this.AutoShowPictureBox_Click);
             // 
             // showWallpaperSwitcher
             // 
@@ -198,7 +198,7 @@
             this.showWallpaperSwitcher.Size = new System.Drawing.Size(95, 39);
             this.showWallpaperSwitcher.TabIndex = 22;
             this.showWallpaperSwitcher.TabStop = false;
-            this.showWallpaperSwitcher.Click += new System.EventHandler(this.showWallpaperSwitcher_Click);
+            this.showWallpaperSwitcher.Click += new System.EventHandler(this.ShowWallpaperSwitcher_Click);
             // 
             // aboutImage
             // 
@@ -210,7 +210,7 @@
             this.aboutImage.Size = new System.Drawing.Size(21, 18);
             this.aboutImage.TabIndex = 16;
             this.aboutImage.TabStop = false;
-            this.aboutImage.MouseHover += new System.EventHandler(this.aboutImage_MouseHover);
+            this.aboutImage.MouseHover += new System.EventHandler(this.AboutImage_MouseHover);
             // 
             // MainForm
             // 
