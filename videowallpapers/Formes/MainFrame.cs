@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using videowp.Formes;
 
 namespace videowp
 {
@@ -37,11 +39,8 @@ namespace videowp
             playlistSelectButton.BackColor = Color.White;
             this.BackColor = Color.White;
 
-            timeComboBox.SelectedIndex = Program.config.InactionIndex;          // считывание времени заставки
-                                                                                
-            autoShowPictureBox.Image = checkBoxPictures[Program.config.AutoShow];
-            autoLoaderPictureBox.Image = File.Exists(Program.shortcut) ? checkBoxPictures[1] : checkBoxPictures[0];
-            overWindowPictureBox.Image = checkBoxPictures[Program.config.OverWindows];
+            timeComboBox.SelectedIndex = Program.config.InactionIndex;          // считывание времени заставки                                                                             
+            overWindowPictureBox.Image = checkBoxPictures[Program.config.OverWindows]; // флаг поверх всех окон
 
             // считывание playerpath
             if (File.Exists(Program.config.PlaylistPath))
@@ -73,9 +72,6 @@ namespace videowp
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             ofd.Filter = Program.filefilter;
         }
-
-        // Информация о программе
-        void AboutImage_MouseHover(object sender, EventArgs e) { toolTip.SetToolTip(aboutImage, "Видеобои 1.33\nAladser ©\n2022"); }
 
         // переключить показ обоев
         void ShowWallpaperSwitcher_Click(object sender, EventArgs e)
@@ -109,19 +105,6 @@ namespace videowp
             Program.config.InactionIndex = timeComboBox.SelectedIndex;
         }
 
-        // переключение автопоказа обоев
-        private void AutoShowPictureBox_Click(object sender, EventArgs e)
-        {
-            Program.config.AutoShow = Program.config.AutoShow == 1 ? 0 : 1;
-            autoShowPictureBox.Image = checkBoxPictures[Program.config.AutoShow];
-        }
-        // переключение автозагрузки
-        private void AutoLoaderPictureBox_Click(object sender, EventArgs e)
-        {
-            int index = File.Exists(Program.shortcut) ? 0 : 1;
-            Program.EditAutoLoader(index==1);
-            autoLoaderPictureBox.Image = checkBoxPictures[index];
-        }
         // переключение поверх окон
         private void OverWindowPictureBox_Click(object sender, EventArgs e)
         {
@@ -169,13 +152,24 @@ namespace videowp
         // Скрытие или закрытие программы
         void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!Program.bcgwork.IsActive())
-                Application.Exit();
-            else
-            {
-                e.Cancel = true;
-                this.Hide();
-            }
+            e.Cancel = true;
+            this.Hide();
+        }
+        // открыть окно настроек
+        private void SetupMenuItem_Click(object sender, EventArgs e)
+        {
+            new SettingForm();
+        }
+        // закрыть программу
+        private void ExitMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.bcgwork.Stop();
+            Process.GetCurrentProcess().Kill();
+        }
+
+        private void AboutMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Видеобои 1.33\nAladser ©\n2022");
         }
     }
 }

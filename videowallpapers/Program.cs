@@ -24,7 +24,7 @@ namespace videowp
 
         static UserActivityHook globalHook;// хук глобального движения мыши или клавиатуры
         public static MainForm mainform;
-        public static BackWork bcgwork;      
+        public static BackWork bcgwork;
         // Проверка запуска второй копии приложения
         static Mutex InstanceCheckMutex;
         static bool InstanceCheck()
