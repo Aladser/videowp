@@ -127,6 +127,7 @@ namespace videowp
             text += $"period = {inactonIndex}\n";
             text += $"autoshow = {autoshow}\n";
             text += $"overWindows = {overwindows}\n";
+            Console.WriteLine($"autoshow = {autoshow}\n");
             writer.WriteLine(text);
             writer.Close();
         }

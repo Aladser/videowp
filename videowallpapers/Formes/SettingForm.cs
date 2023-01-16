@@ -1,11 +1,13 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace videowp.Formes
 {
     public partial class SettingForm : Form
     {
-        bool firstBoot = true;
+        bool firstLoadBoot = true;
+        bool firstShowBoot = true;
         public SettingForm()
         {
             InitializeComponent();
@@ -15,13 +17,13 @@ namespace videowp.Formes
             autoLoaderCheckbox.Checked = File.Exists(Program.shortcut);
             autoShowCheckbox.Checked = Program.config.AutoShow==1;
         }
-
+        // автозагрузка
         private void AutoLoaderCheckbox_CheckedChanged(object sender, System.EventArgs e)
         {
-            // первый фальшивый запуск окна при активной автозагрузке
-            if (firstBoot && File.Exists(Program.shortcut))
+            // первый фальшивый запуск
+            if (firstLoadBoot && File.Exists(Program.shortcut))
             {
-                firstBoot = false;
+                firstLoadBoot = false;
                 return;
             }
             // переключение
@@ -29,21 +31,23 @@ namespace videowp.Formes
             {
                 bool index = !File.Exists(Program.shortcut);
                 Program.EditAutoLoader(index);
-                firstBoot = false;
+                firstLoadBoot = false;
             }
         }
-
-        private void autoShowCheckbox_CheckedChanged(object sender, System.EventArgs e)
+        // автопоказ
+        private void AutoShowCheckbox_CheckedChanged(object sender, System.EventArgs e)
         {
-            // первый фальшивый запуск окна при активной автозагрузке
-            if (firstBoot && Program.config.AutoShow==1)
+            // первый фальшивый запуск
+            if (firstShowBoot && Program.config.AutoShow==1)
             {
-                firstBoot = false;
+                firstShowBoot = false;
                 return;
             }
-            // переключение
             else
-                Program.config.AutoShow = Program.config.AutoShow==1 ? 0 : 1;
+            {
+                Program.config.AutoShow = Program.config.AutoShow == 1 ? 0 : 1;
+                firstShowBoot = false;
+            }
         }
     }
 }

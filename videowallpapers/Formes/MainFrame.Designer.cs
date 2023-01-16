@@ -54,10 +54,10 @@
             // 
             this.playlistNameLabel.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.playlistNameLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.playlistNameLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.playlistNameLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.playlistNameLabel.Location = new System.Drawing.Point(12, 60);
             this.playlistNameLabel.Name = "playlistNameLabel";
-            this.playlistNameLabel.Size = new System.Drawing.Size(480, 23);
+            this.playlistNameLabel.Size = new System.Drawing.Size(480, 33);
             this.playlistNameLabel.TabIndex = 3;
             this.playlistNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -66,7 +66,7 @@
             this.playlistSelectButton.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.playlistSelectButton.Location = new System.Drawing.Point(498, 60);
             this.playlistSelectButton.Name = "playlistSelectButton";
-            this.playlistSelectButton.Size = new System.Drawing.Size(112, 24);
+            this.playlistSelectButton.Size = new System.Drawing.Size(112, 33);
             this.playlistSelectButton.TabIndex = 4;
             this.playlistSelectButton.Text = "Выбор";
             this.playlistSelectButton.UseVisualStyleBackColor = true;
@@ -92,7 +92,7 @@
             // 
             // overWindowLabel
             // 
-            this.overWindowLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.overWindowLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.overWindowLabel.Location = new System.Drawing.Point(47, 179);
             this.overWindowLabel.Name = "overWindowLabel";
             this.overWindowLabel.Size = new System.Drawing.Size(222, 24);

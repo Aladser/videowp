@@ -56,7 +56,7 @@
             this.autoShowCheckbox.TabIndex = 1;
             this.autoShowCheckbox.Text = "Автозапуск заставки";
             this.autoShowCheckbox.UseVisualStyleBackColor = true;
-            this.autoShowCheckbox.CheckedChanged += new System.EventHandler(this.autoShowCheckbox_CheckedChanged);
+            this.autoShowCheckbox.CheckedChanged += new System.EventHandler(this.AutoShowCheckbox_CheckedChanged);
             // 
             // autoLoaderCheckbox
             // 
