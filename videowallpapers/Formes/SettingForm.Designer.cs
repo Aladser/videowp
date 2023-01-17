@@ -32,11 +32,15 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.autoShowCheckbox = new System.Windows.Forms.CheckBox();
             this.autoLoaderCheckbox = new System.Windows.Forms.CheckBox();
+            this.srcInfoLabel = new System.Windows.Forms.Label();
+            this.srcInfoField = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.srcInfoField);
+            this.groupBox1.Controls.Add(this.srcInfoLabel);
             this.groupBox1.Controls.Add(this.autoShowCheckbox);
             this.groupBox1.Controls.Add(this.autoLoaderCheckbox);
             this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -69,6 +73,23 @@
             this.autoLoaderCheckbox.UseVisualStyleBackColor = true;
             this.autoLoaderCheckbox.CheckedChanged += new System.EventHandler(this.AutoLoaderCheckbox_CheckedChanged);
             // 
+            // srcInfoLabel
+            // 
+            this.srcInfoLabel.AutoSize = true;
+            this.srcInfoLabel.Location = new System.Drawing.Point(12, 100);
+            this.srcInfoLabel.Name = "srcInfoLabel";
+            this.srcInfoLabel.Size = new System.Drawing.Size(130, 21);
+            this.srcInfoLabel.TabIndex = 2;
+            this.srcInfoLabel.Text = "Источник видео:";
+            // 
+            // srcInfoField
+            // 
+            this.srcInfoField.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.srcInfoField.Location = new System.Drawing.Point(148, 98);
+            this.srcInfoField.Name = "srcInfoField";
+            this.srcInfoField.Size = new System.Drawing.Size(210, 29);
+            this.srcInfoField.TabIndex = 3;
+            // 
             // SettingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -90,5 +111,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox autoShowCheckbox;
         private System.Windows.Forms.CheckBox autoLoaderCheckbox;
+        private System.Windows.Forms.TextBox srcInfoField;
+        private System.Windows.Forms.Label srcInfoLabel;
     }
 }

@@ -104,7 +104,7 @@
             this.endPeriodLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.endPeriodLabel.Location = new System.Drawing.Point(420, 117);
             this.endPeriodLabel.Name = "endPeriodLabel";
-            this.endPeriodLabel.Size = new System.Drawing.Size(39, 22);
+            this.endPeriodLabel.Size = new System.Drawing.Size(56, 25);
             this.endPeriodLabel.TabIndex = 7;
             this.endPeriodLabel.Text = "мин";
             this.endPeriodLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -134,10 +134,10 @@
             this.startPeriodLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.startPeriodLabel.Location = new System.Drawing.Point(212, 117);
             this.startPeriodLabel.Name = "startPeriodLabel";
-            this.startPeriodLabel.Size = new System.Drawing.Size(128, 22);
+            this.startPeriodLabel.Size = new System.Drawing.Size(130, 25);
             this.startPeriodLabel.TabIndex = 6;
             this.startPeriodLabel.Text = "Время бездействия:";
-            this.startPeriodLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.startPeriodLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // overWindowPictureBox
             // 

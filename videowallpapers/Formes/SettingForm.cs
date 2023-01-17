@@ -16,8 +16,11 @@ namespace videowp.Formes
 
             autoLoaderCheckbox.Checked = File.Exists(Program.shortcut);
             autoShowCheckbox.Checked = Program.config.AutoShow==1;
+
+
         }
-        // автозагрузка
+
+        // флаг автозагрузки
         private void AutoLoaderCheckbox_CheckedChanged(object sender, System.EventArgs e)
         {
             // первый фальшивый запуск
@@ -34,7 +37,8 @@ namespace videowp.Formes
                 firstLoadBoot = false;
             }
         }
-        // автопоказ
+
+        // флаг автопоказа
         private void AutoShowCheckbox_CheckedChanged(object sender, System.EventArgs e)
         {
             // первый фальшивый запуск

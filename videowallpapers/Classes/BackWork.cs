@@ -13,24 +13,6 @@ namespace videowp
         private static extern bool GetWindowRect(HandleRef hWnd, [In, Out] ref RECT rect);
         [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, int dwExtraInfo);
-
-        enum MouseFlags : uint
-        {
-            MOUSEEVENTF_ABSOLUTE = 0x8000,   // If set, dx and dy contain normalized absolute coordinates between 0 and 65535. The event procedure maps these coordinates onto the display surface. Coordinate (0,0) maps onto the upper-left corner of the display surface, (65535,65535) maps onto the lower-right corner.
-            MOUSEEVENTF_LEFTDOWN = 0x0002,   // The left button is down.
-            MOUSEEVENTF_LEFTUP = 0x0004,     // The left button is up.
-            MOUSEEVENTF_MIDDLEDOWN = 0x0020, // The middle button is down.
-            MOUSEEVENTF_MIDDLEUP = 0x0040,   // The middle button is up.
-            MOUSEEVENTF_MOVE = 0x0001,       // Movement occurred.
-            MOUSEEVENTF_RIGHTDOWN = 0x0008,  // The right button is down.
-            MOUSEEVENTF_RIGHTUP = 0x0010,    // The right button is up.
-            MOUSEEVENTF_WHEEL = 0x0800,      // The wheel has been moved, if the mouse has a wheel.The amount of movement is specified in dwData
-            MOUSEEVENTF_XDOWN = 0x0080,      // An X button was pressed.
-            MOUSEEVENTF_XUP = 0x0100,        // An X button was released.
-            MOUSEEVENTF_HWHEEL = 0x01000     // The wheel button is tilted.
-        }
 
         readonly BackgroundWorker bw = new BackgroundWorker();
         long downtime;
@@ -85,7 +67,7 @@ namespace videowp
                     isActive = false;
                     foreach (Process proc in Process.GetProcessesByName("mpv")) proc.Kill();
                 }
-                System.Threading.Thread.Sleep(150);
+                System.Threading.Thread.Sleep(200);
                 dwt2 = GetTimeNow();
                 downtime = dwt2 - dwt1;
             }
@@ -95,45 +77,25 @@ namespace videowp
         /// старт фоновой задачи
         /// </summary>
         /// <param name="plpath"></param>
-        public void Start()
-        {
-            bw.RunWorkerAsync(); 
-        }
-
+        public void Start(){bw.RunWorkerAsync(); }
         /// <summary>
         /// остановка фоновой задачи
         /// </summary>
-        public void Stop()
-        {
-            bw.CancelAsync();
-        }
-
+        public void Stop(){ bw.CancelAsync();}
         /// <summary>
         /// получить текущее время в мс
         /// </summary>
         /// <returns></returns>
-        private long GetTimeNow()
-        {
-            return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-        }
-
+        private long GetTimeNow() {return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;}
         /// <summary>
         /// Возвращает активность фоновой задачи
         /// </summary>
         /// <returns></returns>
-        public bool IsActive()
-        {
-            return bw.IsBusy;
-        }
-
+        public bool IsActive(){ return bw.IsBusy; }
         /// <summary>
         /// Событие остановки показа обоев
         /// </summary>
-        public void StopShowWallpaper()
-        {
-            dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-        }
-
+        public void StopShowWallpaper(){ dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;}
         // Определение запуска фуллэкрана
         [StructLayout(LayoutKind.Sequential)]
         struct RECT

@@ -16,13 +16,17 @@ namespace videowp
         /// конфигурационный файл
         /// </summary>
         public static ConfigControl config = new ConfigControl();
-        public static readonly string shortcut = $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}\\videowp.lnk"; // ярлык автозагрузки 
 
+        public static readonly string shortcut = $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}\\videowp.lnk"; // ярлык автозагрузки 
         public static string mpvPath = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\mpv\\mpv.exe"; // MPV
         public static ProcessStartInfo mpvProc; // MPV процесс в Windows
         public static string filefilter = "видеоплейлисты (*.m3u;*.m3u8;*.pls;*)|*.m3u;*.m3u8;*.pls";
 
-        static UserActivityHook globalHook;// хук глобального движения мыши или клавиатуры
+        /// <summary>
+        /// хук глобального движения мыши или клавиатуры
+        /// </summary>
+        static UserActivityHook globalHook;
+
         public static MainForm mainform;
         public static BackWork bcgwork;
         // Проверка запуска второй копии приложения

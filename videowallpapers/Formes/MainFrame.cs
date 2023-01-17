@@ -73,6 +73,11 @@ namespace videowp
             ofd.Filter = Program.filefilter;
         }
 
+        private void AboutMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Видеобои 1.34\nAladser ©\n2022");
+        }
+
         // переключить показ обоев
         void ShowWallpaperSwitcher_Click(object sender, EventArgs e)
         {
@@ -95,8 +100,7 @@ namespace videowp
         // активировать обои
         void ShowOnBtn(bool index)
         {
-            switcherIndex = index ? 1 : 0;
-            showWallpaperSwitcher.Image = switcher[switcherIndex];
+            showWallpaperSwitcher.Image = switcher[index?1:0];
         }
 
         // переключение времени заставки
@@ -165,11 +169,6 @@ namespace videowp
         {
             Program.bcgwork.Stop();
             Process.GetCurrentProcess().Kill();
-        }
-
-        private void AboutMenuItem_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Видеобои 1.33\nAladser ©\n2022");
         }
     }
 }
