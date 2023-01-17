@@ -74,6 +74,19 @@ namespace videowp
             get { return overwindows; }
         }
         int overwindows;
+        /// <summary>
+        /// Путь к шаре с видео
+        /// </summary>
+        public string Updates
+        {
+            set
+            {
+                updates = value;
+                this.WriteToFile();
+            }
+            get { return updates; }
+        }
+        string updates;
 
         public ConfigControl()
         {
@@ -84,6 +97,7 @@ namespace videowp
                 inactonIndex = 0;
                 autoshow = 0;
                 overwindows = 0;
+                updates = "";
                 this.WriteToFile();
             }
             else
@@ -109,7 +123,10 @@ namespace videowp
                 autoshow = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
 
                 line = reader.ReadLine();
-                overwindows = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));         
+                overwindows = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
+
+                line = reader.ReadLine();
+                updates = line.Substring(line.IndexOf("= ") + 2);
             }
             catch (Exception exc)
             {
@@ -127,6 +144,7 @@ namespace videowp
             text += $"period = {inactonIndex}\n";
             text += $"autoshow = {autoshow}\n";
             text += $"overWindows = {overwindows}\n";
+            text += $"updates = {updates}\n";
             writer.WriteLine(text);
             writer.Close();
         }

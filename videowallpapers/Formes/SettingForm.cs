@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
+using videowp.Classes;
 
 namespace videowp.Formes
 {
@@ -16,7 +19,8 @@ namespace videowp.Formes
             Show();
 
             autoLoaderCheckbox.Checked = File.Exists(Program.shortcut);
-            autoShowCheckbox.Checked = Program.config.AutoShow==1;
+            autoShowCheckbox.Checked = Program.config.AutoShow == 1;
+            updateSrvField.Text = Program.config.Updates;
         }
 
         // флаг автозагрузки
@@ -51,6 +55,30 @@ namespace videowp.Formes
                 Program.config.AutoShow = Program.config.AutoShow == 1 ? 0 : 1;
                 firstShowBoot = false;
             }
+        }
+
+        private void updateSrvField_DoubleClick(object sender, EventArgs e) { updateSrvField.Text = ""; }
+        // ввод названия сервера
+        // \\192.168.1.100\Data\video
+        private void SetUpdateSrvBtn_Click(object sender, EventArgs e)
+        {
+            string serverAddress = updateSrvField.Text;
+            if (Directory.Exists(serverAddress))
+            {
+                Program.config.Updates = serverAddress;
+                Program.updateCtrl = new UpdatePlaylistControl(serverAddress, Program.config.PlaylistPath);
+                Program.updateCtrl.CheckUpdates();
+            }
+            else
+            {
+                updateSrvField.Text = "сервер не существует";                
+            }
+        }
+        // сброс сервера обновлений
+        private void button1_Click(object sender, EventArgs e)
+        {
+            updateSrvField.Text = "";
+            Program.config.Updates = "";
         }
     }
 }

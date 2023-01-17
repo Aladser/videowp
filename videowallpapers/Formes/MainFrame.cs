@@ -27,11 +27,6 @@ namespace videowp
         /// </summary>
         readonly Bitmap[] checkBoxPictures = { Properties.Resources.offSelectImg, Properties.Resources.onSelectImg };
 
-        /// <summary>
-        /// Обновление плейлиста
-        /// </summary>
-        UpdatePlaylistControl updateCtrl = null;
-
         public MainForm()
         {
             InitializeComponent();
@@ -52,8 +47,9 @@ namespace videowp
             if (File.Exists(Program.config.PlaylistPath))
             {
                 playlistNameLabel.Text = Program.config.PlaylistPath;
-                updateCtrl = new UpdatePlaylistControl("\\\\192.168.1.100\\Data\\video", playlistNameLabel.Text);
-                // updateCtrl.CheckUpdates();
+
+                // проверка активности сервера обновлений
+                if (Program.config.Updates != "") Program.updateCtrl.CheckUpdates();
 
                 // проверка автозапуска
                 if (Program.config.AutoShow == 1)

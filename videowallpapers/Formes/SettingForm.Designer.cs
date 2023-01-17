@@ -30,26 +30,70 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingForm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.resetBtn = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.setUpdateSrvBtn = new System.Windows.Forms.Button();
+            this.updateSrvField = new System.Windows.Forms.TextBox();
             this.autoShowCheckbox = new System.Windows.Forms.CheckBox();
             this.autoLoaderCheckbox = new System.Windows.Forms.CheckBox();
-            this.srcInfoLabel = new System.Windows.Forms.Label();
-            this.srcInfoField = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.srcInfoField);
-            this.groupBox1.Controls.Add(this.srcInfoLabel);
+            this.groupBox1.Controls.Add(this.resetBtn);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.setUpdateSrvBtn);
+            this.groupBox1.Controls.Add(this.updateSrvField);
             this.groupBox1.Controls.Add(this.autoShowCheckbox);
             this.groupBox1.Controls.Add(this.autoLoaderCheckbox);
             this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(394, 283);
+            this.groupBox1.Size = new System.Drawing.Size(396, 268);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Настройки";
+            // 
+            // resetBtn
+            // 
+            this.resetBtn.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.resetBtn.Location = new System.Drawing.Point(178, 202);
+            this.resetBtn.Name = "resetBtn";
+            this.resetBtn.Size = new System.Drawing.Size(85, 29);
+            this.resetBtn.TabIndex = 7;
+            this.resetBtn.Text = "Сбросить";
+            this.resetBtn.UseVisualStyleBackColor = true;
+            this.resetBtn.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(21, 121);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(130, 21);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Источник видео:";
+            // 
+            // setUpdateSrvBtn
+            // 
+            this.setUpdateSrvBtn.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.setUpdateSrvBtn.Location = new System.Drawing.Point(37, 202);
+            this.setUpdateSrvBtn.Name = "setUpdateSrvBtn";
+            this.setUpdateSrvBtn.Size = new System.Drawing.Size(85, 29);
+            this.setUpdateSrvBtn.TabIndex = 5;
+            this.setUpdateSrvBtn.Text = "Установить";
+            this.setUpdateSrvBtn.UseVisualStyleBackColor = true;
+            this.setUpdateSrvBtn.Click += new System.EventHandler(this.SetUpdateSrvBtn_Click);
+            // 
+            // updateSrvField
+            // 
+            this.updateSrvField.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.updateSrvField.Location = new System.Drawing.Point(16, 156);
+            this.updateSrvField.Name = "updateSrvField";
+            this.updateSrvField.Size = new System.Drawing.Size(264, 29);
+            this.updateSrvField.TabIndex = 3;
+            this.updateSrvField.DoubleClick += new System.EventHandler(this.updateSrvField_DoubleClick);
             // 
             // autoShowCheckbox
             // 
@@ -73,29 +117,12 @@
             this.autoLoaderCheckbox.UseVisualStyleBackColor = true;
             this.autoLoaderCheckbox.CheckedChanged += new System.EventHandler(this.AutoLoaderCheckbox_CheckedChanged);
             // 
-            // srcInfoLabel
-            // 
-            this.srcInfoLabel.AutoSize = true;
-            this.srcInfoLabel.Location = new System.Drawing.Point(12, 100);
-            this.srcInfoLabel.Name = "srcInfoLabel";
-            this.srcInfoLabel.Size = new System.Drawing.Size(130, 21);
-            this.srcInfoLabel.TabIndex = 2;
-            this.srcInfoLabel.Text = "Источник видео:";
-            // 
-            // srcInfoField
-            // 
-            this.srcInfoField.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.srcInfoField.Location = new System.Drawing.Point(148, 98);
-            this.srcInfoField.Name = "srcInfoField";
-            this.srcInfoField.Size = new System.Drawing.Size(210, 29);
-            this.srcInfoField.TabIndex = 3;
-            // 
             // SettingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(418, 307);
+            this.ClientSize = new System.Drawing.Size(420, 301);
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SettingForm";
@@ -111,7 +138,9 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox autoShowCheckbox;
         private System.Windows.Forms.CheckBox autoLoaderCheckbox;
-        private System.Windows.Forms.TextBox srcInfoField;
-        private System.Windows.Forms.Label srcInfoLabel;
+        private System.Windows.Forms.TextBox updateSrvField;
+        private System.Windows.Forms.Button setUpdateSrvBtn;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button resetBtn;
     }
 }

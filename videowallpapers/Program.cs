@@ -18,12 +18,15 @@ namespace videowp
         /// </summary>
         public static ConfigControl config = new ConfigControl();
 
+        /// <summary>
+        /// Обновление плейлиста
+        /// </summary>
+        public static UpdatePlaylistControl updateCtrl;
+
         public static readonly string shortcut = $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}\\videowp.lnk"; // ярлык автозагрузки 
         public static string mpvPath = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\mpv\\mpv.exe"; // MPV
         public static ProcessStartInfo mpvProc; // MPV процесс в Windows
         public static string filefilter = "видеоплейлисты (*.m3u;*.m3u8;*.pls;*)|*.m3u;*.m3u8;*.pls";
-
-        readonly static string sharePath = "\\\\192.168.1.100\\Data\\video";
 
         /// <summary>
         /// хук глобального движения мыши или клавиатуры
@@ -55,7 +58,22 @@ namespace videowp
             {
                 mpvProc = new ProcessStartInfo(Program.mpvPath, @"");
             }
-            // Создание хука
+            // класс обновления плейлиста
+            if (!config.Updates.Equals(""))
+            {
+                if (Directory.Exists(config.Updates))
+                {
+                    updateCtrl = new UpdatePlaylistControl(config.Updates, config.PlaylistPath);
+                }
+                else
+                {
+                    updateCtrl = null;
+                    config.Updates = "";
+                }
+            }
+            else 
+                updateCtrl = null;
+            // создание хука
             globalHook = new UserActivityHook();
             globalHook.KeyPress += (object sender, KeyPressEventArgs e) => Program.bcgwork.StopShowWallpaper(); // нажатие клавиши
             globalHook.OnMouseActivity += (object sender, MouseEventArgs e) => Program.bcgwork.StopShowWallpaper(); // движение мыши
