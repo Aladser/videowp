@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Drawing;
 using System.IO;
-using System.Threading;
 using System.Windows.Forms;
 using videowp.Classes;
 
@@ -20,6 +17,8 @@ namespace videowp.Formes
 
             autoLoaderCheckbox.Checked = File.Exists(Program.shortcut);
             autoShowCheckbox.Checked = Program.config.AutoShow == 1;
+            overWindowsCheckbox.Checked = Program.config.OverWindows == 1;
+
             updateSrvField.Text = Program.config.Updates;
         }
 
@@ -57,6 +56,22 @@ namespace videowp.Formes
             }
         }
 
+        // Флаг Поверх всех окон
+        private void OverWindowsCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            // первый фальшивый запуск
+            if (firstShowBoot && Program.config.OverWindows == 1)
+            {
+                firstShowBoot = false;
+                return;
+            }
+            else
+            {
+                Program.config.OverWindows = Program.config.OverWindows == 1 ? 0 : 1;
+                firstShowBoot = false;
+            }
+        }
+
         private void updateSrvField_DoubleClick(object sender, EventArgs e) { updateSrvField.Text = ""; }
         // ввод названия сервера
         // \\192.168.1.100\Data\video
@@ -80,5 +95,7 @@ namespace videowp.Formes
             updateSrvField.Text = "";
             Program.config.Updates = "";
         }
+
+
     }
 }

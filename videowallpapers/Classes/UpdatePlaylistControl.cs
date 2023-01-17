@@ -20,17 +20,19 @@ namespace videowp.Classes
         {
             List<string> shareFilenames = GetVideosFromFolder(sharePath);
             List<string> playlistFilenames = GetVideosFromFolder(Path.GetDirectoryName(playlistPath));
+            string plFolder = Path.GetDirectoryName(playlistPath);
             bool isNewVideos = !(new HashSet<string>(shareFilenames).SetEquals(new HashSet<string>(playlistFilenames)));
+            string isFile;
 
             if (isNewVideos)
             {
                 for (int i = 0; i < shareFilenames.Count; i++)
                 {
-                    string isFile = playlistFilenames.Find(x => x.Equals(shareFilenames[i]));
+                    isFile = playlistFilenames.Find(x => x.Equals(shareFilenames[i])); // поиска файла в плейлисте
                     if (isFile == null)
                     {
                         string oldpath = $"{sharePath}\\{shareFilenames[i]}";
-                        string newpath = $"{Path.GetDirectoryName(playlistPath)}\\{shareFilenames[i]}";
+                        string newpath = $"{plFolder}\\{shareFilenames[i]}";
                         File.Copy(oldpath, newpath);
                     }
                 }
@@ -47,7 +49,7 @@ namespace videowp.Classes
             List<string> files = Directory.GetFiles(sharePath).ToList<string>();
             for (int i = 0; i < files.Count; i++) files[i] = Path.GetFileName(files[i]);
             int index = files.IndexOf(Path.GetFileName(playlistPath)); 
-            files.RemoveAt(index); // удаление файла плейлиста
+            files.RemoveAt(index); // удаление файла плейлиста из списка
             return files;
         }
     }

@@ -98,6 +98,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="resources\exiticon.png" />
+    <None Include="resources\setupicon.png" />
+    <None Include="resources\abouticon.png" />
     <None Include="resources\disabledbtn.png" />
     <None Include="resources\onSelectImg.png" />
     <None Include="resources\offSelectImg.png" />

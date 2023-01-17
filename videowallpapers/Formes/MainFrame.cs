@@ -22,11 +22,6 @@ namespace videowp
         /// </summary>
         int switcherIndex;
 
-        /// <summary>
-        /// Флажки опций
-        /// </summary>
-        readonly Bitmap[] checkBoxPictures = { Properties.Resources.offSelectImg, Properties.Resources.onSelectImg };
-
         public MainForm()
         {
             InitializeComponent();
@@ -41,7 +36,6 @@ namespace videowp
             this.BackColor = Color.White;
 
             timeComboBox.SelectedIndex = Program.config.InactionIndex;          // считывание времени заставки                                                                             
-            overWindowPictureBox.Image = checkBoxPictures[Program.config.OverWindows]; // флаг поверх всех окон
 
             // считывание playerpath 
             if (File.Exists(Program.config.PlaylistPath))
@@ -80,7 +74,7 @@ namespace videowp
 
         private void AboutMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Видеобои 1.34\nAladser ©\n2022");
+            MessageBox.Show("Видеобои 1.4\nAladser ©\n2022");
         }
 
         // переключить показ обоев
@@ -112,13 +106,6 @@ namespace videowp
         void TimeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             Program.config.InactionIndex = timeComboBox.SelectedIndex;
-        }
-
-        // переключение поверх окон
-        private void OverWindowPictureBox_Click(object sender, EventArgs e)
-        {
-            Program.config.OverWindows = Program.config.OverWindows==1 ? 0 : 1;
-            overWindowPictureBox.Image = checkBoxPictures[Program.config.OverWindows];
         }
 
         // Сворачивание в трей
@@ -164,13 +151,13 @@ namespace videowp
             e.Cancel = true;
             this.Hide();
         }
-        // открыть окно настроек
-        private void SetupMenuItem_Click(object sender, EventArgs e)
+
+        private void setupBtn_Click(object sender, EventArgs e)
         {
             new SettingForm();
         }
-        // закрыть программу
-        private void ExitMenuItem_Click(object sender, EventArgs e)
+
+        private void exitBtn_Click(object sender, EventArgs e)
         {
             Program.bcgwork.Stop();
             Process.GetCurrentProcess().Kill();

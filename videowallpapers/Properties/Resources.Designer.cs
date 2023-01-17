@@ -63,6 +63,16 @@ namespace videowp.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap abouticon {
+            get {
+                object obj = ResourceManager.GetObject("abouticon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap disabledbtn {
             get {
                 object obj = ResourceManager.GetObject("disabledbtn", resourceCulture);
@@ -73,9 +83,9 @@ namespace videowp.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap info {
+        internal static System.Drawing.Bitmap exiticon {
             get {
-                object obj = ResourceManager.GetObject("info", resourceCulture);
+                object obj = ResourceManager.GetObject("exiticon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,16 +103,6 @@ namespace videowp.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap offSelectImg {
-            get {
-                object obj = ResourceManager.GetObject("offSelectImg", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap onbtn {
             get {
                 object obj = ResourceManager.GetObject("onbtn", resourceCulture);
@@ -113,9 +113,9 @@ namespace videowp.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap onSelectImg {
+        internal static System.Drawing.Bitmap setupicon {
             get {
-                object obj = ResourceManager.GetObject("onSelectImg", resourceCulture);
+                object obj = ResourceManager.GetObject("setupicon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

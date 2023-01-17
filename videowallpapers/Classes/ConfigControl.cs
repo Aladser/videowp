@@ -130,7 +130,7 @@ namespace videowp
             }
             catch (Exception exc)
             {
-                Console.WriteLine(exc);
+                MessageBox.Show(exc.Message);
             }
             reader.Close();
         }
