@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
@@ -16,8 +17,6 @@ namespace videowp.Formes
 
             autoLoaderCheckbox.Checked = File.Exists(Program.shortcut);
             autoShowCheckbox.Checked = Program.config.AutoShow==1;
-
-
         }
 
         // флаг автозагрузки

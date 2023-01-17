@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using videowp.Classes;
 using videowp.Formes;
 
 namespace videowp
@@ -26,6 +27,11 @@ namespace videowp
         /// </summary>
         readonly Bitmap[] checkBoxPictures = { Properties.Resources.offSelectImg, Properties.Resources.onSelectImg };
 
+        /// <summary>
+        /// Обновление плейлиста
+        /// </summary>
+        UpdatePlaylistControl updateCtrl = null;
+
         public MainForm()
         {
             InitializeComponent();
@@ -42,27 +48,30 @@ namespace videowp
             timeComboBox.SelectedIndex = Program.config.InactionIndex;          // считывание времени заставки                                                                             
             overWindowPictureBox.Image = checkBoxPictures[Program.config.OverWindows]; // флаг поверх всех окон
 
-            // считывание playerpath
+            // считывание playerpath 
             if (File.Exists(Program.config.PlaylistPath))
             {
                 playlistNameLabel.Text = Program.config.PlaylistPath;
+                updateCtrl = new UpdatePlaylistControl("\\\\192.168.1.100\\Data\\video", playlistNameLabel.Text);
+                // updateCtrl.CheckUpdates();
 
+                // проверка автозапуска
                 if (Program.config.AutoShow == 1)
                 {
-                    ShowOnBtn(true);
+                    displayWallpapers(true);
                     Program.bcgwork.Start();
                     playlistSelectButton.Enabled = false;
                 }
                 else
                 {
-                    ShowOnBtn(false);
+                    displayWallpapers(false);
                     this.Show();
                 }
             }
             else
             {
                 playlistNameLabel.Text = "Не найден плейлист";
-                ShowOnBtn(false);
+                displayWallpapers(false);
                 this.Show();
                 showWallpaperSwitcher.Enabled = false;
                 showWallpaperSwitcher.Image = switcher[2];
@@ -84,21 +93,21 @@ namespace videowp
             switcherIndex = switcherIndex == 1 ? 0 : 1;
             if (switcherIndex == 1)
             {
-                ShowOnBtn(true);
+                displayWallpapers(true);
                 playlistSelectButton.Enabled = false;
 
                 Program.bcgwork.Start();
             }
             else
             {
-                ShowOnBtn(false);
+                displayWallpapers(false);
                 playlistSelectButton.Enabled = true;
 
                 Program.bcgwork.Stop();
             }
         }
         // активировать обои
-        void ShowOnBtn(bool index)
+        void displayWallpapers(bool index)
         {
             showWallpaperSwitcher.Image = switcher[index?1:0];
         }

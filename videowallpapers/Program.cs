@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+using videowp.Classes;
 
 namespace videowp
 {
@@ -21,6 +22,8 @@ namespace videowp
         public static string mpvPath = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\mpv\\mpv.exe"; // MPV
         public static ProcessStartInfo mpvProc; // MPV процесс в Windows
         public static string filefilter = "видеоплейлисты (*.m3u;*.m3u8;*.pls;*)|*.m3u;*.m3u8;*.pls";
+
+        readonly static string sharePath = "\\\\192.168.1.100\\Data\\video";
 
         /// <summary>
         /// хук глобального движения мыши или клавиатуры
@@ -100,5 +103,6 @@ namespace videowp
             else
                 File.Delete(Program.shortcut);
         }
+
     }
 }
