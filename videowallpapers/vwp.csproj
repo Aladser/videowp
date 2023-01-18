@@ -51,7 +51,7 @@
   <ItemGroup>
     <Compile Include="Classes\BackWork.cs" />
     <Compile Include="Classes\ConfigControl.cs" />
-    <Compile Include="Classes\UpdatePlaylistControl.cs" />
+    <Compile Include="Classes\PlaylistControl.cs" />
     <Compile Include="Formes\MainFrame.cs">
       <SubType>Form</SubType>
     </Compile>

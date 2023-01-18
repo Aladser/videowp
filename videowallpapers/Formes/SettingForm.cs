@@ -81,8 +81,7 @@ namespace videowp.Formes
             if (Directory.Exists(serverAddress))
             {
                 Program.config.Updates = serverAddress;
-                Program.updateCtrl = new UpdatePlaylistControl(serverAddress, Program.config.PlaylistPath);
-                Program.updateCtrl.CheckUpdates();
+                Program.plCtrl = new PlaylistControl(Program.config.PlaylistFolderPath);
             }
             else
             {

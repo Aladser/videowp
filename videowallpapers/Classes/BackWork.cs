@@ -38,7 +38,7 @@ namespace videowp
             dwt1 = startBWTime;
             downtime = 0;
 
-            Program.mpvProc.Arguments = $"--playlist={Program.config.PlaylistPath}";
+            Program.mpvProc.Arguments = $"--playlist={Program.plCtrl.PLAYLIST_PATH}";
 
             while (true)
             {               

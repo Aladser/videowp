@@ -1,25 +1,18 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
-using videowp.Classes;
 using videowp.Formes;
 
 namespace videowp
 {
     public partial class MainForm : Form
     {
-        readonly OpenFileDialog ofd = new OpenFileDialog();
-
-        /// <summary>
-        /// переключатель
-        /// </summary>
+        //readonly OpenFileDialog ofd = new OpenFileDialog();
+        readonly FolderBrowserDialog fbd = new FolderBrowserDialog();
+        // переключатель
         readonly Bitmap[] switcher = {Properties.Resources.offbtn, Properties.Resources.onbtn, Properties.Resources.disabledbtn};
-
-        /// <summary>
-        /// индекс переключателя  
-        /// </summary>
+        // индекс переключателя  
         int switcherIndex;
 
         public MainForm()
@@ -35,41 +28,50 @@ namespace videowp
             playlistSelectButton.BackColor = Color.White;
             this.BackColor = Color.White;
 
-            timeComboBox.SelectedIndex = Program.config.InactionIndex;          // считывание времени заставки                                                                             
+            timeComboBox.SelectedIndex = Program.config.InactionIndex; // считывание времени заставки
 
-            // считывание playerpath 
-            if (File.Exists(Program.config.PlaylistPath))
+            // плейлист 
+            if (!Program.plCtrl.playlistFolderPath.Equals(""))
             {
-                playlistNameLabel.Text = Program.config.PlaylistPath;
-
-                // проверка активности сервера обновлений
-                if (Program.config.Updates != "") Program.updateCtrl.CheckUpdates();
-
-                // проверка автозапуска
-                if (Program.config.AutoShow == 1)
+                if (!Program.plCtrl.IsEmpty())
                 {
-                    displayWallpapers(true);
-                    Program.bcgwork.Start();
-                    playlistSelectButton.Enabled = false;
+                    playlistFolderNameLabel.Text = Program.plCtrl.playlistFolderPath;
+                    fbd.SelectedPath = Program.plCtrl.playlistFolderPath;
                 }
                 else
                 {
-                    displayWallpapers(false);
-                    this.Show();
+                    playlistFolderNameLabel.Text = $"{Program.plCtrl.playlistFolderPath} (Пусто)";
+                    fbd.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                    showWallpaperSwitcher.Image = switcher[2];
                 }
             }
             else
             {
-                playlistNameLabel.Text = "Не найден плейлист";
-                displayWallpapers(false);
-                this.Show();
-                showWallpaperSwitcher.Enabled = false;
-                showWallpaperSwitcher.Image = switcher[2];
-                playlistSelectButton.Enabled = true;
+                playlistFolderNameLabel.Text = "";
+                fbd.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             }
+            Program.plCtrl.CheckFilesInFolder();
 
-            ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            ofd.Filter = Program.filefilter;
+            // проверка автозапуска
+            // есть автозапуск
+            if (Program.config.AutoShow==1 && (!Program.plCtrl.playlistFolderPath.Equals("") || !Program.plCtrl.IsEmpty()))
+            {
+                ActiveVideoSwitcher(true);
+                Program.bcgwork.Start();
+                playlistSelectButton.Enabled = false;
+            }
+            // пустая папка с видео, или нет плейлиста
+            else if (Program.plCtrl.playlistFolderPath.Equals("") || Program.plCtrl.IsEmpty())
+            {
+                showWallpaperSwitcher.Image = switcher[2];
+                showWallpaperSwitcher.Enabled = false;
+                this.Show();
+            }
+            else
+            {
+                ActiveVideoSwitcher(false);
+                this.Show();
+            }          
         }
 
         private void AboutMenuItem_Click(object sender, EventArgs e)
@@ -83,24 +85,21 @@ namespace videowp
             switcherIndex = switcherIndex == 1 ? 0 : 1;
             if (switcherIndex == 1)
             {
-                displayWallpapers(true);
+                ActiveVideoSwitcher(true);
                 playlistSelectButton.Enabled = false;
 
                 Program.bcgwork.Start();
             }
             else
             {
-                displayWallpapers(false);
+                ActiveVideoSwitcher(false);
                 playlistSelectButton.Enabled = true;
 
                 Program.bcgwork.Stop();
             }
         }
-        // активировать обои
-        void displayWallpapers(bool index)
-        {
-            showWallpaperSwitcher.Image = switcher[index?1:0];
-        }
+        // изменить изображение переключателя
+        void ActiveVideoSwitcher(bool index){showWallpaperSwitcher.Image = switcher[index?1:0];}
 
         // переключение времени заставки
         void TimeComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -116,14 +115,15 @@ namespace videowp
         // смена плейлиста
         void PlaylistSelectButton_Click(object sender, EventArgs e)
         {
-            if (ofd.ShowDialog() != DialogResult.OK) return;
+            if (fbd.ShowDialog() != DialogResult.OK) return;
 
-            ofd.InitialDirectory = Path.GetDirectoryName(ofd.FileName);
-            Program.config.PlaylistPath = ofd.FileName;
-            playlistNameLabel.Text = ofd.FileName;
+            Program.config.PlaylistFolderPath = fbd.SelectedPath;
+            Program.plCtrl.playlistFolderPath = fbd.SelectedPath;
+            playlistFolderNameLabel.Text = !Program.plCtrl.IsEmpty() ? fbd.SelectedPath : $"{fbd.SelectedPath} (Пусто)";
+            Program.plCtrl.CheckFilesInFolder();
 
-            showWallpaperSwitcher.Enabled = true;
-            showWallpaperSwitcher.Image = switcher[0];
+            showWallpaperSwitcher.Enabled = !Program.plCtrl.IsEmpty();
+            showWallpaperSwitcher.Image = Program.plCtrl.IsEmpty() ? switcher[2] : switcher[0];
         }
 
         // отрисовка combobox

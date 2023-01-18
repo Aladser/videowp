@@ -13,26 +13,15 @@ namespace videowp
         [DllImport("gdi32.dll")]
         static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
 
-        /// <summary>
-        /// конфигурационный файл
-        /// </summary>
-        public static ConfigControl config = new ConfigControl();
-
-        /// <summary>
-        /// Обновление плейлиста
-        /// </summary>
-        public static UpdatePlaylistControl updateCtrl;
+        public static ConfigControl config = new ConfigControl(); // конфигурационный файл  
+        public static PlaylistControl plCtrl = new PlaylistControl(config.PlaylistFolderPath); // управление плейлистом
 
         public static readonly string shortcut = $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}\\videowp.lnk"; // ярлык автозагрузки 
         public static string mpvPath = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\mpv\\mpv.exe"; // MPV
         public static ProcessStartInfo mpvProc; // MPV процесс в Windows
         public static string filefilter = "видеоплейлисты (*.m3u;*.m3u8;*.pls;*)|*.m3u;*.m3u8;*.pls";
 
-        /// <summary>
-        /// хук глобального движения мыши или клавиатуры
-        /// </summary>
-        static UserActivityHook globalHook;
-
+        static UserActivityHook globalHook; // хук глобального движения мыши или клавиатуры
         public static MainForm mainform;
         public static BackWork bcgwork;
         // Проверка запуска второй копии приложения
@@ -42,13 +31,11 @@ namespace videowp
             InstanceCheckMutex = new Mutex(true, "videowp", out bool isNew);
             return isNew;
         }
-        /// <summary>
-        /// Главная точка входа для приложения.
-        /// </summary>
+
         [STAThread]
         static void Main()   
         {
-            // поиск папки mpv
+            // проверка папки mpv
             if (!File.Exists(mpvPath))
             {
                 MessageBox.Show("Папка mpv не найдена. Программа будет закрыта");
@@ -58,27 +45,14 @@ namespace videowp
             {
                 mpvProc = new ProcessStartInfo(Program.mpvPath, @"");
             }
-            // класс обновления плейлиста
-            if (!config.Updates.Equals(""))
-            {
-                if (Directory.Exists(config.Updates))
-                {
-                    updateCtrl = new UpdatePlaylistControl(config.Updates, config.PlaylistPath);
-                }
-                else
-                {
-                    updateCtrl = null;
-                    config.Updates = "";
-                }
-            }
-            else 
-                updateCtrl = null;
+
             // создание хука
             globalHook = new UserActivityHook();
             globalHook.KeyPress += (object sender, KeyPressEventArgs e) => Program.bcgwork.StopShowWallpaper(); // нажатие клавиши
             globalHook.OnMouseActivity += (object sender, MouseEventArgs e) => Program.bcgwork.StopShowWallpaper(); // движение мыши
             globalHook.Start(true, true);
             if (Process.GetProcessesByName(Application.ProductName).Length > 1) return;// предотвращение запуска второй копии
+
             // запуск программы
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -87,10 +61,7 @@ namespace videowp
             if (InstanceCheck()) Application.Run();
         }
 
-        /// <summary>
-        /// Изменить автозагрузку
-        /// </summary>
-        /// <param name="isAutoLoader">флаг</param>
+        // Изменить автозагрузку
         public static void EditAutoLoader(bool isAutoLoader)
         {
             // Создание ярлыка

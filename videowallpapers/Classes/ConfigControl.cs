@@ -17,15 +17,15 @@ namespace videowp
         /// <summary>
         /// путь плейлиста
         /// </summary>
-        public string PlaylistPath
+        public string PlaylistFolderPath
         {
             set {
-                plpath = value;
+                plFolderPath = value;
                 this.WriteToFile();
             }
-            get { return plpath; }
+            get { return plFolderPath; }
         }
-        string plpath;
+        string plFolderPath;
 
         /// <summary>
         /// индекс времени бездействия
@@ -90,18 +90,20 @@ namespace videowp
 
         public ConfigControl()
         {
-            if (!File.Exists(CONFIG_PATH))
+            if (File.Exists(CONFIG_PATH))
             {
-                MessageBox.Show("Конфигурационный файл не найден. Будут установлены стандартные настройки");
-                plpath = "";
+                this.ReadFromFile();
+            }
+            else
+            {
+                MessageBox.Show("Конфигурационный файл не найден. Установлены стандартные настройки");
+                plFolderPath = "";
                 inactonIndex = 0;
                 autoshow = 0;
                 overwindows = 0;
                 updates = "";
                 this.WriteToFile();
-            }
-            else
-                this.ReadFromFile();
+            }              
         }
 
         /// <summary>
@@ -113,8 +115,8 @@ namespace videowp
             try
             {
                 string line = reader.ReadLine();
-                plpath = line.Substring(line.IndexOf("= ") + 2);
-                if (!File.Exists(plpath)) plpath = "";
+                plFolderPath = line.Substring(line.IndexOf("= ") + 2);
+                if (!Directory.Exists(plFolderPath)) plFolderPath = "";
 
                 line = reader.ReadLine();
                 inactonIndex = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
@@ -127,6 +129,7 @@ namespace videowp
 
                 line = reader.ReadLine();
                 updates = line.Substring(line.IndexOf("= ") + 2);
+                if (!Directory.Exists(updates)) updates = "";
             }
             catch (Exception exc)
             {
@@ -140,7 +143,7 @@ namespace videowp
         void WriteToFile()
         {
             StreamWriter writer = new StreamWriter(CONFIG_PATH, false);
-            string text = $"playerpath = {plpath}\n";
+            string text = $"plfolderpath = {plFolderPath}\n";
             text += $"period = {inactonIndex}\n";
             text += $"autoshow = {autoshow}\n";
             text += $"overWindows = {overwindows}\n";
