@@ -18,7 +18,11 @@ namespace videowp.Classes
                 StreamWriter writer = new StreamWriter(PLAYLIST_PATH, false);
                 writer.WriteLine("");
                 writer.Close();
-            } 
+            }
+            else
+            {
+                CheckFilesInFolder();
+            }
         }
         //проверка файлов плейлиста и папки
         public void CheckFilesInFolder()
@@ -57,13 +61,9 @@ namespace videowp.Classes
                         isOldFiles = true;
                     }
                 }
-                // коррекция соддержимого папки
                 if (isOldFiles)
                 {
                     StreamWriter writer = new StreamWriter(PLAYLIST_PATH, false);
-                    writer.Write("");
-                    writer.Close();
-                    writer = new StreamWriter(PLAYLIST_PATH, true);
                     foreach (string elem in plFiles) writer.WriteLine(elem);
                     writer.Close();
                 }

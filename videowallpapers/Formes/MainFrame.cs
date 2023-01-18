@@ -31,27 +31,17 @@ namespace videowp
             this.BackColor = Color.White;
        
             // плейлист 
-            if (!Program.plCtrl.playlistFolderPath.Equals(""))
+            if (!Program.plCtrl.IsEmpty())
             {
-                if (!Program.plCtrl.IsEmpty())
-                {
-                    playlistFolderNameLabel.Text = Program.plCtrl.playlistFolderPath;
-                    fbd.SelectedPath = Program.plCtrl.playlistFolderPath;
-                }
-                else
-                {
-                    playlistFolderNameLabel.Text = $"{Program.plCtrl.playlistFolderPath} (Пусто)";
-                    fbd.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-                    showWallpaperSwitcher.Image = switcher[DISABLED];
-                }
+                playlistFolderNameLabel.Text = Program.plCtrl.playlistFolderPath;
+                fbd.SelectedPath = Program.plCtrl.playlistFolderPath;
             }
             else
             {
-                playlistFolderNameLabel.Text = "";
+                playlistFolderNameLabel.Text = $"{Program.plCtrl.playlistFolderPath} (Пусто)";
                 fbd.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                 showWallpaperSwitcher.Image = switcher[DISABLED];
             }
-            Program.plCtrl.CheckFilesInFolder();
 
             // ***** проверка автозапуска *****
             // есть автозапуск
@@ -61,7 +51,7 @@ namespace videowp
                 Program.bcgwork.Start();
                 playlistSelectButton.Enabled = false;
             }
-            // пустая папка с видео, или нет плейлиста
+            // пустая папка с видео
             else if (Program.plCtrl.playlistFolderPath.Equals("") || Program.plCtrl.IsEmpty())
             {
                 setSwitcherImage(DISABLED);
