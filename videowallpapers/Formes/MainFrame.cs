@@ -8,6 +8,10 @@ namespace videowp
 {
     public partial class MainForm : Form
     {
+        readonly int OFF = 0;
+        readonly int ON = 1;
+        readonly int DISABLED = 2;
+        
         readonly FolderBrowserDialog fbd = new FolderBrowserDialog();       
         readonly Bitmap[] switcher = {Properties.Resources.offbtn, Properties.Resources.onbtn, Properties.Resources.disabledbtn}; // переключатель        
         int switcherIndex; // индекс переключателя 
@@ -38,13 +42,14 @@ namespace videowp
                 {
                     playlistFolderNameLabel.Text = $"{Program.plCtrl.playlistFolderPath} (Пусто)";
                     fbd.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-                    showWallpaperSwitcher.Image = switcher[2];
+                    showWallpaperSwitcher.Image = switcher[DISABLED];
                 }
             }
             else
             {
                 playlistFolderNameLabel.Text = "";
                 fbd.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                showWallpaperSwitcher.Image = switcher[DISABLED];
             }
             Program.plCtrl.CheckFilesInFolder();
 
@@ -52,21 +57,21 @@ namespace videowp
             // есть автозапуск
             if (Program.config.AutoShow==1 && !Program.plCtrl.playlistFolderPath.Equals("") && !Program.plCtrl.IsEmpty())
             {
-                setSwitcherImage(1);
+                setSwitcherImage(ON);
                 Program.bcgwork.Start();
                 playlistSelectButton.Enabled = false;
             }
             // пустая папка с видео, или нет плейлиста
             else if (Program.plCtrl.playlistFolderPath.Equals("") || Program.plCtrl.IsEmpty())
             {
-                setSwitcherImage(2);
-                showWallpaperSwitcher.Image = switcher[2];
+                setSwitcherImage(DISABLED);
+                showWallpaperSwitcher.Image = switcher[DISABLED];
                 showWallpaperSwitcher.Enabled = false;
                 this.Show();
             }
             else
             {
-                setSwitcherImage(0);
+                setSwitcherImage(OFF);
                 this.Show();
             }          
         }
@@ -79,19 +84,17 @@ namespace videowp
         // переключить показ обоев
         void ShowWallpaperSwitcher_Click(object sender, EventArgs e)
         {
-            switcherIndex = switcherIndex == 1 ? 0 : 1;
-            if (switcherIndex == 1)
+            switcherIndex = switcherIndex == ON ? OFF : ON;
+            if (switcherIndex == ON)
             {
-                setSwitcherImage(1);
+                setSwitcherImage(ON);
                 playlistSelectButton.Enabled = false;
-
                 Program.bcgwork.Start();
             }
             else
             {
-                setSwitcherImage(0);
+                setSwitcherImage(OFF);
                 playlistSelectButton.Enabled = true;
-
                 Program.bcgwork.Stop();
             }
         }
@@ -123,11 +126,11 @@ namespace videowp
             Program.plCtrl.CheckFilesInFolder();
 
             showWallpaperSwitcher.Enabled = !Program.plCtrl.IsEmpty();
-            showWallpaperSwitcher.Image = Program.plCtrl.IsEmpty() ? switcher[2] : switcher[0];
+            showWallpaperSwitcher.Image = Program.plCtrl.IsEmpty() ? switcher[DISABLED] : switcher[OFF];
         }
 
         // отрисовка combobox
-        private void timeComboBox_DrawItem(object sender, DrawItemEventArgs e)
+        private void TimeComboBox_DrawItem(object sender, DrawItemEventArgs e)
         {
             var cmb = (ComboBox)sender;
 
@@ -145,7 +148,7 @@ namespace videowp
             e.DrawFocusRectangle();
         }
 
-        // Скрытие или закрытие программы
+        // Скрытие программы
         void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = true;
@@ -161,11 +164,6 @@ namespace videowp
         {
             Program.bcgwork.Stop();
             Process.GetCurrentProcess().Kill();
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

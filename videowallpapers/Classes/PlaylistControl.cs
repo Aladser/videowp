@@ -27,7 +27,7 @@ namespace videowp.Classes
                 while ((line = reader.ReadLine()) != null) plFiles.Add(line);
                 reader.Close();
                 // считывание файлов папки
-                List<string> dirFiles = getVideosFromFolder(playlistFolderPath);
+                List<string> dirFiles = GetVideosFromFolder(playlistFolderPath);
                 // удаление несуществующих файлов из плейлиста
                 int i = 0;
                 bool isOldFiles = false;
@@ -56,8 +56,7 @@ namespace videowp.Classes
                 if (isOldFiles)
                 {
                     StreamWriter writer = new StreamWriter(PLAYLIST_PATH, false);
-                    string text = "";
-                    writer.Write(text);
+                    writer.Write("");
                     writer.Close();
                     writer = new StreamWriter(PLAYLIST_PATH, true);
                     foreach (string elem in plFiles) writer.WriteLine(elem);
@@ -72,7 +71,7 @@ namespace videowp.Classes
             return Directory.GetFiles(playlistFolderPath).Length == 0;
         }
 
-        List<string> getVideosFromFolder(string path)
+        List<string> GetVideosFromFolder(string path)
         {
             List<string> dirFiles = Directory.GetFiles(playlistFolderPath).ToList<string>();
             string ext;
