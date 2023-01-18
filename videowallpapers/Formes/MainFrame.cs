@@ -8,18 +8,16 @@ namespace videowp
 {
     public partial class MainForm : Form
     {
-        //readonly OpenFileDialog ofd = new OpenFileDialog();
-        readonly FolderBrowserDialog fbd = new FolderBrowserDialog();
-        // переключатель
-        readonly Bitmap[] switcher = {Properties.Resources.offbtn, Properties.Resources.onbtn, Properties.Resources.disabledbtn};
-        // индекс переключателя  
-        int switcherIndex;
+        readonly FolderBrowserDialog fbd = new FolderBrowserDialog();       
+        readonly Bitmap[] switcher = {Properties.Resources.offbtn, Properties.Resources.onbtn, Properties.Resources.disabledbtn}; // переключатель        
+        int switcherIndex; // индекс переключателя 
 
         public MainForm()
         {
             InitializeComponent();
             CenterToScreen();
             notifyIcon.Text = "Aladser Видеообои";
+            timeComboBox.SelectedIndex = Program.config.InactionIndex; // считывание времени заставки
 
             // цвет элементов
             timeComboBox.DrawMode = DrawMode.OwnerDrawVariable;
@@ -27,9 +25,7 @@ namespace videowp
             endPeriodLabel.ForeColor = Color.Green;
             playlistSelectButton.BackColor = Color.White;
             this.BackColor = Color.White;
-
-            timeComboBox.SelectedIndex = Program.config.InactionIndex; // считывание времени заставки
-
+       
             // плейлист 
             if (!Program.plCtrl.playlistFolderPath.Equals(""))
             {
@@ -52,24 +48,25 @@ namespace videowp
             }
             Program.plCtrl.CheckFilesInFolder();
 
-            // проверка автозапуска
+            // ***** проверка автозапуска *****
             // есть автозапуск
-            if (Program.config.AutoShow==1 && (!Program.plCtrl.playlistFolderPath.Equals("") || !Program.plCtrl.IsEmpty()))
+            if (Program.config.AutoShow==1 && !Program.plCtrl.playlistFolderPath.Equals("") && !Program.plCtrl.IsEmpty())
             {
-                ActiveVideoSwitcher(true);
+                setSwitcherImage(1);
                 Program.bcgwork.Start();
                 playlistSelectButton.Enabled = false;
             }
             // пустая папка с видео, или нет плейлиста
             else if (Program.plCtrl.playlistFolderPath.Equals("") || Program.plCtrl.IsEmpty())
             {
+                setSwitcherImage(2);
                 showWallpaperSwitcher.Image = switcher[2];
                 showWallpaperSwitcher.Enabled = false;
                 this.Show();
             }
             else
             {
-                ActiveVideoSwitcher(false);
+                setSwitcherImage(0);
                 this.Show();
             }          
         }
@@ -85,21 +82,24 @@ namespace videowp
             switcherIndex = switcherIndex == 1 ? 0 : 1;
             if (switcherIndex == 1)
             {
-                ActiveVideoSwitcher(true);
+                setSwitcherImage(1);
                 playlistSelectButton.Enabled = false;
 
                 Program.bcgwork.Start();
             }
             else
             {
-                ActiveVideoSwitcher(false);
+                setSwitcherImage(0);
                 playlistSelectButton.Enabled = true;
 
                 Program.bcgwork.Stop();
             }
         }
         // изменить изображение переключателя
-        void ActiveVideoSwitcher(bool index){showWallpaperSwitcher.Image = switcher[index?1:0];}
+        void setSwitcherImage(int index){
+            switcherIndex = index;
+            showWallpaperSwitcher.Image = switcher[index];
+        }
 
         // переключение времени заставки
         void TimeComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -161,6 +161,11 @@ namespace videowp
         {
             Program.bcgwork.Stop();
             Process.GetCurrentProcess().Kill();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
