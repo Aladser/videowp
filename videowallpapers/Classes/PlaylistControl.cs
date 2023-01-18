@@ -13,6 +13,12 @@ namespace videowp.Classes
         public PlaylistControl(string playlistFolderPath)
         {
             this.playlistFolderPath = Directory.Exists(playlistFolderPath) ? playlistFolderPath : "";
+            if (!File.Exists(PLAYLIST_PATH))
+            {
+                StreamWriter writer = new StreamWriter(PLAYLIST_PATH, false);
+                writer.WriteLine("");
+                writer.Close();
+            } 
         }
         //проверка файлов плейлиста и папки
         public void CheckFilesInFolder()

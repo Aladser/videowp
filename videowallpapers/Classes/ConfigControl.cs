@@ -116,7 +116,7 @@ namespace videowp
             {
                 string line = reader.ReadLine();
                 plFolderPath = line.Substring(line.IndexOf("= ") + 2);
-                if (!Directory.Exists(plFolderPath)) plFolderPath = "";
+                if (!Directory.Exists(plFolderPath)) Directory.CreateDirectory(plFolderPath);
 
                 line = reader.ReadLine();
                 inactonIndex = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
