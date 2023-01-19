@@ -145,12 +145,9 @@ namespace videowp
             this.Hide();
         }
 
-        private void setupBtn_Click(object sender, EventArgs e)
-        {
-            new SettingForm();
-        }
+        private void SetupBtn_Click(object sender, EventArgs e){new SettingForm();}
 
-        private void exitBtn_Click(object sender, EventArgs e)
+        private void ExitBtn_Click(object sender, EventArgs e)
         {
             Program.bcgwork.Stop();
             Process.GetCurrentProcess().Kill();

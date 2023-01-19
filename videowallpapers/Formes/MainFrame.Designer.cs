@@ -97,7 +97,7 @@
             this.setupBtn.TabIndex = 30;
             this.setupBtn.TabStop = false;
             this.toolTip.SetToolTip(this.setupBtn, "Настройки");
-            this.setupBtn.Click += new System.EventHandler(this.setupBtn_Click);
+            this.setupBtn.Click += new System.EventHandler(this.SetupBtn_Click);
             // 
             // exitBtn
             // 
@@ -108,7 +108,7 @@
             this.exitBtn.TabIndex = 32;
             this.exitBtn.TabStop = false;
             this.toolTip.SetToolTip(this.exitBtn, "Выход");
-            this.exitBtn.Click += new System.EventHandler(this.exitBtn_Click);
+            this.exitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
             // 
             // infoBtn
             // 
@@ -191,7 +191,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Видеобои 1.4_alpha7";
+            this.Text = "Видеобои 1.4_alpha9";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.setupBtn)).EndInit();

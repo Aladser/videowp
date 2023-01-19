@@ -58,6 +58,7 @@ namespace videowp
                 {
                     dwt2 = GetTimeNow();
                     isActive = true;
+                    foreach (Process proc in Process.GetProcessesByName("mpv")) proc.Kill(); // убить зависшие процессы
                     Process.Start(Program.mpvProc);
                 }
                 // прерывание показа обоев

@@ -24,6 +24,7 @@ namespace videowp
         // фоновая задача
         void BW_DoWork(object sender, DoWorkEventArgs e)
         {
+            if(Program.bcgwork != null) Program.bcgwork.Stop();
             bool isNewData = false;
             List<string> srcFiles = PlaylistControl.GetVideosFromFolder(src, true);
             List<string> dstFiles = PlaylistControl.GetVideosFromFolder(dst, true);
@@ -44,11 +45,8 @@ namespace videowp
                         long srcSize = new FileInfo($"{src}\\{srcFilename}").Length;
                         long dstSize = new FileInfo($"{dst}\\{srcFilename}").Length;
                         if (srcSize == dstSize) break;
-                        if (copyCount > 4)
-                        {
-                            File.Delete($"{dst}\\{srcFilename}");
-                            break;
-                        }
+                        if (copyCount > 4) break;
+                        copyCount++;
                     }
                 }
                 bw.ReportProgress((i*100)/size);
@@ -66,7 +64,7 @@ namespace videowp
                 bw.ReportProgress((i * 100) / size);
                 i++;
             }
-             if (isNewData) Program.plCtrl.CheckFilesInPlaylist();
+            if (isNewData) Program.plCtrl.CheckFilesInPlaylist();
         }
 
         void Bw_ProgressChanged(object sender, ProgressChangedEventArgs e){ Console.WriteLine(e.ProgressPercentage+"%");}
