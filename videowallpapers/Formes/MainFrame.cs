@@ -113,7 +113,7 @@ namespace videowp
             Program.config.PlaylistFolderPath = fbd.SelectedPath;
             Program.plCtrl.playlistFolderPath = fbd.SelectedPath;
             playlistFolderNameLabel.Text = !Program.plCtrl.IsEmpty() ? fbd.SelectedPath : $"{fbd.SelectedPath} (Пусто)";
-            Program.plCtrl.CheckFilesInFolder();
+            Program.plCtrl.CheckFilesInPlaylist();
 
             showWallpaperSwitcher.Enabled = !Program.plCtrl.IsEmpty();
             showWallpaperSwitcher.Image = Program.plCtrl.IsEmpty() ? switcher[DISABLED] : switcher[OFF];

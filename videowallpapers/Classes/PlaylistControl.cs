@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -9,10 +10,13 @@ namespace videowp.Classes
     {
         public readonly string PLAYLIST_PATH = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\PL.m3u"; // плейлист
         public string playlistFolderPath;
+        string sharePath;
 
-        public PlaylistControl(string playlistFolderPath)
+        public PlaylistControl(string playlistFolderPath, string sharePath = "")
         {
             this.playlistFolderPath = Directory.Exists(playlistFolderPath) ? playlistFolderPath : "";
+            this.sharePath = sharePath;
+
             if (!File.Exists(PLAYLIST_PATH))
             {
                 StreamWriter writer = new StreamWriter(PLAYLIST_PATH, false);
@@ -20,12 +24,20 @@ namespace videowp.Classes
                 writer.Close();
             }
             else
-            {
-                CheckFilesInFolder();
+            {                
+                if(!sharePath.Equals("") && Directory.Exists(sharePath)) CompareFilesWithShare();
+                CheckFilesInPlaylist();
             }
         }
-        //проверка файлов плейлиста и папки
-        public void CheckFilesInFolder()
+
+        // установка сетевой папки
+        public void setShare(string path)
+        {
+            sharePath = path;
+        }
+
+        //добавление и удаление файлов в плейлист из папки
+        public void CheckFilesInPlaylist()
         {         
             if (Directory.Exists(playlistFolderPath))
             {
@@ -70,22 +82,47 @@ namespace videowp.Classes
             }
         }
 
+        // сравнить папку видео с сетевой папкой
+        public void CompareFilesWithShare()
+        {
+            if(!sharePath.Equals(""))
+            {
+                List<string> dirFiles = GetVideosFromFolder(playlistFolderPath, true);
+                List<string> shareFiles = GetVideosFromFolder(sharePath, true);
+                // добавление файлов из сетевой папки
+                foreach(string shrVideo in shareFiles)
+                {
+                    string findVideo = dirFiles.Find(x => x.Equals(shrVideo));
+                    if (findVideo == null) File.Copy($"{sharePath}\\{shrVideo}", $"{playlistFolderPath}\\{shrVideo}");
+                }
+                // удаление файлов из папки плейлиста
+                foreach (string dirVideo in dirFiles)
+                {
+                    string findVideo = shareFiles.Find(x => x.Equals(dirVideo));
+                    if (findVideo == null) File.Delete($"{playlistFolderPath}\\{dirVideo}");
+                }
+            }
+        }
+
         // проверка папки на наличие файлов
         public bool IsEmpty()
         {
             return Directory.GetFiles(playlistFolderPath).Length == 0;
         }
 
-        List<string> GetVideosFromFolder(string path)
+        List<string> GetVideosFromFolder(string path, bool onlyFilename = false)
         {
-            List<string> dirFiles = Directory.GetFiles(playlistFolderPath).ToList<string>();
+            List<string> dirFiles = Directory.GetFiles(path).ToList<string>();
             string ext;
-            string[] extList = {".mp4", ".m4v"};
+            string[] extList = {".mp4", ".m4v", ".mkv", ".avi"};
             for(int i=0; i<dirFiles.Count; i++)
             {
                 ext = Path.GetExtension(dirFiles[i]);
                 if (!extList.Contains(ext)) dirFiles.RemoveAt(i);
             }
+            if (onlyFilename)
+                for (int i = 0; i < dirFiles.Count; i++) 
+                    dirFiles[i] = Path.GetFileName(dirFiles[i]);
             return dirFiles;
         }
     }

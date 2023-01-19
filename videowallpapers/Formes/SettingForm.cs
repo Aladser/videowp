@@ -1,14 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
-using videowp.Classes;
 
 namespace videowp.Formes
 {
     public partial class SettingForm : Form
     {
-        bool firstLoadBoot = true;
-        bool firstShowBoot = true;
+        bool firstLoadBoot = true; // флаг автозагрузки
+        bool firstShowBoot = true; // флаг первого показа окна
+        string lastSrv = "";
         public SettingForm()
         {
             InitializeComponent();
@@ -18,8 +18,12 @@ namespace videowp.Formes
             autoLoaderCheckbox.Checked = File.Exists(Program.shortcut);
             autoShowCheckbox.Checked = Program.config.AutoShow == 1;
             overWindowsCheckbox.Checked = Program.config.OverWindows == 1;
-
-            updateSrvField.Text = Program.config.Updates;
+            // сетевая папка с видео
+            if (!Program.config.UpdateServer.Equals(""))
+            {
+                bool isShareExists = Directory.Exists(Program.config.UpdateServer);
+                updateSrvField.Text = isShareExists ? Program.config.UpdateServer : $"{ Program.config.UpdateServer} (нет связи)";
+            }
         }
 
         // флаг автозагрузки
@@ -72,29 +76,29 @@ namespace videowp.Formes
             }
         }
 
-        private void updateSrvField_DoubleClick(object sender, EventArgs e) { updateSrvField.Text = ""; }
         // ввод названия сервера
         // \\192.168.1.100\Data\video
         private void SetUpdateSrvBtn_Click(object sender, EventArgs e)
         {
-            string serverAddress = updateSrvField.Text;
-            if (Directory.Exists(serverAddress))
+            string srvName = updateSrvField.Text;
+            if (Directory.Exists(srvName))
             {
-                Program.config.Updates = serverAddress;
-                Program.plCtrl = new PlaylistControl(Program.config.PlaylistFolderPath);
+                Program.config.UpdateServer = srvName;
+                Program.plCtrl.setShare(srvName);
             }
-            else
+            else if(!srvName.Equals(""))
             {
-                updateSrvField.Text = "сервер не существует";                
-            }
+                lastSrv = updateSrvField.Text.Contains("нет связи") ? lastSrv : updateSrvField.Text;
+                updateSrvField.Text = $"{lastSrv}: нет связи";
+            }               
         }
         // сброс сервера обновлений
-        private void button1_Click(object sender, EventArgs e)
+        private void ResetUpdateSrvBtn_Click(object sender, EventArgs e)
         {
             updateSrvField.Text = "";
-            Program.config.Updates = "";
+            Program.config.UpdateServer = "";
         }
-
-
+        
+        private void updateSrvField_DoubleClick(object sender, EventArgs e){updateSrvField.Text = ""; } // очистка поля пути к серверу
     }
 }

@@ -14,7 +14,7 @@ namespace videowp
         static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
 
         public static ConfigControl config = new ConfigControl(); // конфигурационный файл  
-        public static PlaylistControl plCtrl = new PlaylistControl(config.PlaylistFolderPath); // управление плейлистом
+        public static PlaylistControl plCtrl = new PlaylistControl(config.PlaylistFolderPath, config.UpdateServer); // управление плейлистом
 
         public static readonly string shortcut = $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}\\videowp.lnk"; // ярлык автозагрузки 
         public static string mpvPath = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\mpv\\mpv.exe"; // MPV

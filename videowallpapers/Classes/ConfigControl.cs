@@ -4,19 +4,13 @@ using System.Windows.Forms;
 
 namespace videowp
 {
-    /// <summary>
-    /// Конфигурационный Control
-    /// </summary>
+    // Конфигурационный Control
     public class ConfigControl
     {
-        /// <summary>
-        /// путь к конфигурационному файлу
-        /// </summary>
+        // путь к конфигурационному файлу
         readonly string CONFIG_PATH = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\videowp.cfg";
 
-        /// <summary>
-        /// путь плейлиста
-        /// </summary>
+        // Плейлист
         public string PlaylistFolderPath
         {
             set {
@@ -27,9 +21,7 @@ namespace videowp
         }
         string plFolderPath;
 
-        /// <summary>
-        /// индекс времени бездействия
-        /// </summary>
+        // индекс времени бездействия
         public int InactionIndex
         {
             set {
@@ -39,19 +31,14 @@ namespace videowp
             get { return inactonIndex; }
         }
         int inactonIndex;
-        /// <summary>
-        /// получить время бездействия в мс
-        /// </summary>
-        /// <returns></returns>
+        // получить время бездействия в мс
         public int GetInactionTime()
         {
             double[] inactionTimeNumberList = { 0.05, 1, 3, 5, 10, 15 };
             return (int)(inactionTimeNumberList[inactonIndex] * 60000);
         }
 
-        /// <summary>
-        /// автозапуск обоев
-        /// </summary>
+        // автозапуск обоев
         public int AutoShow
         {
             set {
@@ -61,9 +48,7 @@ namespace videowp
             get { return autoshow; }
         }
         int autoshow;
-        /// <summary>
-        /// повех всех окон
-        /// </summary>
+        // повех всех окон
         public int OverWindows
         {
             set
@@ -74,19 +59,17 @@ namespace videowp
             get { return overwindows; }
         }
         int overwindows;
-        /// <summary>
-        /// Путь к шаре с видео
-        /// </summary>
-        public string Updates
+        // Путь к шаре с видео
+        public string UpdateServer
         {
             set
             {
-                updates = value;
+                updateSrv = value;
                 this.WriteToFile();
             }
-            get { return updates; }
+            get { return updateSrv; }
         }
-        string updates;
+        string updateSrv;
 
         public ConfigControl()
         {
@@ -101,14 +84,12 @@ namespace videowp
                 inactonIndex = 0;
                 autoshow = 0;
                 overwindows = 0;
-                updates = "";
+                updateSrv = "";
                 this.WriteToFile();
             }              
         }
 
-        /// <summary>
-        /// Чтение данных из конфиг.файла
-        /// </summary>
+        // Чтение данных из конфиг.файла
         void ReadFromFile()
         {
             StreamReader reader = new StreamReader(CONFIG_PATH);
@@ -128,8 +109,7 @@ namespace videowp
                 overwindows = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
 
                 line = reader.ReadLine();
-                updates = line.Substring(line.IndexOf("= ") + 2);
-                if (!Directory.Exists(updates)) updates = "";
+                updateSrv = line.Substring(line.IndexOf("= ") + 2);
             }
             catch (Exception exc)
             {
@@ -137,9 +117,7 @@ namespace videowp
             }
             reader.Close();
         }
-        /// <summary>
-        /// Запись данных в конфиг.файл
-        /// </summary>
+        // Запись данных в конфиг.файл
         void WriteToFile()
         {
             StreamWriter writer = new StreamWriter(CONFIG_PATH, false);
@@ -147,7 +125,7 @@ namespace videowp
             text += $"period = {inactonIndex}\n";
             text += $"autoshow = {autoshow}\n";
             text += $"overWindows = {overwindows}\n";
-            text += $"updates = {updates}\n";
+            text += $"updates = {updateSrv}\n";
             writer.WriteLine(text);
             writer.Close();
         }
