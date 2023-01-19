@@ -17,6 +17,7 @@ namespace videowp
             bw.DoWork += BW_DoWork;
             bw.WorkerReportsProgress = true;
             bw.ProgressChanged += new ProgressChangedEventHandler(Bw_ProgressChanged);
+            bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Bw_RunCompleted);
             src = srcDir;
             dst = dstDir;
         }
@@ -66,8 +67,19 @@ namespace videowp
             if (isNewData) Program.plCtrl.CheckFilesInPlaylist();
         }
 
-        void Bw_ProgressChanged(object sender, ProgressChangedEventArgs e){ Console.WriteLine(e.ProgressPercentage+"%");}
+        void Bw_ProgressChanged(object sender, ProgressChangedEventArgs e){
+            if (Program.mainform != null)
+            {
+                Program.mainform.setNotifyIconText($"Aladser Видеообои (копирование: {e.ProgressPercentage}%)");
+            }
+        }
 
+        void Bw_RunCompleted(object sender, RunWorkerCompletedEventArgs e) {
+            if (Program.mainform != null)
+            {
+                Program.mainform.setNotifyIconText($"Aladser Видеообои (копирование завершено)");
+            }
+        }
         public void Start() { bw.RunWorkerAsync(); }
         public bool IsActive() { return bw.IsBusy; }
     }

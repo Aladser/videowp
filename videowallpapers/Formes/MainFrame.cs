@@ -67,9 +67,14 @@ namespace videowp
             }          
         }
 
-        private void AboutMenuItem_Click(object sender, EventArgs e)
+        void AboutMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Видеобои 1.4\nAladser ©\n2022");
+        }
+
+        public void setNotifyIconText(string text)
+        {
+            notifyIcon.Text = text;
         }
 
         // переключить показ обоев
