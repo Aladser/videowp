@@ -30,13 +30,13 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingForm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.overWindowsCheckbox = new System.Windows.Forms.CheckBox();
             this.resetUpdateSrvBtn = new System.Windows.Forms.Button();
             this.setUpdateSrvBtn = new System.Windows.Forms.Button();
             this.updateSrvField = new System.Windows.Forms.TextBox();
             this.autoShowCheckbox = new System.Windows.Forms.CheckBox();
             this.autoLoaderCheckbox = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -56,6 +56,15 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Настройки";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(114, 128);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(176, 21);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Обновления плейлиста";
             // 
             // overWindowsCheckbox
             // 
@@ -92,9 +101,9 @@
             // updateSrvField
             // 
             this.updateSrvField.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.updateSrvField.Location = new System.Drawing.Point(72, 152);
+            this.updateSrvField.Location = new System.Drawing.Point(16, 152);
             this.updateSrvField.Name = "updateSrvField";
-            this.updateSrvField.Size = new System.Drawing.Size(264, 29);
+            this.updateSrvField.Size = new System.Drawing.Size(366, 29);
             this.updateSrvField.TabIndex = 3;
             this.updateSrvField.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.updateSrvField.DoubleClick += new System.EventHandler(this.updateSrvField_DoubleClick);
@@ -120,15 +129,6 @@
             this.autoLoaderCheckbox.Text = "Автозагрузка";
             this.autoLoaderCheckbox.UseVisualStyleBackColor = true;
             this.autoLoaderCheckbox.CheckedChanged += new System.EventHandler(this.AutoLoaderCheckbox_CheckedChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(114, 128);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(176, 21);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "Обновления плейлиста";
             // 
             // SettingForm
             // 

@@ -84,7 +84,7 @@ namespace videowp.Formes
             if (Directory.Exists(srvName))
             {
                 Program.config.UpdateServer = srvName;
-                Program.plCtrl.setShare(srvName);
+                Program.plCtrl.SetShare(srvName);
             }
             else if(!srvName.Equals(""))
             {
