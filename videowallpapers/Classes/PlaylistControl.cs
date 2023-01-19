@@ -107,7 +107,10 @@ namespace videowp.Classes
         // проверка папки на наличие файлов
         public bool IsEmpty()
         {
-            return Directory.GetFiles(playlistFolderPath).Length == 0;
+            if (Directory.Exists(playlistFolderPath))
+                return Directory.GetFiles(playlistFolderPath).Length == 0;
+            else
+                return true;
         }
 
         List<string> GetVideosFromFolder(string path, bool onlyFilename = false)
