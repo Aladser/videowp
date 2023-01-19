@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Threading;
 using videowp.Classes;
 
 namespace videowp
@@ -40,7 +41,15 @@ namespace videowp
                     int copyCount = 0;
                     while (true)
                     {
-                        File.Copy($"{src}\\{srcFilename}", $"{dst}\\{srcFilename}");
+                        // копирование при доступной сетевой папке
+                        if (Directory.Exists(src))
+                            File.Copy($"{src}\\{srcFilename}", $"{dst}\\{srcFilename}");
+                        else
+                        {
+                            Thread.Sleep(30000);
+                            copyCount++;
+                            continue;
+                        }
                         // проверка целостности
                         long srcSize = new FileInfo($"{src}\\{srcFilename}").Length;
                         long dstSize = new FileInfo($"{dst}\\{srcFilename}").Length;

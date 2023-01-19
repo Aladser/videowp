@@ -27,10 +27,7 @@ namespace videowp.Classes
             }
             else
             {
-                if (!sharePath.Equals(""))
-                {
-                    if (IsShare()) CompareFilesWithShare();
-                }
+                if (IsShare()) GetFilesFromShare();
                 CheckFilesInPlaylist();
             }
         }
@@ -40,6 +37,22 @@ namespace videowp.Classes
         public void SetShare(string path) {
             sharePath = path;
             copyCtrl = new Copying(sharePath, playlistFolderPath);
+        }
+
+        // проверка соединения с шарой
+        public bool IsShare() {
+            if (!sharePath.Equals(""))
+            {
+                return Directory.Exists(sharePath);
+            }
+            else
+                return false;
+        }
+
+        // получить видео из сетевой папки
+        public void GetFilesFromShare()
+        {
+            copyCtrl.Start();
         }
 
         //добавление и удаление файлов в файл плейлиста из папки
@@ -88,18 +101,6 @@ namespace videowp.Classes
             }
         }
 
-        // сравнить папку видео с сетевой папкой
-        public void CompareFilesWithShare()
-        {
-            if (!sharePath.Equals(""))
-            {
-                if (IsShare())
-                {
-                    copyCtrl.Start();
-                }
-            }
-        }
-
         // проверка папки на наличие файлов
         public bool IsEmpty()
         {
@@ -108,17 +109,11 @@ namespace videowp.Classes
             else
                 return true;
         }
-        // проверка соединения с шарой
-        public bool IsShare(){return Directory.Exists(sharePath);}
+
         // активное копирование
         public bool IsActiveCopying(){return copyCtrl.IsActive();}
 
-        /// <summary>
-        /// Получить файлы из папки
-        /// </summary>
-        /// <param name="path">путь к папке</param>
-        /// <param name="onlyFilename"> только имена файлов?</param>
-        /// <returns></returns>
+        // Получить файлы из папки
         public static List<string> GetVideosFromFolder(string path, bool onlyFilename = false)
         {
             List<string> dirFiles = Directory.GetFiles(path).ToList<string>();
