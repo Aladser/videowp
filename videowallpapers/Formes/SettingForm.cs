@@ -21,8 +21,7 @@ namespace videowp.Formes
             // сетевая папка с видео
             if (!Program.config.UpdateServer.Equals(""))
             {
-                bool isShareExists = Directory.Exists(Program.config.UpdateServer);
-                updateSrvField.Text = isShareExists ? Program.config.UpdateServer : $"{ Program.config.UpdateServer} (нет связи)";
+                updateSrvField.Text = Program.plCtrl.IsShare() ? Program.config.UpdateServer : $"{ Program.config.UpdateServer} (нет связи)";
             }
         }
 

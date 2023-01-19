@@ -27,10 +27,7 @@ namespace videowp.Classes
             {
                 if (!sharePath.Equals(""))
                 {
-                    if (Directory.Exists(sharePath))
-                    {
-                        CompareFilesWithShare();
-                    }
+                    if (IsShare()) CompareFilesWithShare();
                 }
                 CheckFilesInPlaylist();
             }
@@ -89,7 +86,13 @@ namespace videowp.Classes
         // сравнить папку видео с сетевой папкой
         public void CompareFilesWithShare()
         {
-            if(!sharePath.Equals("")) new Copying(sharePath, playlistFolderPath).Start();
+            if (!sharePath.Equals(""))
+            {
+                if (IsShare())
+                {
+                    new Copying(sharePath, playlistFolderPath).Start();
+                }
+            }
         }
 
         // проверка папки на наличие файлов
@@ -100,6 +103,8 @@ namespace videowp.Classes
             else
                 return true;
         }
+        // проверка соединения с шарой
+        public bool IsShare(){return Directory.Exists(sharePath);}
 
         /// <summary>
         /// Получить файлы из папки
