@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace videowp
 {
@@ -56,6 +57,8 @@ namespace videowp
                 // запуск обоев
                 else if (downtime >= Program.config.GetInactionTime() && !isActive)
                 {
+                    while (Program.plCtrl.IsActiveCopying()) { Thread.Sleep(250); } // ожидание конца копирования
+
                     dwt2 = GetTimeNow();
                     isActive = true;
                     foreach (Process proc in Process.GetProcessesByName("mpv")) proc.Kill(); // убить зависшие процессы

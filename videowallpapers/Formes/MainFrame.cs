@@ -50,15 +50,7 @@ namespace videowp
             {
                 setSwitcherImage(ON);               
                 playlistSelectButton.Enabled = false;
-                while (true)
-                {
-                    if (!Program.plCtrl.IsActiveCopying())
-                    {
-                        Program.bcgwork.Start();
-                        break;
-                    }
-                    Thread.Sleep(250);
-                }
+                Program.bcgwork.Start();
             }
             // пустая папка с видео
             else if (Program.plCtrl.playlistFolderPath.Equals("") || Program.plCtrl.IsEmpty())
