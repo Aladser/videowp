@@ -24,8 +24,14 @@ namespace videowp.Classes
                 writer.Close();
             }
             else
-            {                
-                if(!sharePath.Equals("") && Directory.Exists(sharePath)) CompareFilesWithShare();
+            {
+                if (!sharePath.Equals(""))
+                {
+                    if (Directory.Exists(sharePath))
+                    {
+                        CompareFilesWithShare();
+                    }
+                }
                 CheckFilesInPlaylist();
             }
         }

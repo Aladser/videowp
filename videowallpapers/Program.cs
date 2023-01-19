@@ -13,8 +13,8 @@ namespace videowp
         [DllImport("gdi32.dll")]
         static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
 
-        public static ConfigControl config = new ConfigControl(); // конфигурационный файл  
-        public static PlaylistControl plCtrl = new PlaylistControl(config.PlaylistFolderPath, config.UpdateServer); // управление плейлистом
+        public static ConfigControl config;   // конфигурационный файл  
+        public static PlaylistControl plCtrl; // управление плейлистом
 
         public static readonly string shortcut = $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}\\videowp.lnk"; // ярлык автозагрузки 
         public static string mpvPath = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\mpv\\mpv.exe"; // MPV
@@ -38,12 +38,14 @@ namespace videowp
             // проверка папки mpv
             if (!File.Exists(mpvPath))
             {
-                MessageBox.Show("Папка mpv не найдена. Программа будет закрыта");
+                MessageBox.Show("Папка mpv не найдена. Невозможен запуск программы");
                 Process.GetCurrentProcess().Kill();
             }
             else
             {
                 mpvProc = new ProcessStartInfo(Program.mpvPath, @"");
+                config = new ConfigControl();
+                plCtrl = new PlaylistControl(config.PlaylistFolderPath, config.UpdateServer);
             }
 
             // создание хука

@@ -97,7 +97,10 @@ namespace videowp
             {
                 string line = reader.ReadLine();
                 plFolderPath = line.Substring(line.IndexOf("= ") + 2);
-                if (!Directory.Exists(plFolderPath)) Directory.CreateDirectory(plFolderPath);
+                if (!plFolderPath.Equals(""))
+                {
+                    if (!Directory.Exists(plFolderPath)) Directory.CreateDirectory(plFolderPath);
+                }
 
                 line = reader.ReadLine();
                 inactonIndex = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
@@ -110,6 +113,10 @@ namespace videowp
 
                 line = reader.ReadLine();
                 updateSrv = line.Substring(line.IndexOf("= ") + 2);
+                if (!updateSrv.Equals(""))
+                {
+                    if (!Directory.Exists(plFolderPath)) Directory.CreateDirectory(updateSrv);
+                }
             }
             catch (Exception exc)
             {

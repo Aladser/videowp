@@ -71,8 +71,8 @@ namespace videowp.Formes
             }
             else
             {
-                Program.config.OverWindows = Program.config.OverWindows == 1 ? 0 : 1;
                 firstShowBoot = false;
+                Program.config.OverWindows = Convert.ToInt32(overWindowsCheckbox.Checked);
             }
         }
 
