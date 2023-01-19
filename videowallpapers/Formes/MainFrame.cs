@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 using videowp.Formes;
 
@@ -47,9 +48,17 @@ namespace videowp
             // есть автозапуск
             if (Program.config.AutoShow==1 && !Program.plCtrl.playlistFolderPath.Equals("") && !Program.plCtrl.IsEmpty())
             {
-                setSwitcherImage(ON);
-                Program.bcgwork.Start();
+                setSwitcherImage(ON);               
                 playlistSelectButton.Enabled = false;
+                while (true)
+                {
+                    if (!Program.plCtrl.IsActiveCopying())
+                    {
+                        Program.bcgwork.Start();
+                        break;
+                    }
+                    Thread.Sleep(250);
+                }
             }
             // пустая папка с видео
             else if (Program.plCtrl.playlistFolderPath.Equals("") || Program.plCtrl.IsEmpty())

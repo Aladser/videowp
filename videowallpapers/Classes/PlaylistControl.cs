@@ -10,11 +10,13 @@ namespace videowp.Classes
         public readonly string PLAYLIST_PATH = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\PL.m3u"; // плейлист
         public string playlistFolderPath;
         string sharePath;
+        Copying copyCtrl;
 
         public PlaylistControl(string playlistFolderPath, string sharePath = "")
         {
             this.playlistFolderPath = Directory.Exists(playlistFolderPath) ? playlistFolderPath : "";
             this.sharePath = sharePath;
+            copyCtrl = !sharePath.Equals("") ? new Copying(sharePath, playlistFolderPath) : null;
 
             // проверка наличия плейлиста
             if (!File.Exists(PLAYLIST_PATH))
@@ -35,7 +37,10 @@ namespace videowp.Classes
 
         // установка сетевой папки
         // \\192.168.1.100\Data\video
-        public void SetShare(string path) {sharePath = path;}
+        public void SetShare(string path) {
+            sharePath = path;
+            copyCtrl = new Copying(sharePath, playlistFolderPath);
+        }
 
         //добавление и удаление файлов в файл плейлиста из папки
         public void CheckFilesInPlaylist()
@@ -90,7 +95,7 @@ namespace videowp.Classes
             {
                 if (IsShare())
                 {
-                    new Copying(sharePath, playlistFolderPath).Start();
+                    copyCtrl.Start();
                 }
             }
         }
@@ -105,6 +110,8 @@ namespace videowp.Classes
         }
         // проверка соединения с шарой
         public bool IsShare(){return Directory.Exists(sharePath);}
+        // активное копирование
+        public bool IsActiveCopying(){return copyCtrl.IsActive();}
 
         /// <summary>
         /// Получить файлы из папки

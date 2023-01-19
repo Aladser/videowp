@@ -23,8 +23,7 @@ namespace videowp
 
         // фоновая задача
         void BW_DoWork(object sender, DoWorkEventArgs e)
-        {
-            if(Program.bcgwork != null) Program.bcgwork.Stop();
+        {           
             bool isNewData = false;
             List<string> srcFiles = PlaylistControl.GetVideosFromFolder(src, true);
             List<string> dstFiles = PlaylistControl.GetVideosFromFolder(dst, true);
@@ -70,5 +69,6 @@ namespace videowp
         void Bw_ProgressChanged(object sender, ProgressChangedEventArgs e){ Console.WriteLine(e.ProgressPercentage+"%");}
 
         public void Start() { bw.RunWorkerAsync(); }
+        public bool IsActive() { return bw.IsBusy; }
     }
 }

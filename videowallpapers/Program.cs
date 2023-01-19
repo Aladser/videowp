@@ -44,6 +44,7 @@ namespace videowp
             else
             {
                 mpvProc = new ProcessStartInfo(Program.mpvPath, @"");
+                bcgwork = new BackWork();
                 config = new ConfigControl();
                 plCtrl = new PlaylistControl(config.PlaylistFolderPath, config.UpdateServer);
             }
@@ -58,7 +59,6 @@ namespace videowp
             // запуск программы
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            bcgwork = new BackWork();
             mainform = new MainForm();
             if (InstanceCheck()) Application.Run();
         }
