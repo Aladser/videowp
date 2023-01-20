@@ -10,9 +10,9 @@ namespace videowp.Formes
         bool firstLoadBoot = true; // флаг автозагрузки
         bool firstShowBoot = true; // флаг первого показа окна
         readonly ConfigControl config;
-        readonly UpdateSearch updateSrv;
+        readonly UpdateSearchBW updateSrv;
         string lastSrv = "";
-        public SettingForm(MainForm mf, ConfigControl config, UpdateSearch updateSrv)
+        public SettingForm(MainForm mf, ConfigControl config, UpdateSearchBW updateSrv)
         {
             InitializeComponent();
             CenterToScreen();
@@ -89,7 +89,7 @@ namespace videowp.Formes
             {
                 config.UpdateServer = srvName;
                 Program.SetShare(srvName);
-                new Copying(updateSrv.BW_GetFilesFromShare).Start();
+                new CopyingBW(updateSrv.BW_GetFilesFromShare).Start();
             }
             else if(!srvName.Equals(""))
             {

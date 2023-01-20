@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace videowp.Classes
 {
-    internal class UpdateSearch
+    internal class UpdateSearchBW
     {
         readonly BackgroundWorker bw = new BackgroundWorker();
 
@@ -20,7 +20,7 @@ namespace videowp.Classes
         int downtime;
 
         // \\192.168.1.100\Data\video
-        public UpdateSearch(PlaylistControl pl, string sharePath, int downtime=60000)
+        public UpdateSearchBW(PlaylistControl pl, string sharePath, int downtime=60000)
         {
             bw.DoWork += BW_DoWork;
             bw.WorkerSupportsCancellation = true;

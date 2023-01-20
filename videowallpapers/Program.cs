@@ -18,9 +18,9 @@ namespace videowp
 
         static ConfigControl config;   // конфигурационный файл  
         static PlaylistControl plCtrl; // управление плейлистом
-        static UpdateSearch updateSearch; // проверка обновлений плейлиста
+        static UpdateSearchBW updateSearch; // проверка обновлений плейлиста
         static MainForm mainform;
-        static BackWork bcgwork;
+        static PlayerBW bcgwork;
         
         static readonly string mpvPath = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\mpv\\mpv.exe"; // MPV
         static ProcessStartInfo mpvProc; // MPV процесс в Windows
@@ -50,8 +50,8 @@ namespace videowp
 
                 plCtrl = new PlaylistControl(config.PlaylistFolderPath);
                 plCtrl.CheckFilesInPlaylist();
-                bcgwork = new BackWork(config, mpvProc, plCtrl);
-                updateSearch = new UpdateSearch(plCtrl, config.UpdateServer);
+                bcgwork = new PlayerBW(config, mpvProc, plCtrl);
+                updateSearch = new UpdateSearchBW(plCtrl, config.UpdateServer);
                 updateSearch.Start();
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);

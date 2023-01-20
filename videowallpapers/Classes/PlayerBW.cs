@@ -6,7 +6,7 @@ using videowp.Classes;
 
 namespace videowp
 {
-    internal class BackWork
+    internal class PlayerBW
     {
         [DllImport("user32.dll", SetLastError = true)]
         public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
@@ -25,7 +25,7 @@ namespace videowp
         /// <summary>
         /// Класс фоновой задачи показа обоев
         /// </summary>
-        public BackWork(ConfigControl config, ProcessStartInfo mpvProc, PlaylistControl pl)
+        public PlayerBW(ConfigControl config, ProcessStartInfo mpvProc, PlaylistControl pl)
         {
             this.config = config;
             this.mpvProc = mpvProc;

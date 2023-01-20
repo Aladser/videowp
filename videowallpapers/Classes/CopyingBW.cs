@@ -2,11 +2,11 @@
 
 namespace videowp.Classes
 {
-    internal class Copying
+    internal class CopyingBW
     {
         readonly BackgroundWorker bw = new BackgroundWorker();
         
-        public Copying(DoWorkEventHandler func)
+        public CopyingBW(DoWorkEventHandler func)
         {
             bw.WorkerSupportsCancellation = true;
             bw.DoWork += func;

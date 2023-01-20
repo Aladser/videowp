@@ -49,11 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\BackWork.cs" />
+    <Compile Include="Classes\PlayerBW.cs" />
     <Compile Include="Classes\ConfigControl.cs" />
-    <Compile Include="Classes\Copying.cs" />
+    <Compile Include="Classes\CopyingBW.cs" />
     <Compile Include="Classes\PlaylistControl.cs" />
-    <Compile Include="Classes\UpdateSearch.cs" />
+    <Compile Include="Classes\UpdateSearchBW.cs" />
     <Compile Include="Formes\MainFrame.cs">
       <SubType>Form</SubType>
     </Compile>

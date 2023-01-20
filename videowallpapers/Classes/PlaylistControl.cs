@@ -33,7 +33,7 @@ namespace videowp.Classes
             while ((line = reader.ReadLine()) != null) plFiles.Add(line);
             reader.Close();
             // считывание файлов папки
-            List<string> dirFiles = UpdateSearch.GetVideoFromFolder(playlistFolderPath);
+            List<string> dirFiles = UpdateSearchBW.GetVideoFromFolder(playlistFolderPath);
             // удаление несуществующих файлов из плейлиста
             int i = 0;
             bool isOldFiles = false;
