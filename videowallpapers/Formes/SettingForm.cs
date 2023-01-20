@@ -28,6 +28,7 @@ namespace videowp.Formes
             overWindowsCheckbox.Checked = config.OverWindows == 1;
             this.updateSrv = updateSrv;
             updateSrvField.Text = !updateSrv.SharePath.Equals("") ? updateSrv.IsShare() ? updateSrv.SharePath : $"{updateSrv.SharePath}: нет связи" : "";
+            updateTimeComboBox.SelectedIndex = config.UpdateTime;
         }
 
         // флаг автозагрузки
@@ -103,7 +104,12 @@ namespace videowp.Formes
             updateSrvField.Text = "";
             config.UpdateServer = "";
         }
-        
-        private void updateSrvField_DoubleClick(object sender, EventArgs e){updateSrvField.Text = ""; } // очистка поля пути к серверу
+        // очистка поля пути к серверу
+        private void UpdateSrvField_DoubleClick(object sender, EventArgs e){updateSrvField.Text = ""; } 
+        // установка времени
+        private void UpdateTimeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            config.UpdateTime = updateTimeComboBox.SelectedIndex;
+        }
     }
 }

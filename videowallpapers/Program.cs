@@ -51,7 +51,7 @@ namespace videowp
                 plCtrl = new PlaylistControl(config.PlaylistFolderPath);
                 plCtrl.CheckFilesInPlaylist();
                 bcgwork = new PlayerBW(config, mpvProc, plCtrl);
-                updateSearch = new UpdateSearchBW(plCtrl, config.UpdateServer);
+                updateSearch = new UpdateSearchBW(config, plCtrl);
                 updateSearch.Start();
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);

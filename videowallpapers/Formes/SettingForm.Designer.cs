@@ -30,6 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingForm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.updateTimeComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.overWindowsCheckbox = new System.Windows.Forms.CheckBox();
             this.resetUpdateSrvBtn = new System.Windows.Forms.Button();
@@ -42,6 +45,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.updateTimeComboBox);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.overWindowsCheckbox);
             this.groupBox1.Controls.Add(this.resetUpdateSrvBtn);
@@ -52,15 +58,49 @@
             this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(396, 257);
+            this.groupBox1.Size = new System.Drawing.Size(491, 254);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Настройки";
             // 
+            // label3
+            // 
+            this.label3.Location = new System.Drawing.Point(328, 210);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(48, 26);
+            this.label3.TabIndex = 12;
+            this.label3.Text = "МИН";
+            // 
+            // label2
+            // 
+            this.label2.Location = new System.Drawing.Point(92, 207);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(161, 26);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "Период обновлений";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // updateTimeComboBox
+            // 
+            this.updateTimeComboBox.FormattingEnabled = true;
+            this.updateTimeComboBox.Items.AddRange(new object[] {
+            "1",
+            "30",
+            "60",
+            "120",
+            "240",
+            "480"});
+            this.updateTimeComboBox.Location = new System.Drawing.Point(259, 207);
+            this.updateTimeComboBox.Name = "updateTimeComboBox";
+            this.updateTimeComboBox.Size = new System.Drawing.Size(63, 29);
+            this.updateTimeComboBox.TabIndex = 10;
+            this.updateTimeComboBox.TabStop = false;
+            this.updateTimeComboBox.SelectedIndexChanged += new System.EventHandler(this.UpdateTimeComboBox_SelectedIndexChanged);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(114, 128);
+            this.label1.Location = new System.Drawing.Point(49, 83);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(176, 21);
             this.label1.TabIndex = 9;
@@ -68,9 +108,9 @@
             // 
             // overWindowsCheckbox
             // 
-            this.overWindowsCheckbox.Location = new System.Drawing.Point(16, 99);
+            this.overWindowsCheckbox.Location = new System.Drawing.Point(328, 37);
             this.overWindowsCheckbox.Name = "overWindowsCheckbox";
-            this.overWindowsCheckbox.Size = new System.Drawing.Size(176, 26);
+            this.overWindowsCheckbox.Size = new System.Drawing.Size(156, 26);
             this.overWindowsCheckbox.TabIndex = 8;
             this.overWindowsCheckbox.Text = "Поверх всех окон";
             this.overWindowsCheckbox.UseVisualStyleBackColor = true;
@@ -79,7 +119,7 @@
             // resetUpdateSrvBtn
             // 
             this.resetUpdateSrvBtn.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.resetUpdateSrvBtn.Location = new System.Drawing.Point(205, 197);
+            this.resetUpdateSrvBtn.Location = new System.Drawing.Point(259, 156);
             this.resetUpdateSrvBtn.Name = "resetUpdateSrvBtn";
             this.resetUpdateSrvBtn.Size = new System.Drawing.Size(85, 29);
             this.resetUpdateSrvBtn.TabIndex = 7;
@@ -90,7 +130,7 @@
             // setUpdateSrvBtn
             // 
             this.setUpdateSrvBtn.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.setUpdateSrvBtn.Location = new System.Drawing.Point(107, 197);
+            this.setUpdateSrvBtn.Location = new System.Drawing.Point(155, 156);
             this.setUpdateSrvBtn.Name = "setUpdateSrvBtn";
             this.setUpdateSrvBtn.Size = new System.Drawing.Size(85, 29);
             this.setUpdateSrvBtn.TabIndex = 5;
@@ -101,12 +141,12 @@
             // updateSrvField
             // 
             this.updateSrvField.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.updateSrvField.Location = new System.Drawing.Point(16, 152);
+            this.updateSrvField.Location = new System.Drawing.Point(53, 107);
             this.updateSrvField.Name = "updateSrvField";
-            this.updateSrvField.Size = new System.Drawing.Size(366, 29);
+            this.updateSrvField.Size = new System.Drawing.Size(368, 29);
             this.updateSrvField.TabIndex = 3;
             this.updateSrvField.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.updateSrvField.DoubleClick += new System.EventHandler(this.updateSrvField_DoubleClick);
+            this.updateSrvField.DoubleClick += new System.EventHandler(this.UpdateSrvField_DoubleClick);
             // 
             // autoShowCheckbox
             // 
@@ -122,7 +162,7 @@
             // autoLoaderCheckbox
             // 
             this.autoLoaderCheckbox.AutoSize = true;
-            this.autoLoaderCheckbox.Location = new System.Drawing.Point(16, 68);
+            this.autoLoaderCheckbox.Location = new System.Drawing.Point(198, 37);
             this.autoLoaderCheckbox.Name = "autoLoaderCheckbox";
             this.autoLoaderCheckbox.Size = new System.Drawing.Size(124, 25);
             this.autoLoaderCheckbox.TabIndex = 0;
@@ -135,7 +175,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(420, 281);
+            this.ClientSize = new System.Drawing.Size(517, 280);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -161,5 +201,8 @@
         private System.Windows.Forms.Button resetUpdateSrvBtn;
         private System.Windows.Forms.CheckBox overWindowsCheckbox;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox updateTimeComboBox;
     }
 }

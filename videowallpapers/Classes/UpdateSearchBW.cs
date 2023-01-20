@@ -9,25 +9,22 @@ namespace videowp.Classes
     internal class UpdateSearchBW
     {
         readonly BackgroundWorker bw = new BackgroundWorker();
-
-        readonly PlaylistControl playlist;
-
-        public string SharePath{
-            get { return sharePath; }
+        public string SharePath
+        {
+            get { return config.UpdateServer; }
         }
-        string sharePath;
-
-        int downtime;
+        readonly PlaylistControl playlist;
+        readonly ConfigControl config;
+        readonly int[] times = {1, 30, 60, 120, 240, 480}; // время проверки обновлений
 
         // \\192.168.1.100\Data\video
-        public UpdateSearchBW(PlaylistControl pl, string sharePath, int downtime=60000)
+        public UpdateSearchBW(ConfigControl config, PlaylistControl pl)
         {
             bw.DoWork += BW_DoWork;
             bw.WorkerSupportsCancellation = true;
 
+            this.config = config;
             playlist = pl;
-            this.sharePath = sharePath;
-            this.downtime = downtime;
         }
 
         // фоновая задача
@@ -36,14 +33,14 @@ namespace videowp.Classes
             while (true)
             {
                 if (IsShare()) GetFilesFromShare();
-                Thread.Sleep(downtime);
+                Thread.Sleep(times[config.UpdateTime]*60000);
             }
         }
 
         // получить видео из сетевой папки
         public void GetFilesFromShare()
         {
-            List<string> srcFiles = GetVideoFromFolder(sharePath, true);
+            List<string> srcFiles = GetVideoFromFolder(config.UpdateServer, true);
             List<string> dstFiles = GetVideoFromFolder(playlist.playlistFolderPath, true);
 
             // добавление файлов из сетевой папки
@@ -59,7 +56,7 @@ namespace videowp.Classes
                     {
                         // копирование при доступной сетевой папке
                         if (IsShare())
-                            File.Copy($"{sharePath}\\{srcFilename}", $"{playlist.playlistFolderPath}\\{srcFilename}");
+                            File.Copy($"{config.UpdateServer}\\{srcFilename}", $"{playlist.playlistFolderPath}\\{srcFilename}");
                         else
                         {
                             Thread.Sleep(60000);
@@ -68,7 +65,7 @@ namespace videowp.Classes
                             continue;
                         }
                         // проверка целостности
-                        long srcSize = new FileInfo($"{sharePath}\\{srcFilename}").Length;
+                        long srcSize = new FileInfo($"{config.UpdateServer}\\{srcFilename}").Length;
                         long dstSize = new FileInfo($"{playlist.playlistFolderPath}\\{srcFilename}").Length;
                         if (srcSize == dstSize) break;
                         if (copyCount > 4) break;
@@ -95,13 +92,10 @@ namespace videowp.Classes
             GetFilesFromShare();
         }
 
-        // установить время простоя
-        public void SetDowntime(int period) { this.downtime = period; }
-
         // установить сетевую папку
-        public void SetShare(string path) { sharePath = path; }
+        public void SetShare(string path) { config.UpdateServer = path; }
         // проверка соединения с шарой
-        public bool IsShare() { return Directory.Exists(sharePath); }
+        public bool IsShare() { return Directory.Exists(config.UpdateServer); }
 
         // старт фоновой задачи
         public void Start() { bw.RunWorkerAsync(); }

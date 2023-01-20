@@ -9,7 +9,6 @@ namespace videowp
     {
         // путь к конфигурационному файлу
         readonly string CONFIG_PATH = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\videowp.cfg";
-
         // Плейлист
         public string PlaylistFolderPath
         {
@@ -20,7 +19,6 @@ namespace videowp
             get { return plFolderPath; }
         }
         string plFolderPath;
-
         // индекс времени бездействия
         public int InactionIndex
         {
@@ -37,7 +35,6 @@ namespace videowp
             double[] inactionTimeNumberList = { 0.05, 1, 3, 5, 10, 15 };
             return (int)(inactionTimeNumberList[inactonIndex] * 60000);
         }
-
         // автозапуск обоев
         public int AutoShow
         {
@@ -70,6 +67,15 @@ namespace videowp
             get { return updateSrv; }
         }
         string updateSrv;
+        // время проверки обновлений
+        public int UpdateTime{
+            set { 
+                updatetime = value;
+                this.WriteToFile();
+            }
+            get { return updatetime; }
+        }
+        int updatetime;
 
         public ConfigControl()
         {
@@ -85,6 +91,7 @@ namespace videowp
                 autoshow = 0;
                 overwindows = 0;
                 updateSrv = "";
+                updatetime = 4;
                 this.WriteToFile();
             }              
         }
@@ -117,6 +124,9 @@ namespace videowp
                 {
                     if (!Directory.Exists(plFolderPath)) Directory.CreateDirectory(updateSrv);
                 }
+
+                line = reader.ReadLine();
+                updatetime = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
             }
             catch (Exception exc)
             {
@@ -131,8 +141,9 @@ namespace videowp
             string text = $"plfolderpath = {plFolderPath}\n";
             text += $"period = {inactonIndex}\n";
             text += $"autoshow = {autoshow}\n";
-            text += $"overWindows = {overwindows}\n";
+            text += $"over_windows = {overwindows}\n";
             text += $"updates = {updateSrv}\n";
+            text += $"update_time = {updatetime}\n";
             writer.WriteLine(text);
             writer.Close();
         }
