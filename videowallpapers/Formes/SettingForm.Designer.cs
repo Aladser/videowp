@@ -82,6 +82,7 @@
             // 
             // updateTimeComboBox
             // 
+            this.updateTimeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.updateTimeComboBox.FormattingEnabled = true;
             this.updateTimeComboBox.Items.AddRange(new object[] {
             "1",
