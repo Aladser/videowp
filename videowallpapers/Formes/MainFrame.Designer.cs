@@ -35,16 +35,18 @@
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.playlistFolderLabel = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.setupBtn = new System.Windows.Forms.PictureBox();
+            this.minBtn = new System.Windows.Forms.PictureBox();
             this.exitBtn = new System.Windows.Forms.PictureBox();
             this.infoBtn = new System.Windows.Forms.PictureBox();
+            this.setupBtn = new System.Windows.Forms.PictureBox();
             this.endPeriodLabel = new System.Windows.Forms.Label();
             this.timeComboBox = new System.Windows.Forms.ComboBox();
             this.startPeriodLabel = new System.Windows.Forms.Label();
             this.showWallpaperSwitcher = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.setupBtn)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.minBtn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.exitBtn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.infoBtn)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.setupBtn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.showWallpaperSwitcher)).BeginInit();
             this.SuspendLayout();
             // 
@@ -88,16 +90,18 @@
             this.playlistFolderLabel.TabIndex = 10;
             this.playlistFolderLabel.Text = "Папка видео:";
             // 
-            // setupBtn
+            // minBtn
             // 
-            this.setupBtn.Image = global::videowp.Properties.Resources.setupicon;
-            this.setupBtn.Location = new System.Drawing.Point(564, 12);
-            this.setupBtn.Name = "setupBtn";
-            this.setupBtn.Size = new System.Drawing.Size(20, 20);
-            this.setupBtn.TabIndex = 30;
-            this.setupBtn.TabStop = false;
-            this.toolTip.SetToolTip(this.setupBtn, "Настройки");
-            this.setupBtn.Click += new System.EventHandler(this.SetupBtn_Click);
+            this.minBtn.ErrorImage = global::videowp.Properties.Resources.minbtn;
+            this.minBtn.Image = global::videowp.Properties.Resources.minbtn;
+            this.minBtn.InitialImage = global::videowp.Properties.Resources.minbtn;
+            this.minBtn.Location = new System.Drawing.Point(512, 12);
+            this.minBtn.Name = "minBtn";
+            this.minBtn.Size = new System.Drawing.Size(20, 20);
+            this.minBtn.TabIndex = 33;
+            this.minBtn.TabStop = false;
+            this.toolTip.SetToolTip(this.minBtn, "Свернуть");
+            this.minBtn.Click += new System.EventHandler(this.MinBtn_Click);
             // 
             // exitBtn
             // 
@@ -118,7 +122,18 @@
             this.infoBtn.Size = new System.Drawing.Size(20, 20);
             this.infoBtn.TabIndex = 31;
             this.infoBtn.TabStop = false;
-            this.toolTip.SetToolTip(this.infoBtn, "Видеобои 1.4\r\nAladser ©\r\n2022");
+            this.toolTip.SetToolTip(this.infoBtn, "Видеобои 1.5\nAladser ©\r\n2022");
+            // 
+            // setupBtn
+            // 
+            this.setupBtn.Image = global::videowp.Properties.Resources.setupicon;
+            this.setupBtn.Location = new System.Drawing.Point(564, 12);
+            this.setupBtn.Name = "setupBtn";
+            this.setupBtn.Size = new System.Drawing.Size(20, 20);
+            this.setupBtn.TabIndex = 30;
+            this.setupBtn.TabStop = false;
+            this.toolTip.SetToolTip(this.setupBtn, "Настройки");
+            this.setupBtn.Click += new System.EventHandler(this.SetupBtn_Click);
             // 
             // endPeriodLabel
             // 
@@ -174,8 +189,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.Control;
+            this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ClientSize = new System.Drawing.Size(622, 191);
+            this.ControlBox = false;
+            this.Controls.Add(this.minBtn);
             this.Controls.Add(this.exitBtn);
             this.Controls.Add(this.infoBtn);
             this.Controls.Add(this.setupBtn);
@@ -191,12 +208,12 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Видеобои 1.4";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Text = "Видеобои 1.5_a3";
             this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
-            ((System.ComponentModel.ISupportInitialize)(this.setupBtn)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.minBtn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.exitBtn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.infoBtn)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.setupBtn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.showWallpaperSwitcher)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -217,6 +234,7 @@
         private System.Windows.Forms.PictureBox setupBtn;
         private System.Windows.Forms.PictureBox infoBtn;
         private System.Windows.Forms.PictureBox exitBtn;
+        private System.Windows.Forms.PictureBox minBtn;
     }
 }
 

@@ -14,23 +14,17 @@ namespace videowp
         static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
 
         public static ConfigControl config;   // конфигурационный файл  
-        public static PlaylistControl plCtrl; // управление плейлистом
+        public static readonly string SHORTCUT = $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}\\videowp.lnk"; // ярлык автозагрузки 
+        public static bool isNewData = false;
 
-        public static readonly string shortcut = $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}\\videowp.lnk"; // ярлык автозагрузки 
-        public static string mpvPath = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\mpv\\mpv.exe"; // MPV
-        public static ProcessStartInfo mpvProc; // MPV процесс в Windows
-        public static string filefilter = "видеоплейлисты (*.m3u;*.m3u8;*.pls;*)|*.m3u;*.m3u8;*.pls";
-
+        static PlaylistControl plCtrl; // управление плейлистом
+        static UpdateSearch updateSearch; // проверка обновлений плейлиста
+        static MainForm mainform;
+        static BackWork bcgwork;
+        
+        static readonly string mpvPath = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\mpv\\mpv.exe"; // MPV
+        static ProcessStartInfo mpvProc; // MPV процесс в Windows
         static UserActivityHook globalHook; // хук глобального движения мыши или клавиатуры
-        public static MainForm mainform;
-        public static BackWork bcgwork;
-        // Проверка запуска второй копии приложения
-        static Mutex InstanceCheckMutex;
-        static bool InstanceCheck()
-        {
-            InstanceCheckMutex = new Mutex(true, "videowp", out bool isNew);
-            return isNew;
-        }
 
         [STAThread]
         static void Main()   
@@ -43,26 +37,31 @@ namespace videowp
             }
             else
             {
-                mpvProc = new ProcessStartInfo(Program.mpvPath, @"");
-                bcgwork = new BackWork();
+                // создание хука
+                globalHook = new UserActivityHook();
+                globalHook.KeyPress += (object sender, KeyPressEventArgs e) => Program.bcgwork.StopShowWallpaper(); // нажатие клавиши
+                globalHook.OnMouseActivity += (object sender, MouseEventArgs e) => Program.bcgwork.StopShowWallpaper(); // движение мыши
+                globalHook.Start(true, true);
+                // предотвращение запуска второй копии
+                if (Process.GetProcessesByName(Application.ProductName).Length > 1) return;
+                // запуск программы
+                mpvProc = new ProcessStartInfo(mpvPath, @"");
                 config = new ConfigControl();
-                plCtrl = new PlaylistControl(config.PlaylistFolderPath, config.UpdateServer);
-            }
 
-            // создание хука
-            globalHook = new UserActivityHook();
-            globalHook.KeyPress += (object sender, KeyPressEventArgs e) => Program.bcgwork.StopShowWallpaper(); // нажатие клавиши
-            globalHook.OnMouseActivity += (object sender, MouseEventArgs e) => Program.bcgwork.StopShowWallpaper(); // движение мыши
-            globalHook.Start(true, true);
-            if (Process.GetProcessesByName(Application.ProductName).Length > 1) return;// предотвращение запуска второй копии
-
-            // запуск программы
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            mainform = new MainForm();
-            if (InstanceCheck()) Application.Run();
+                plCtrl = new PlaylistControl(config.PlaylistFolderPath);
+                plCtrl.CheckFilesInPlaylist();
+                bcgwork = new BackWork(mpvProc, plCtrl);
+                updateSearch = new UpdateSearch(plCtrl, config.UpdateServer);
+                updateSearch.Start();
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                mainform = new MainForm(bcgwork, plCtrl, updateSearch);
+                if (InstanceCheck()) Application.Run();
+            }      
         }
 
+        public static bool IsShare(){return updateSearch.IsShare();}
+        public static void SetShare(string path) { updateSearch.SetShare(path); }
         // Изменить автозагрузку
         public static void EditAutoLoader(bool isAutoLoader)
         {
@@ -73,7 +72,7 @@ namespace videowp
                 dynamic shell = Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8")));
                 try
                 {
-                    var lnk = shell.CreateShortcut(Program.shortcut);
+                    var lnk = shell.CreateShortcut(Program.SHORTCUT);
                     try
                     {
                         lnk.TargetPath = Application.ExecutablePath;
@@ -92,8 +91,15 @@ namespace videowp
             }
             // Удаление ярлыка
             else
-                File.Delete(Program.shortcut);
+                File.Delete(Program.SHORTCUT);
         }
 
+        // Проверка запуска второй копии приложения
+        static Mutex InstanceCheckMutex;
+        static bool InstanceCheck()
+        {
+            InstanceCheckMutex = new Mutex(true, "videowp", out bool isNew);
+            return isNew;
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using videowp.Classes;
 
 namespace videowp.Formes
 {
@@ -8,28 +9,30 @@ namespace videowp.Formes
     {
         bool firstLoadBoot = true; // флаг автозагрузки
         bool firstShowBoot = true; // флаг первого показа окна
+        readonly UpdateSearch updateSrv;
         string lastSrv = "";
-        public SettingForm()
+        public SettingForm(MainForm mf, UpdateSearch updateSrv)
         {
             InitializeComponent();
             CenterToScreen();
-            Show();
 
-            autoLoaderCheckbox.Checked = File.Exists(Program.shortcut);
+            int left = mf.Left + (this.Width - mf.Width) / 2;
+            int top = mf.Top + (this.Height - mf.Height) / 2;
+            Left = left;
+            Top = top;
+
+            autoLoaderCheckbox.Checked = File.Exists(Program.SHORTCUT);
             autoShowCheckbox.Checked = Program.config.AutoShow == 1;
             overWindowsCheckbox.Checked = Program.config.OverWindows == 1;
-            // сетевая папка с видео
-            if (!Program.config.UpdateServer.Equals(""))
-            {
-                updateSrvField.Text = Program.plCtrl.IsShare() ? Program.config.UpdateServer : $"{ Program.config.UpdateServer} (нет связи)";
-            }
+            this.updateSrv = updateSrv;
+            updateSrvField.Text = !updateSrv.SharePath.Equals("") ? updateSrv.IsShare() ? updateSrv.SharePath : $"{updateSrv.SharePath}: нет связи" : "";
         }
 
         // флаг автозагрузки
         private void AutoLoaderCheckbox_CheckedChanged(object sender, System.EventArgs e)
         {
             // первый фальшивый запуск
-            if (firstLoadBoot && File.Exists(Program.shortcut))
+            if (firstLoadBoot && File.Exists(Program.SHORTCUT))
             {
                 firstLoadBoot = false;
                 return;
@@ -37,7 +40,7 @@ namespace videowp.Formes
             // переключение
             else
             {
-                bool index = !File.Exists(Program.shortcut);
+                bool index = !File.Exists(Program.SHORTCUT);
                 Program.EditAutoLoader(index);
                 firstLoadBoot = false;
             }
@@ -83,7 +86,8 @@ namespace videowp.Formes
             if (Directory.Exists(srvName))
             {
                 Program.config.UpdateServer = srvName;
-                Program.plCtrl.SetShare(srvName);
+                Program.SetShare(srvName);
+                new Copying(updateSrv.BW_GetFilesFromShare).Start();
             }
             else if(!srvName.Equals(""))
             {

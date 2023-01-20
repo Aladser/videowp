@@ -2,11 +2,11 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Threading;
+using videowp.Classes;
 
 namespace videowp
 {
-    internal class BackWork
+    public class BackWork
     {
         [DllImport("user32.dll", SetLastError = true)]
         public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
@@ -16,14 +16,18 @@ namespace videowp
         private static extern IntPtr GetForegroundWindow();
 
         readonly BackgroundWorker bw = new BackgroundWorker();
+        ProcessStartInfo mpvProc; 
+        PlaylistControl playlist;
         long downtime;
         long dwt1, dwt2;
 
         /// <summary>
         /// Класс фоновой задачи показа обоев
         /// </summary>
-        public BackWork()
+        public BackWork(ProcessStartInfo mpvProc, PlaylistControl pl)
         {
+            this.mpvProc = mpvProc;
+            playlist = pl;
             bw.DoWork += BW_DoWork;
             bw.WorkerSupportsCancellation = true;
         }
@@ -39,7 +43,7 @@ namespace videowp
             dwt1 = startBWTime;
             downtime = 0;
 
-            Program.mpvProc.Arguments = $"--playlist={Program.plCtrl.PLAYLIST_PATH}";
+            mpvProc.Arguments = $"--playlist={playlist.PLAYLIST_PATH}";
 
             while (true)
             {               
@@ -49,6 +53,14 @@ namespace videowp
                     e.Cancel = true;
                     break;
                 }
+                // появлись новые видео
+                if(Program.isNewData)
+                {
+                    if(isActive) foreach (Process proc in Process.GetProcessesByName("mpv")) proc.Kill();
+                    playlist.CheckFilesInPlaylist();
+                    if(isActive) Process.Start(mpvProc);
+                    Program.isNewData = false;
+                }
                 //поиск другого запущенного приложения в фуллскрине
                 if (IsForegroundFullScreen() && Program.config.OverWindows==0)
                 {
@@ -57,12 +69,10 @@ namespace videowp
                 // запуск обоев
                 else if (downtime >= Program.config.GetInactionTime() && !isActive)
                 {
-                    while (Program.plCtrl.IsActiveCopying()) { Thread.Sleep(250); } // ожидание конца копирования
-
                     dwt2 = GetTimeNow();
                     isActive = true;
                     foreach (Process proc in Process.GetProcessesByName("mpv")) proc.Kill(); // убить зависшие процессы
-                    Process.Start(Program.mpvProc);
+                    Process.Start(mpvProc);
                 }
                 // прерывание показа обоев
                 else if (downtime < Program.config.GetInactionTime() && isActive)
