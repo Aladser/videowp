@@ -150,6 +150,7 @@ namespace videowp
         // закрыть окно
         void ExitBtn_Click(object sender, EventArgs e)
         {
+            updateSearch.Stop();
             bcgwork.Stop();
             Process.GetCurrentProcess().Kill();
         }
