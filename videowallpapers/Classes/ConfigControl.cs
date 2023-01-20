@@ -5,7 +5,7 @@ using System.Windows.Forms;
 namespace videowp
 {
     // Конфигурационный Control
-    public class ConfigControl
+    internal class ConfigControl
     {
         // путь к конфигурационному файлу
         readonly string CONFIG_PATH = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\videowp.cfg";

@@ -6,7 +6,7 @@ using videowp.Classes;
 
 namespace videowp
 {
-    public class BackWork
+    internal class BackWork
     {
         [DllImport("user32.dll", SetLastError = true)]
         public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
@@ -16,16 +16,18 @@ namespace videowp
         private static extern IntPtr GetForegroundWindow();
 
         readonly BackgroundWorker bw = new BackgroundWorker();
-        ProcessStartInfo mpvProc; 
-        PlaylistControl playlist;
+        readonly ConfigControl config;
+        readonly ProcessStartInfo mpvProc;
+        readonly PlaylistControl playlist;
         long downtime;
         long dwt1, dwt2;
 
         /// <summary>
         /// Класс фоновой задачи показа обоев
         /// </summary>
-        public BackWork(ProcessStartInfo mpvProc, PlaylistControl pl)
+        public BackWork(ConfigControl config, ProcessStartInfo mpvProc, PlaylistControl pl)
         {
+            this.config = config;
             this.mpvProc = mpvProc;
             playlist = pl;
             bw.DoWork += BW_DoWork;
@@ -62,12 +64,12 @@ namespace videowp
                     Program.isNewData = false;
                 }
                 //поиск другого запущенного приложения в фуллскрине
-                if (IsForegroundFullScreen() && Program.config.OverWindows==0)
+                if (IsForegroundFullScreen() && config.OverWindows==0)
                 {
                     dwt1 = GetTimeNow();
                 }
                 // запуск обоев
-                else if (downtime >= Program.config.GetInactionTime() && !isActive)
+                else if (downtime >= config.GetInactionTime() && !isActive)
                 {
                     dwt2 = GetTimeNow();
                     isActive = true;
@@ -75,7 +77,7 @@ namespace videowp
                     Process.Start(mpvProc);
                 }
                 // прерывание показа обоев
-                else if (downtime < Program.config.GetInactionTime() && isActive)
+                else if (downtime < config.GetInactionTime() && isActive)
                 {
                     dwt1 = GetTimeNow();
                     isActive = false;

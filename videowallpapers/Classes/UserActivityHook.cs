@@ -11,7 +11,7 @@ namespace videowp
     /// или вообще не имеет пользовательского интерфейса. Этот класс вызывает общие события .NET с помощью KeyEventArgs и MouseEventArgs, 
     /// поэтому вы можете легко получить любую необходимую информацию.
     /// </summary>
-    public class UserActivityHook
+    internal class UserActivityHook
     {
         #region Windows structure definitions
 

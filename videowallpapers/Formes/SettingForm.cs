@@ -5,16 +5,18 @@ using videowp.Classes;
 
 namespace videowp.Formes
 {
-    public partial class SettingForm : Form
+    internal partial class SettingForm : Form
     {
         bool firstLoadBoot = true; // флаг автозагрузки
         bool firstShowBoot = true; // флаг первого показа окна
+        readonly ConfigControl config;
         readonly UpdateSearch updateSrv;
         string lastSrv = "";
-        public SettingForm(MainForm mf, UpdateSearch updateSrv)
+        public SettingForm(MainForm mf, ConfigControl config, UpdateSearch updateSrv)
         {
             InitializeComponent();
             CenterToScreen();
+            this.config = config;
 
             int left = mf.Left + (this.Width - mf.Width) / 2;
             int top = mf.Top + (this.Height - mf.Height) / 2;
@@ -22,8 +24,8 @@ namespace videowp.Formes
             Top = top;
 
             autoLoaderCheckbox.Checked = File.Exists(Program.SHORTCUT);
-            autoShowCheckbox.Checked = Program.config.AutoShow == 1;
-            overWindowsCheckbox.Checked = Program.config.OverWindows == 1;
+            autoShowCheckbox.Checked = config.AutoShow == 1;
+            overWindowsCheckbox.Checked = config.OverWindows == 1;
             this.updateSrv = updateSrv;
             updateSrvField.Text = !updateSrv.SharePath.Equals("") ? updateSrv.IsShare() ? updateSrv.SharePath : $"{updateSrv.SharePath}: нет связи" : "";
         }
@@ -50,14 +52,14 @@ namespace videowp.Formes
         private void AutoShowCheckbox_CheckedChanged(object sender, System.EventArgs e)
         {
             // первый фальшивый запуск
-            if (firstShowBoot && Program.config.AutoShow==1)
+            if (firstShowBoot && config.AutoShow==1)
             {
                 firstShowBoot = false;
                 return;
             }
             else
             {
-                Program.config.AutoShow = Program.config.AutoShow == 1 ? 0 : 1;
+                config.AutoShow = config.AutoShow == 1 ? 0 : 1;
                 firstShowBoot = false;
             }
         }
@@ -66,7 +68,7 @@ namespace videowp.Formes
         private void OverWindowsCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             // первый фальшивый запуск
-            if (firstShowBoot && Program.config.OverWindows == 1)
+            if (firstShowBoot && config.OverWindows == 1)
             {
                 firstShowBoot = false;
                 return;
@@ -74,7 +76,7 @@ namespace videowp.Formes
             else
             {
                 firstShowBoot = false;
-                Program.config.OverWindows = Convert.ToInt32(overWindowsCheckbox.Checked);
+                config.OverWindows = Convert.ToInt32(overWindowsCheckbox.Checked);
             }
         }
 
@@ -85,7 +87,7 @@ namespace videowp.Formes
             string srvName = updateSrvField.Text;
             if (Directory.Exists(srvName))
             {
-                Program.config.UpdateServer = srvName;
+                config.UpdateServer = srvName;
                 Program.SetShare(srvName);
                 new Copying(updateSrv.BW_GetFilesFromShare).Start();
             }
@@ -99,7 +101,7 @@ namespace videowp.Formes
         private void ResetUpdateSrvBtn_Click(object sender, EventArgs e)
         {
             updateSrvField.Text = "";
-            Program.config.UpdateServer = "";
+            config.UpdateServer = "";
         }
         
         private void updateSrvField_DoubleClick(object sender, EventArgs e){updateSrvField.Text = ""; } // очистка поля пути к серверу

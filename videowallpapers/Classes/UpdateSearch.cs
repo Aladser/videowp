@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace videowp.Classes
 {
-    public class UpdateSearch
+    internal class UpdateSearch
     {
         readonly BackgroundWorker bw = new BackgroundWorker();
 

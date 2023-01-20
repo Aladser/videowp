@@ -2,7 +2,7 @@
 
 namespace videowp.Classes
 {
-    public class Copying
+    internal class Copying
     {
         readonly BackgroundWorker bw = new BackgroundWorker();
         

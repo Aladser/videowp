@@ -13,10 +13,10 @@ namespace videowp
         [DllImport("gdi32.dll")]
         static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
 
-        public static ConfigControl config;   // конфигурационный файл  
         public static readonly string SHORTCUT = $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}\\videowp.lnk"; // ярлык автозагрузки 
-        public static bool isNewData = false;
+        public static bool isNewData = false; // флаг новых видео
 
+        static ConfigControl config;   // конфигурационный файл  
         static PlaylistControl plCtrl; // управление плейлистом
         static UpdateSearch updateSearch; // проверка обновлений плейлиста
         static MainForm mainform;
@@ -50,12 +50,12 @@ namespace videowp
 
                 plCtrl = new PlaylistControl(config.PlaylistFolderPath);
                 plCtrl.CheckFilesInPlaylist();
-                bcgwork = new BackWork(mpvProc, plCtrl);
+                bcgwork = new BackWork(config, mpvProc, plCtrl);
                 updateSearch = new UpdateSearch(plCtrl, config.UpdateServer);
                 updateSearch.Start();
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                mainform = new MainForm(bcgwork, plCtrl, updateSearch);
+                mainform = new MainForm(config, bcgwork, plCtrl, updateSearch);
                 if (InstanceCheck()) Application.Run();
             }      
         }

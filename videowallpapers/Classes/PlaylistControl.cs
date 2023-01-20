@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace videowp.Classes
 {
-    public class PlaylistControl
+    internal class PlaylistControl
     {
         public readonly string PLAYLIST_PATH = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\PL.m3u"; // плейлист
         public string playlistFolderPath;

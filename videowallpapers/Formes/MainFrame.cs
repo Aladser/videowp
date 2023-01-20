@@ -7,29 +7,30 @@ using videowp.Formes;
 
 namespace videowp
 {
-    public partial class MainForm : Form
+    internal partial class MainForm : Form
     {
         readonly int OFF = 0;
         readonly int ON = 1;
         readonly int DISABLED = 2;
-
-        BackWork bcgwork;
-        PlaylistControl playlist;
-        UpdateSearch updateSearch;
+        readonly ConfigControl config;
+        readonly BackWork bcgwork;
+        readonly PlaylistControl playlist;
+        readonly UpdateSearch updateSearch;
         readonly FolderBrowserDialog fbd = new FolderBrowserDialog();
         readonly Bitmap[] switcher = {Properties.Resources.offbtn, Properties.Resources.onbtn, Properties.Resources.disabledbtn}; // переключатель        
         int switcherIndex; // индекс переключателя 
 
-        public MainForm(BackWork bcgwork, PlaylistControl pl, UpdateSearch updtSrch)
+        public MainForm(ConfigControl config, BackWork bcgwork, PlaylistControl pl, UpdateSearch updtSrch)
         {
             InitializeComponent();
             CenterToScreen();
+            this.config = config;
             this.bcgwork = bcgwork;
             playlist = pl;
             updateSearch = updtSrch;
 
             notifyIcon.Text = "Aladser Видеообои";
-            timeComboBox.SelectedIndex = Program.config.InactionIndex; // считывание времени заставки
+            timeComboBox.SelectedIndex = config.InactionIndex; // считывание времени заставки
 
             // цвет элементов
             timeComboBox.DrawMode = DrawMode.OwnerDrawVariable;
@@ -51,7 +52,7 @@ namespace videowp
 
             // ***** проверка автозапуска *****
             // есть автозапуск
-            if (Program.config.AutoShow==1 && !playlist.playlistFolderPath.Equals("") && !playlist.IsEmpty())
+            if (config.AutoShow==1 && !playlist.playlistFolderPath.Equals("") && !playlist.IsEmpty())
             {
                 setSwitcherImage(ON);               
                 playlistSelectButton.Enabled = false;
@@ -108,7 +109,7 @@ namespace videowp
         // переключение времени заставки
         void TimeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Program.config.InactionIndex = timeComboBox.SelectedIndex;
+            config.InactionIndex = timeComboBox.SelectedIndex;
         }
 
         // Сворачивание в трей
@@ -121,7 +122,7 @@ namespace videowp
         {
             if (fbd.ShowDialog() != DialogResult.OK) return;
 
-            Program.config.PlaylistFolderPath = fbd.SelectedPath;
+            config.PlaylistFolderPath = fbd.SelectedPath;
             playlist.playlistFolderPath = fbd.SelectedPath;
             playlistFolderNameLabel.Text = !playlist.IsEmpty() ? fbd.SelectedPath : $"{fbd.SelectedPath} (Пусто)";
             playlist.CheckFilesInPlaylist();
@@ -149,7 +150,7 @@ namespace videowp
             e.DrawFocusRectangle();
         }
         void SetupBtn_Click(object sender, EventArgs e){
-            SettingForm sf = new SettingForm(this, updateSearch);
+            SettingForm sf = new SettingForm(this, config, updateSearch);
             sf.ShowDialog();
         }
         // закрыть окно
