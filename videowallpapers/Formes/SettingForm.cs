@@ -12,6 +12,7 @@ namespace videowp.Formes
         readonly ConfigControl config;
         readonly UpdateSearchBW updateSrv;
         string lastSrv = "";
+
         public SettingForm(MainForm mf, ConfigControl config, UpdateSearchBW updateSrv)
         {
             InitializeComponent();
@@ -32,7 +33,7 @@ namespace videowp.Formes
         }
 
         // флаг автозагрузки
-        private void AutoLoaderCheckbox_CheckedChanged(object sender, System.EventArgs e)
+        private void AutoLoaderCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             // первый фальшивый запуск
             if (firstLoadBoot && File.Exists(Program.SHORTCUT))
@@ -50,7 +51,7 @@ namespace videowp.Formes
         }
 
         // флаг автопоказа
-        private void AutoShowCheckbox_CheckedChanged(object sender, System.EventArgs e)
+        private void AutoShowCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             // первый фальшивый запуск
             if (firstShowBoot && config.AutoShow==1)
@@ -105,7 +106,10 @@ namespace videowp.Formes
             config.UpdateServer = "";
         }
         // очистка поля пути к серверу
-        private void UpdateSrvField_DoubleClick(object sender, EventArgs e){updateSrvField.Text = ""; } 
+        private void UpdateSrvField_DoubleClick(object sender, EventArgs e)
+        {
+            updateSrvField.Text = ""; 
+        } 
         // установка времени
         private void UpdateTimeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {

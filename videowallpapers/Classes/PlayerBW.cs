@@ -22,9 +22,6 @@ namespace videowp
         long downtime;
         long dwt1, dwt2;
 
-        /// <summary>
-        /// Класс фоновой задачи показа обоев
-        /// </summary>
         public PlayerBW(ConfigControl config, ProcessStartInfo mpvProc, PlaylistControl pl)
         {
             this.config = config;
@@ -34,9 +31,6 @@ namespace videowp
             bw.WorkerSupportsCancellation = true;
         }
 
-        /// <summary>
-        /// фоновая задача
-        /// </summary>
         void BW_DoWork(object sender, DoWorkEventArgs e)
         {
             bool isActive = false;
@@ -89,30 +83,14 @@ namespace videowp
             }
         }
 
-        /// <summary>
-        /// старт фоновой задачи
-        /// </summary>
-        /// <param name="plpath"></param>
         public void Start(){bw.RunWorkerAsync(); }
-        /// <summary>
-        /// остановка фоновой задачи
-        /// </summary>
         public void Stop(){ bw.CancelAsync();}
-        /// <summary>
-        /// получить текущее время в мс
-        /// </summary>
-        /// <returns></returns>
+        public bool IsActive() { return bw.IsBusy; }
+
         private long GetTimeNow() {return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;}
-        /// <summary>
-        /// Возвращает активность фоновой задачи
-        /// </summary>
-        /// <returns></returns>
-        public bool IsActive(){ return bw.IsBusy; }
-        /// <summary>
-        /// Событие остановки показа обоев
-        /// </summary>
+
         public void StopShowWallpaper(){ dwt1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;}
-        // Определение запуска фуллэкрана
+        // Поиск другой программы в фуллскрине
         [StructLayout(LayoutKind.Sequential)]
         struct RECT
         {
@@ -121,10 +99,7 @@ namespace videowp
             public int right;
             public int bottom;
         }
-        /// <summary>
-        /// Поиск другой программы в фуллскрине
-        /// </summary>
-        /// <returns></returns>
+
         public bool IsForegroundFullScreen()
         {
             System.Windows.Forms.Screen screen = System.Windows.Forms.Screen.PrimaryScreen;

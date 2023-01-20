@@ -19,6 +19,7 @@ namespace videowp
             get { return plFolderPath; }
         }
         string plFolderPath;
+
         // индекс времени бездействия
         public int InactionIndex
         {
@@ -29,12 +30,14 @@ namespace videowp
             get { return inactonIndex; }
         }
         int inactonIndex;
+
         // получить время бездействия в мс
         public int GetInactionTime()
         {
             double[] inactionTimeNumberList = { 0.05, 1, 3, 5, 10, 15 };
             return (int)(inactionTimeNumberList[inactonIndex] * 60000);
         }
+
         // автозапуск обоев
         public int AutoShow
         {
@@ -45,6 +48,7 @@ namespace videowp
             get { return autoshow; }
         }
         int autoshow;
+
         // повех всех окон
         public int OverWindows
         {
@@ -56,6 +60,7 @@ namespace videowp
             get { return overwindows; }
         }
         int overwindows;
+
         // Путь к шаре с видео
         public string UpdateServer
         {
@@ -67,6 +72,7 @@ namespace videowp
             get { return updateSrv; }
         }
         string updateSrv;
+
         // время проверки обновлений
         public int UpdateTime{
             set { 
@@ -134,6 +140,7 @@ namespace videowp
             }
             reader.Close();
         }
+
         // Запись данных в конфиг.файл
         void WriteToFile()
         {

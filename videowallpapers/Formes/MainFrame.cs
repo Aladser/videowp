@@ -54,33 +54,23 @@ namespace videowp
             // есть автозапуск
             if (config.AutoShow==1 && !playlist.playlistFolderPath.Equals("") && !playlist.IsEmpty())
             {
-                setSwitcherImage(ON);               
+                SetSwitcherImage(ON);               
                 playlistSelectButton.Enabled = false;
                 bcgwork.Start();
             }
             // пустая папка с видео
             else if (playlist.playlistFolderPath.Equals("") || playlist.IsEmpty())
             {
-                setSwitcherImage(DISABLED);
+                SetSwitcherImage(DISABLED);
                 showWallpaperSwitcher.Image = switcher[DISABLED];
                 showWallpaperSwitcher.Enabled = false;
                 this.Show();
             }
             else
             {
-                setSwitcherImage(OFF);
+                SetSwitcherImage(OFF);
                 this.Show();
             }          
-        }
-
-        void AboutMenuItem_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Видеобои 1.4\nAladser ©\n2022");
-        }
-
-        public void setNotifyIconText(string text)
-        {
-            notifyIcon.Text = text;
         }
 
         // переключить показ обоев
@@ -89,19 +79,20 @@ namespace videowp
             switcherIndex = switcherIndex == ON ? OFF : ON;
             if (switcherIndex == ON)
             {
-                setSwitcherImage(ON);
+                SetSwitcherImage(ON);
                 playlistSelectButton.Enabled = false;
                 bcgwork.Start();
             }
             else
             {
-                setSwitcherImage(OFF);
+                SetSwitcherImage(OFF);
                 playlistSelectButton.Enabled = true;
                 bcgwork.Stop();
             }
         }
+        
         // изменить изображение переключателя
-        void setSwitcherImage(int index){
+        void SetSwitcherImage(int index){
             switcherIndex = index;
             showWallpaperSwitcher.Image = switcher[index];
         }
@@ -114,6 +105,7 @@ namespace videowp
 
         // Сворачивание в трей
         void MainForm_SizeChanged(object sender, EventArgs e){this.Hide();}
+
         // Разворачивание окна
         void NotifyIcon_MouseDoubleClick(object sender, MouseEventArgs e){this.Show();}
 
@@ -149,16 +141,19 @@ namespace videowp
             }
             e.DrawFocusRectangle();
         }
+
         void SetupBtn_Click(object sender, EventArgs e){
             SettingForm sf = new SettingForm(this, config, updateSearch);
             sf.ShowDialog();
         }
+
         // закрыть окно
         void ExitBtn_Click(object sender, EventArgs e)
         {
             bcgwork.Stop();
             Process.GetCurrentProcess().Kill();
         }
+
         // свернуть окно
         void MinBtn_Click(object sender, EventArgs e)
         {

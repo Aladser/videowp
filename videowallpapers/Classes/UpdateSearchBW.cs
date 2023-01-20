@@ -94,13 +94,16 @@ namespace videowp.Classes
 
         // установить сетевую папку
         public void SetShare(string path) { config.UpdateServer = path; }
+
         // проверка соединения с шарой
         public bool IsShare() { return Directory.Exists(config.UpdateServer); }
 
         // старт фоновой задачи
         public void Start() { bw.RunWorkerAsync(); }
+
         // остановка фоновой задачи
         public void Stop() { bw.CancelAsync(); }
+
         // Возвращает активность фоновой задачи
         public bool IsActive() { return bw.IsBusy; }
 
