@@ -1,7 +1,6 @@
 ## Видеообои
 Видеобои на основе MPV-плеера.
 Проигрывание видеофайлов из указанной папки. Поддерживаемые видеофайлы: .mp4, .m4v, .mkv, .avi.
-[Скачать]( https://drive.google.com/file/d/1wMgGYZ6r5VmU9Kq4ApDF5DZcHtFgtg4W/view?usp=sharing )
 
 ![Главное окно программы](/images/Screenshot_1.png)
 
@@ -18,3 +17,5 @@
 6. Закрыть
 
 ![Окно настроек](/images/Screenshot_1.png)
+
+[Скачать]( https://drive.google.com/file/d/1wMgGYZ6r5VmU9Kq4ApDF5DZcHtFgtg4W/view?usp=sharing )
