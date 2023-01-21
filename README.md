@@ -19,5 +19,3 @@
 
 ### Окно настроек
 ![Окно настроек](/images/Screenshot_1.png)
-
-[Скачать]( https://drive.google.com/file/d/1wMgGYZ6r5VmU9Kq4ApDF5DZcHtFgtg4W/view?usp=sharing )
