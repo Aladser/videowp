@@ -18,4 +18,4 @@
 6. Закрыть
 
 ### Окно настроек
-![Окно настроек](/images/Screenshot_1.png)
+![Окно настроек](/images/Screenshot_2.png)
