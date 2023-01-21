@@ -118,7 +118,7 @@ namespace videowp
             playlist.playlistFolderPath = fbd.SelectedPath;
             playlistFolderNameLabel.Text = !playlist.IsEmpty() ? fbd.SelectedPath : $"{fbd.SelectedPath} (Пусто)";
             playlist.CheckFilesInPlaylist();
-
+            if (updateSearch.IsActive()) new Backwork(updateSearch.BW_GetFilesFromShare).Start();
             showWallpaperSwitcher.Enabled = !playlist.IsEmpty();
             showWallpaperSwitcher.Image = playlist.IsEmpty() ? switcher[DISABLED] : switcher[OFF];
         }

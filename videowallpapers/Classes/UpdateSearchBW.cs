@@ -32,7 +32,7 @@ namespace videowp.Classes
         {
             while (true)
             {
-                if (IsShare()) GetFilesFromShare();
+                if (IsShare() && !playlist.IsEmpty()) GetFilesFromShare();
                 Thread.Sleep(times[config.UpdateTime]*60000);
             }
         }

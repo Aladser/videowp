@@ -12,8 +12,12 @@ namespace videowp.Classes
         public PlaylistControl(string playlistFolderPath)
         {
             // проверка папки с видео
-            if(!Directory.Exists(playlistFolderPath)) Directory.CreateDirectory(playlistFolderPath);
+            if (!playlistFolderPath.Equals(""))
+                if (!Directory.Exists(playlistFolderPath)) Directory.CreateDirectory(playlistFolderPath);
+            else
+                this.playlistFolderPath = "";
             this.playlistFolderPath = playlistFolderPath;
+
             // проверка наличия плейлиста
             if (!File.Exists(PLAYLIST_PATH))
             {
@@ -67,7 +71,9 @@ namespace videowp.Classes
         }
 
         // проверка папки на наличие файлов
-        public bool IsEmpty(){return Directory.GetFiles(playlistFolderPath).Length == 0;}
+        public bool IsEmpty(){
+            return playlistFolderPath.Equals("") ? true : Directory.GetFiles(playlistFolderPath).Length == 0;
+        }
     }
 
 }

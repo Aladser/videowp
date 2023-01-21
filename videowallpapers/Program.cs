@@ -37,11 +37,6 @@ namespace videowp
             }
             else
             {
-                // создание хука
-                globalHook = new UserActivityHook();
-                globalHook.KeyPress += (object sender, KeyPressEventArgs e) => Program.bcgwork.StopShowWallpaper(); // нажатие клавиши
-                globalHook.OnMouseActivity += (object sender, MouseEventArgs e) => Program.bcgwork.StopShowWallpaper(); // движение мыши
-                globalHook.Start(true, true);
                 // предотвращение запуска второй копии
                 if (Process.GetProcessesByName(Application.ProductName).Length > 1) return;
                 // запуск программы
@@ -49,10 +44,17 @@ namespace videowp
                 config = new ConfigControl();
 
                 plCtrl = new PlaylistControl(config.PlaylistFolderPath);
-                plCtrl.CheckFilesInPlaylist();
+                if(!plCtrl.IsEmpty()) plCtrl.CheckFilesInPlaylist();
                 bcgwork = new PlayerBW(config, mpvProc, plCtrl);
+
+                // создание хука
+                globalHook = new UserActivityHook();
+                globalHook.KeyPress += (object sender, KeyPressEventArgs e) => Program.bcgwork.StopShowWallpaper(); // нажатие клавиши
+                globalHook.OnMouseActivity += (object sender, MouseEventArgs e) => Program.bcgwork.StopShowWallpaper(); // движение мыши
+                globalHook.Start(true, true);
+
                 updateSearch = new UpdateSearchBW(config, plCtrl);
-                if(!config.UpdateServer.Equals("")) updateSearch.Start();
+                if(!plCtrl.IsEmpty() && !config.UpdateServer.Equals("")) updateSearch.Start();
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 mainform = new MainForm(config, bcgwork, plCtrl, updateSearch);

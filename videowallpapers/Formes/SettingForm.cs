@@ -91,8 +91,10 @@ namespace videowp.Formes
             {
                 config.UpdateServer = srvName;
                 updateSrv.SetShare(srvName);
-                new Backwork(updateSrv.BW_GetFilesFromShare).Start();
-                updateSrv.Start();
+                if(!updateSrv.IsActive()) 
+                    updateSrv.Start();
+                else
+                    new Backwork(updateSrv.BW_GetFilesFromShare).Start();
             }
             else if(!srvName.Equals(""))
             {
@@ -105,7 +107,7 @@ namespace videowp.Formes
         {
             updateSrvField.Text = "";
             config.UpdateServer = "";
-            updateSrv.Stop();
+            if (updateSrv.IsActive())  updateSrv.Stop();
         }
         // очистка поля пути к серверу
         private void UpdateSrvField_DoubleClick(object sender, EventArgs e)
