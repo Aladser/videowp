@@ -51,7 +51,7 @@
   <ItemGroup>
     <Compile Include="Classes\PlayerBW.cs" />
     <Compile Include="Classes\ConfigControl.cs" />
-    <Compile Include="Classes\CopyingBW.cs" />
+    <Compile Include="Classes\Backwork.cs" />
     <Compile Include="Classes\PlaylistControl.cs" />
     <Compile Include="Classes\UpdateSearchBW.cs" />
     <Compile Include="Formes\MainFrame.cs">

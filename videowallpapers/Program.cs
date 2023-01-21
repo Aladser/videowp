@@ -52,7 +52,7 @@ namespace videowp
                 plCtrl.CheckFilesInPlaylist();
                 bcgwork = new PlayerBW(config, mpvProc, plCtrl);
                 updateSearch = new UpdateSearchBW(config, plCtrl);
-                updateSearch.Start();
+                if(!config.UpdateServer.Equals("")) updateSearch.Start();
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 mainform = new MainForm(config, bcgwork, plCtrl, updateSearch);
@@ -60,8 +60,6 @@ namespace videowp
             }      
         }
 
-        public static bool IsShare(){return updateSearch.IsShare();}
-        public static void SetShare(string path) { updateSearch.SetShare(path); }
         // Изменить автозагрузку
         public static void EditAutoLoader(bool isAutoLoader)
         {
