@@ -12,19 +12,51 @@ namespace videowp
     {
         [DllImport("gdi32.dll")]
         static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
-
-        public static readonly string SHORTCUT = $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}\\videowp.lnk"; // ярлык автозагрузки 
-        public static bool isNewData = false; // флаг новых видео
-
-        static ConfigControl config;   // конфигурационный файл  
-        static PlaylistControl plCtrl; // управление плейлистом
-        static UpdateSearchBW updateSearch; // проверка обновлений плейлиста
+     
+        static ConfigControl config;        // конфигурационный файл  
+        static PlaylistControl plCtrl;      // управление плейлистом
+        static UpdateSearchBW updateCtrl;   // управляет обновленями плейлиста
         static MainForm mainform;
-        static PlayerBW bcgwork;
+        static PlayerBW playerBW;
         
         static readonly string mpvPath = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\mpv\\mpv.exe"; // MPV
+        public static readonly string SHORTCUT = $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}\\videowp.lnk"; // ярлык автозагрузки 
         static ProcessStartInfo mpvProc; // MPV процесс в Windows
         static UserActivityHook globalHook; // хук глобального движения мыши или клавиатуры
+
+        // ярлык автозагрузки
+        public static bool IsAutoLoader
+        {
+            set
+            {
+                if (value)
+                {
+                    //Windows Script Host Shell Object
+                    dynamic shell = Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8")));
+                    try
+                    {
+                        var lnk = shell.CreateShortcut(Program.SHORTCUT);
+                        try
+                        {
+                            lnk.TargetPath = Application.ExecutablePath;
+                            lnk.IconLocation = "shell32.dll, 1";
+                            lnk.Save();
+                        }
+                        finally
+                        {
+                            Marshal.FinalReleaseComObject(lnk);
+                        }
+                    }
+                    finally
+                    {
+                        Marshal.FinalReleaseComObject(shell);
+                    }
+                }
+                // Удаление ярлыка
+                else
+                    File.Delete(Program.SHORTCUT);
+            }
+        }
 
         [STAThread]
         static void Main()   
@@ -45,53 +77,21 @@ namespace videowp
 
                 plCtrl = new PlaylistControl(config.PlaylistFolderPath);
                 if(!plCtrl.IsEmpty()) plCtrl.CheckFilesInPlaylist();
-                bcgwork = new PlayerBW(config, mpvProc, plCtrl);
+                updateCtrl = new UpdateSearchBW(config, plCtrl);
+                playerBW = new PlayerBW(config, updateCtrl, mpvProc, plCtrl);
 
                 // создание хука
                 globalHook = new UserActivityHook();
-                globalHook.KeyPress += (object sender, KeyPressEventArgs e) => Program.bcgwork.StopShowWallpaper(); // нажатие клавиши
-                globalHook.OnMouseActivity += (object sender, MouseEventArgs e) => Program.bcgwork.StopShowWallpaper(); // движение мыши
+                globalHook.KeyPress += (object sender, KeyPressEventArgs e) => playerBW.StopShowWallpaper(); // нажатие клавиши
+                globalHook.OnMouseActivity += (object sender, MouseEventArgs e) => playerBW.StopShowWallpaper(); // движение мыши
                 globalHook.Start(true, true);
 
-                updateSearch = new UpdateSearchBW(config, plCtrl);
-                if(!plCtrl.IsEmpty() && !config.UpdateServer.Equals("")) updateSearch.Start();
+                if(!plCtrl.IsEmpty() && !config.UpdateServer.Equals("")) updateCtrl.Start();
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                mainform = new MainForm(config, bcgwork, plCtrl, updateSearch);
+                mainform = new MainForm(config, playerBW, plCtrl, updateCtrl);
                 if (InstanceCheck()) Application.Run();
             }      
-        }
-
-        // Изменить автозагрузку
-        public static void EditAutoLoader(bool isAutoLoader)
-        {
-            // Создание ярлыка
-            if (isAutoLoader)
-            {
-                //Windows Script Host Shell Object
-                dynamic shell = Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8")));
-                try
-                {
-                    var lnk = shell.CreateShortcut(Program.SHORTCUT);
-                    try
-                    {
-                        lnk.TargetPath = Application.ExecutablePath;
-                        lnk.IconLocation = "shell32.dll, 1";
-                        lnk.Save();
-                    }
-                    finally
-                    {
-                        Marshal.FinalReleaseComObject(lnk);
-                    }
-                }
-                finally
-                {
-                    Marshal.FinalReleaseComObject(shell);
-                }
-            }
-            // Удаление ярлыка
-            else
-                File.Delete(Program.SHORTCUT);
         }
 
         // Проверка запуска второй копии приложения

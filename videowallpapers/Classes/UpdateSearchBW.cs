@@ -13,6 +13,7 @@ namespace videowp.Classes
         {
             get { return config.UpdateServer; }
         }
+        public bool IsNewData;
         readonly PlaylistControl playlist;
         readonly ConfigControl config;
         readonly int[] times = {1, 30, 60, 120, 240, 480}; // время проверки обновлений
@@ -32,7 +33,7 @@ namespace videowp.Classes
         {
             while (true)
             {
-                if (IsShare() && !playlist.IsEmpty()) GetFilesFromShare();
+                if (IsShareConnection() && !playlist.IsEmpty()) GetFilesFromShare();
                 Thread.Sleep(times[config.UpdateTime]*60000);
             }
         }
@@ -40,22 +41,21 @@ namespace videowp.Classes
         // получить видео из сетевой папки
         public void GetFilesFromShare()
         {
-            List<string> srcFiles = GetVideoFromFolder(config.UpdateServer, true);
-            List<string> dstFiles = GetVideoFromFolder(playlist.playlistFolderPath, true);
+            List<string> srcFiles = PlaylistControl.GetVideoFromFolder(config.UpdateServer, true);
+            List<string> dstFiles = PlaylistControl.GetVideoFromFolder(playlist.playlistFolderPath, true);
 
             // добавление файлов из сетевой папки
-            bool isNewData = false;
             foreach (string srcFilename in srcFiles)
             {
                 string findVideo = dstFiles.Find(x => x.Equals(srcFilename));
                 if (findVideo == null)
                 {
-                    isNewData = true;
+                    IsNewData = true;
                     int copyCount = 0;
                     while (true)
                     {
                         // копирование при доступной сетевой папке
-                        if (IsShare())
+                        if (IsShareConnection())
                             File.Copy($"{config.UpdateServer}\\{srcFilename}", $"{playlist.playlistFolderPath}\\{srcFilename}");
                         else
                         {
@@ -78,13 +78,12 @@ namespace videowp.Classes
             foreach (string dstFilename in dstFiles)
             {
                 string findVideo = srcFiles.Find(x => x.Equals(dstFilename));
-                if (findVideo == null && IsShare())
+                if (findVideo == null && IsShareConnection())
                 {
-                    isNewData = true;
+                    IsNewData = true;
                     File.Delete($"{playlist.playlistFolderPath}\\{dstFilename}");
                 }
             }
-            Program.isNewData = isNewData;
         }
 
         public void BW_GetFilesFromShare(object sender, DoWorkEventArgs e)
@@ -96,7 +95,7 @@ namespace videowp.Classes
         public void SetShare(string path) { config.UpdateServer = path; }
 
         // проверка соединения с шарой
-        public bool IsShare() { return Directory.Exists(config.UpdateServer); }
+        public bool IsShareConnection() { return Directory.Exists(config.UpdateServer); }
 
         // старт фоновой задачи
         public void Start() { bw.RunWorkerAsync(); }
@@ -107,21 +106,6 @@ namespace videowp.Classes
         // Возвращает активность фоновой задачи
         public bool IsActive() { return bw.IsBusy; }
 
-        // Получить файлы из папки
-        public static List<string> GetVideoFromFolder(string path, bool onlyFilename = false)
-        {
-            List<string> dirFiles = Directory.GetFiles(path).ToList<string>();
-            string ext;
-            string[] extList = { ".mp4", ".m4v", ".mkv", ".avi" };
-            for (int i = 0; i < dirFiles.Count; i++)
-            {
-                ext = Path.GetExtension(dirFiles[i]);
-                if (!extList.Contains(ext)) dirFiles.RemoveAt(i);
-            }
-            if (onlyFilename)
-                for (int i = 0; i < dirFiles.Count; i++)
-                    dirFiles[i] = Path.GetFileName(dirFiles[i]);
-            return dirFiles;
-        }
+
     }
 }

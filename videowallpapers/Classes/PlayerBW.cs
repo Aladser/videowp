@@ -19,14 +19,16 @@ namespace videowp
         readonly ConfigControl config;
         readonly ProcessStartInfo mpvProc;
         readonly PlaylistControl playlist;
+        readonly UpdateSearchBW updateCtrl;
         long downtime;
         long dwt1, dwt2;
 
-        public PlayerBW(ConfigControl config, ProcessStartInfo mpvProc, PlaylistControl pl)
+        public PlayerBW(ConfigControl config, UpdateSearchBW updateCtrl, ProcessStartInfo mpvProc, PlaylistControl pl)
         {
             this.config = config;
+            this.updateCtrl = updateCtrl;
             this.mpvProc = mpvProc;
-            playlist = pl;
+            this.playlist = pl;
             bw.DoWork += BW_DoWork;
             bw.WorkerSupportsCancellation = true;
         }
@@ -50,12 +52,12 @@ namespace videowp
                     break;
                 }
                 // появлись новые видео
-                if(Program.isNewData)
+                if(updateCtrl.IsNewData)
                 {
                     if(isActive) foreach (Process proc in Process.GetProcessesByName("mpv")) proc.Kill();
                     playlist.CheckFilesInPlaylist();
                     if(isActive) Process.Start(mpvProc);
-                    Program.isNewData = false;
+                    updateCtrl.IsNewData = false;
                 }
                 //поиск другого запущенного приложения в фуллскрине
                 if (IsForegroundFullScreen() && config.OverWindows==0)

@@ -28,7 +28,7 @@ namespace videowp.Formes
             autoShowCheckbox.Checked = config.AutoShow == 1;
             overWindowsCheckbox.Checked = config.OverWindows == 1;
             this.updateSrv = updateSrv;
-            updateSrvField.Text = !updateSrv.SharePath.Equals("") ? updateSrv.IsShare() ? updateSrv.SharePath : $"{updateSrv.SharePath}: нет связи" : "";
+            updateSrvField.Text = !updateSrv.SharePath.Equals("") ? updateSrv.IsShareConnection() ? updateSrv.SharePath : $"{updateSrv.SharePath}: нет связи" : "";
             updateTimeComboBox.SelectedIndex = config.UpdateTime;
         }
 
@@ -45,7 +45,7 @@ namespace videowp.Formes
             else
             {
                 bool index = !File.Exists(Program.SHORTCUT);
-                Program.EditAutoLoader(index);
+                Program.IsAutoLoader = index;
                 firstLoadBoot = false;
             }
         }
