@@ -51,12 +51,17 @@ namespace videowp
                     e.Cancel = true;
                     break;
                 }
-                // появлись новые видео
+                // добавление новых видео
                 if(updateCtrl.IsNewData)
                 {
-                    if(isActive) foreach (Process proc in Process.GetProcessesByName("mpv")) proc.Kill();
-                    playlist.CheckFilesInPlaylist();
-                    if(isActive) Process.Start(mpvProc);
+                    if (isActive)
+                    {
+                        foreach (Process proc in Process.GetProcessesByName("mpv")) proc.Kill();
+                        playlist.CheckFilesInPlaylist();
+                        Process.Start(mpvProc);
+                    }
+                    else
+                        playlist.CheckFilesInPlaylist();
                     updateCtrl.IsNewData = false;
                 }
                 //поиск другого запущенного приложения в фуллскрине

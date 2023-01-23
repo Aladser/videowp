@@ -43,6 +43,7 @@ namespace videowp.Classes
         {
             List<string> srcFiles = PlaylistControl.GetVideoFromFolder(config.UpdateServer, true);
             List<string> dstFiles = PlaylistControl.GetVideoFromFolder(playlist.playlistFolderPath, true);
+            bool newdata = false;
 
             // добавление файлов из сетевой папки
             foreach (string srcFilename in srcFiles)
@@ -50,7 +51,7 @@ namespace videowp.Classes
                 string findVideo = dstFiles.Find(x => x.Equals(srcFilename));
                 if (findVideo == null)
                 {
-                    IsNewData = true;
+                    newdata = true;
                     int copyCount = 0;
                     while (true)
                     {
@@ -80,10 +81,11 @@ namespace videowp.Classes
                 string findVideo = srcFiles.Find(x => x.Equals(dstFilename));
                 if (findVideo == null && IsShareConnection())
                 {
-                    IsNewData = true;
+                    newdata = true;
                     File.Delete($"{playlist.playlistFolderPath}\\{dstFilename}");
                 }
             }
+            IsNewData = newdata;
         }
 
         public void BW_GetFilesFromShare(object sender, DoWorkEventArgs e)
