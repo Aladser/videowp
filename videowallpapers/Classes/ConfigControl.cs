@@ -34,7 +34,7 @@ namespace videowp
         // получить время бездействия в мс
         public int GetInactionTime()
         {
-            double[] inactionTimeNumberList = { 0.05, 1, 3, 5, 10, 15 };
+            double[] inactionTimeNumberList = { 0.01, 1, 3, 5, 10, 15 };
             return (int)(inactionTimeNumberList[inactonIndex] * 60000);
         }
 

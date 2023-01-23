@@ -152,7 +152,7 @@
             this.timeComboBox.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.timeComboBox.FormattingEnabled = true;
             this.timeComboBox.Items.AddRange(new object[] {
-            "0.05",
+            "0.01",
             "1",
             "3",
             "5",
