@@ -15,12 +15,12 @@ namespace videowp
         readonly ConfigControl config;
         readonly PlayerBW bcgwork;
         readonly PlaylistControl playlist;
-        readonly UpdateSearchBW updateSearch;
+        readonly UpdateCheckBW updateSearch;
         readonly FolderBrowserDialog fbd = new FolderBrowserDialog();
         readonly Bitmap[] switcher = {Properties.Resources.offbtn, Properties.Resources.onbtn, Properties.Resources.disabledbtn}; // переключатель        
         int switcherIndex; // индекс переключателя 
 
-        public MainForm(ConfigControl config, PlayerBW bcgwork, PlaylistControl pl, UpdateSearchBW updtSrch)
+        public MainForm(ConfigControl config, PlayerBW bcgwork, PlaylistControl pl, UpdateCheckBW updtSrch)
         {
             InitializeComponent();
             CenterToScreen();

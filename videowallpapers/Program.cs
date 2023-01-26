@@ -15,7 +15,7 @@ namespace videowp
      
         static ConfigControl config;        // конфигурационный файл  
         static PlaylistControl plCtrl;      // управление плейлистом
-        static UpdateSearchBW updateCtrl;   // управляет обновленями плейлиста
+        static UpdateCheckBW updateCtrl;   // управляет обновленями плейлиста
         static MainForm mainform;
         static PlayerBW playerBW;
         
@@ -77,7 +77,7 @@ namespace videowp
 
                 plCtrl = new PlaylistControl(config.PlaylistFolderPath);
                 if(!plCtrl.IsEmpty()) plCtrl.CheckFilesInPlaylist();
-                updateCtrl = new UpdateSearchBW(config, plCtrl);
+                updateCtrl = new UpdateCheckBW(config, plCtrl);
                 playerBW = new PlayerBW(config, updateCtrl, mpvProc, plCtrl);
 
                 // создание хука
@@ -86,7 +86,7 @@ namespace videowp
                 globalHook.OnMouseActivity += (object sender, MouseEventArgs e) => playerBW.StopShowWallpaper(); // движение мыши
                 globalHook.Start(true, true);
 
-                if(!plCtrl.IsEmpty() && !config.UpdateServer.Equals("")) updateCtrl.Start();
+                if(!plCtrl.playlistFolderPath.Equals("") && !config.UpdateServer.Equals("")) updateCtrl.Start();
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 mainform = new MainForm(config, playerBW, plCtrl, updateCtrl);

@@ -19,11 +19,11 @@ namespace videowp
         readonly ConfigControl config;
         readonly ProcessStartInfo mpvProc;
         readonly PlaylistControl playlist;
-        readonly UpdateSearchBW updateCtrl;
+        readonly UpdateCheckBW updateCtrl;
         long downtime;
         long dwt1, dwt2;
 
-        public PlayerBW(ConfigControl config, UpdateSearchBW updateCtrl, ProcessStartInfo mpvProc, PlaylistControl pl)
+        public PlayerBW(ConfigControl config, UpdateCheckBW updateCtrl, ProcessStartInfo mpvProc, PlaylistControl pl)
         {
             this.config = config;
             this.updateCtrl = updateCtrl;

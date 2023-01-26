@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading;
 
 namespace videowp.Classes
 {
-    internal class UpdateSearchBW
+    internal class UpdateCheckBW
     {
         readonly BackgroundWorker bw = new BackgroundWorker();
         public string SharePath
@@ -19,7 +21,7 @@ namespace videowp.Classes
         readonly int[] times = {1, 30, 60, 120, 240, 480}; // время проверки обновлений
 
         // \\192.168.1.100\Data\video
-        public UpdateSearchBW(ConfigControl config, PlaylistControl pl)
+        public UpdateCheckBW(ConfigControl config, PlaylistControl pl)
         {
             bw.DoWork += BW_DoWork;
             bw.WorkerSupportsCancellation = true;
@@ -33,7 +35,7 @@ namespace videowp.Classes
         {
             while (true)
             {
-                if (IsShareConnection() && !playlist.IsEmpty()) GetFilesFromShare();
+                if (IsShareConnection() && Directory.Exists(playlist.playlistFolderPath)) GetFilesFromShare();
                 Thread.Sleep(times[config.UpdateTime]*60000);
             }
         }
@@ -49,6 +51,7 @@ namespace videowp.Classes
             foreach (string srcFilename in srcFiles)
             {
                 string findVideo = dstFiles.Find(x => x.Equals(srcFilename));
+                Console.WriteLine(findVideo);
                 if (findVideo == null)
                 {
                     newdata = true;
@@ -66,6 +69,8 @@ namespace videowp.Classes
                             continue;
                         }
                         // проверка целостности
+
+
                         long srcSize = new FileInfo($"{config.UpdateServer}\\{srcFilename}").Length;
                         long dstSize = new FileInfo($"{playlist.playlistFolderPath}\\{srcFilename}").Length;
                         if (srcSize == dstSize) break;

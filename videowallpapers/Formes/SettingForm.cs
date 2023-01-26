@@ -10,10 +10,10 @@ namespace videowp.Formes
         bool firstLoadBoot = true; // флаг автозагрузки
         bool firstShowBoot = true; // флаг первого показа окна
         readonly ConfigControl config;
-        readonly UpdateSearchBW updateSrv;
+        readonly UpdateCheckBW updateSrv;
         string lastSrv = "";
 
-        public SettingForm(MainForm mf, ConfigControl config, UpdateSearchBW updateSrv)
+        public SettingForm(MainForm mf, ConfigControl config, UpdateCheckBW updateSrv)
         {
             InitializeComponent();
             CenterToScreen();
