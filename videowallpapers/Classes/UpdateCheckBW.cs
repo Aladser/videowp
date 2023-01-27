@@ -43,6 +43,20 @@ namespace videowp.Classes
             List<string> dstFiles = VideoFileFunctions.GetVideofilesFromFolder(playlist.playlistFolderPath, true);
             bool newdata = false;
 
+            // проверка целостности файлов в папке плейлиста
+            int i = 0;
+            string path;
+            while (i < dstFiles.Count)
+            {
+                path = $"{playlist.playlistFolderPath}\\{dstFiles[i]}";
+                if (!VideoFileFunctions.IsIntegrity(path))
+                {
+                    File.Delete(path);
+                    dstFiles.RemoveAt(i);
+                }
+                else
+                    i++;
+            }
             // добавление файлов из сетевой папки
             foreach (string srcFilename in srcFiles)
             {
@@ -50,35 +64,7 @@ namespace videowp.Classes
                 if (findVideo == null)
                 {
                     newdata = true;
-                    int copyCount = 0;
-                    while (true)
-                    {
-                        // копирование при доступной сетевой папке
-                        int count = 0;
-                        if (IsShareConnection())
-                        {
-                            string dstPath = $"{playlist.playlistFolderPath}\\{srcFilename}";
-                            File.Copy($"{config.UpdateServer}\\{srcFilename}", dstPath);
-                            // проверка целостности
-                            if(VideoFileFunctions.IsIntegrity(dstPath)) break;
-                            else
-                            {
-                                if (count > 4)
-                                {
-                                    File.Delete(dstPath);
-                                    break;
-                                }
-                                count++;
-                            }
-                        }
-                        else
-                        {
-                            Thread.Sleep(60000);
-                            if (copyCount > 5) break;
-                            copyCount++;
-                            continue;
-                        }
-                    }
+                    File.Copy($"{config.UpdateServer}\\{srcFilename}", $"{playlist.playlistFolderPath}\\{srcFilename}");
                 }
             }
 
