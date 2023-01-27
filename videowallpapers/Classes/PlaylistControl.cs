@@ -38,8 +38,9 @@ namespace videowp.Classes
             string line;
             while ((line = reader.ReadLine()) != null) plFiles.Add(line);
             reader.Close();
-            // считывание файлов папки
-            List<string> dirFiles = GetVideoFromFolder(playlistFolderPath);
+            // считывание файлов папки и проверка целостности файлов
+            List<string> dirFiles = VideoFileFunctions.GetVideofilesFromFolder(playlistFolderPath);
+            foreach (string elem in dirFiles) if (!VideoFileFunctions.IsIntegrity(elem)) File.Delete(elem);
             // удаление несуществующих файлов из плейлиста
             int i = 0;
             bool isOldFiles = false;
@@ -64,6 +65,7 @@ namespace videowp.Classes
                     isOldFiles = true;
                 }
             }
+            // перезапись плейлиста
             if (isOldFiles)
             {
                 StreamWriter writer = new StreamWriter(PLAYLIST_PATH, false);
@@ -74,24 +76,7 @@ namespace videowp.Classes
 
         // проверка папки на наличие файлов
         public bool IsEmpty(){
-            return playlistFolderPath.Equals("") ? true : Directory.GetFiles(playlistFolderPath).Length == 0;
-        }
-
-        // Получить файлы из папки
-        public static List<string> GetVideoFromFolder(string path, bool onlyFilename = false)
-        {
-            List<string> dirFiles = Directory.GetFiles(path).ToList<string>();
-            string ext;
-            string[] extList = { ".mp4", ".m4v", ".mkv", ".avi" };
-            for (int i = 0; i < dirFiles.Count; i++)
-            {
-                ext = Path.GetExtension(dirFiles[i]);
-                if (!extList.Contains(ext)) dirFiles.RemoveAt(i);
-            }
-            if (onlyFilename)
-                for (int i = 0; i < dirFiles.Count; i++)
-                    dirFiles[i] = Path.GetFileName(dirFiles[i]);
-            return dirFiles;
+            return playlistFolderPath.Equals("") || Directory.GetFiles(playlistFolderPath).Length == 0;
         }
     }
 

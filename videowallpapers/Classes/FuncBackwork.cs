@@ -2,11 +2,11 @@
 
 namespace videowp.Classes
 {
-    internal class Backwork
+    internal class FuncBackwork
     {
         readonly BackgroundWorker bw = new BackgroundWorker();
         
-        public Backwork(DoWorkEventHandler func)
+        public FuncBackwork(DoWorkEventHandler func)
         {
             bw.WorkerSupportsCancellation = true;
             bw.DoWork += func;

@@ -49,9 +49,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\VideoFileFunctions.cs" />
     <Compile Include="Classes\PlayerBW.cs" />
     <Compile Include="Classes\ConfigControl.cs" />
-    <Compile Include="Classes\Backwork.cs" />
+    <Compile Include="Classes\FuncBackwork.cs" />
     <Compile Include="Classes\PlaylistControl.cs" />
     <Compile Include="Classes\UpdateCheckBW.cs" />
     <Compile Include="Formes\MainFrame.cs">

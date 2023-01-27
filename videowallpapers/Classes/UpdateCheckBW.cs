@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
 using System.Threading;
 
 namespace videowp.Classes
@@ -20,7 +17,6 @@ namespace videowp.Classes
         readonly ConfigControl config;
         readonly int[] times = {1, 30, 60, 120, 240, 480}; // время проверки обновлений
 
-        // \\192.168.1.100\Data\video
         public UpdateCheckBW(ConfigControl config, PlaylistControl pl)
         {
             bw.DoWork += BW_DoWork;
@@ -43,15 +39,14 @@ namespace videowp.Classes
         // получить видео из сетевой папки
         public void GetFilesFromShare()
         {
-            List<string> srcFiles = PlaylistControl.GetVideoFromFolder(config.UpdateServer, true);
-            List<string> dstFiles = PlaylistControl.GetVideoFromFolder(playlist.playlistFolderPath, true);
+            List<string> srcFiles = VideoFileFunctions.GetVideofilesFromFolder(config.UpdateServer, true);
+            List<string> dstFiles = VideoFileFunctions.GetVideofilesFromFolder(playlist.playlistFolderPath, true);
             bool newdata = false;
 
             // добавление файлов из сетевой папки
             foreach (string srcFilename in srcFiles)
             {
                 string findVideo = dstFiles.Find(x => x.Equals(srcFilename));
-                Console.WriteLine(findVideo);
                 if (findVideo == null)
                 {
                     newdata = true;
@@ -59,23 +54,30 @@ namespace videowp.Classes
                     while (true)
                     {
                         // копирование при доступной сетевой папке
+                        int count = 0;
                         if (IsShareConnection())
-                            File.Copy($"{config.UpdateServer}\\{srcFilename}", $"{playlist.playlistFolderPath}\\{srcFilename}");
+                        {
+                            string dstPath = $"{playlist.playlistFolderPath}\\{srcFilename}";
+                            File.Copy($"{config.UpdateServer}\\{srcFilename}", dstPath);
+                            // проверка целостности
+                            if(VideoFileFunctions.IsIntegrity(dstPath)) break;
+                            else
+                            {
+                                if (count > 4)
+                                {
+                                    File.Delete(dstPath);
+                                    break;
+                                }
+                                count++;
+                            }
+                        }
                         else
                         {
                             Thread.Sleep(60000);
-                            if (copyCount > 4) break;
+                            if (copyCount > 5) break;
                             copyCount++;
                             continue;
                         }
-                        // проверка целостности
-
-
-                        long srcSize = new FileInfo($"{config.UpdateServer}\\{srcFilename}").Length;
-                        long dstSize = new FileInfo($"{playlist.playlistFolderPath}\\{srcFilename}").Length;
-                        if (srcSize == dstSize) break;
-                        if (copyCount > 4) break;
-                        copyCount++;
                     }
                 }
             }

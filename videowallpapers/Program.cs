@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -19,7 +21,7 @@ namespace videowp
         static MainForm mainform;
         static PlayerBW playerBW;
         
-        static readonly string mpvPath = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\mpv\\mpv.exe"; // MPV
+        static readonly string mpvPath = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\player\\mpv.exe"; // MPV
         public static readonly string SHORTCUT = $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}\\videowp.lnk"; // ярлык автозагрузки 
         static ProcessStartInfo mpvProc; // MPV процесс в Windows
         static UserActivityHook globalHook; // хук глобального движения мыши или клавиатуры
@@ -90,7 +92,7 @@ namespace videowp
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 mainform = new MainForm(config, playerBW, plCtrl, updateCtrl);
-                if (InstanceCheck()) Application.Run();
+                if (InstanceCheck()) Application.Run();               
             }      
         }
 

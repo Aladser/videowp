@@ -94,7 +94,7 @@ namespace videowp.Formes
                 if(!updateSrv.IsActive()) 
                     updateSrv.Start();
                 else
-                    new Backwork(updateSrv.BW_GetFilesFromShare).Start();
+                    new FuncBackwork(updateSrv.BW_GetFilesFromShare).Start();
             }
             else if(!srvName.Equals(""))
             {
