@@ -6,22 +6,19 @@ namespace videowp.Classes
 {
 
     internal abstract class VideoFileFunctions
-    {   
+    {
         /// <summary>
         /// Проверка целостности видеофайла
         /// </summary>
+        // проверка на нули последнего процента файла
         public static bool IsIntegrity(string path)
         {
             byte[] byteArr = File.ReadAllBytes(path);
-            int fivePercents = (int)(byteArr.Length * 0.05);
-            int count = 0;
+            int percent = (int)(byteArr.Length * 0.01);
+            int zeroCount = 0;
 
-            for (int j = byteArr.Length-1; j > -1; j--)
-            {
-                if (byteArr[j] == 0) count++;
-                if (count > fivePercents) return false;
-            }
-            return true;
+            for (int j = byteArr.Length - 1; j > byteArr.Length - percent - 1; j--) if (byteArr[j] == 0) zeroCount++;
+            return zeroCount != percent;
         }
         /// <summary>
         /// Получить файлы из папки
