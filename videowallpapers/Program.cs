@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -17,7 +15,7 @@ namespace videowp
      
         static ConfigControl config;        // конфигурационный файл  
         static PlaylistControl plCtrl;      // управление плейлистом
-        static UpdateCheckBW updateCtrl;   // управляет обновленями плейлиста
+        static UpdateCheckBW updateCtrl;    // управляет обновленями плейлиста
         static MainForm mainform;
         static PlayerBW playerBW;
         
