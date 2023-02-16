@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.IO;
 using System.Threading;
+using videowp.Formes;
 
 namespace videowp.Classes
 {
@@ -42,7 +43,7 @@ namespace videowp.Classes
             List<string> srcFiles = VideoFileFunctions.GetVideofilesFromFolder(config.UpdateServer, true);
             List<string> dstFiles = VideoFileFunctions.GetVideofilesFromFolder(playlist.playlistFolderPath, true);
             bool newdata = false;
-
+            bool isEmptyPL = dstFiles.Count == 0;
             // проверка целостности файлов в папке плейлиста
             int i = 0;
             string path;
@@ -79,6 +80,11 @@ namespace videowp.Classes
                 }
             }
             IsNewData = newdata;
+            // добавление новых видео, если папка плейлиста пуста
+            if(isEmptyPL && newdata)
+            {
+                Program.mainform.CheckFilesOfPlaylist();
+            }
         }
 
         public void BW_GetFilesFromShare(object sender, DoWorkEventArgs e)

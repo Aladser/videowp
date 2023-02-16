@@ -36,6 +36,7 @@
     <ApplicationIcon>mainicon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -55,6 +56,12 @@
     <Compile Include="Classes\FuncBackwork.cs" />
     <Compile Include="Classes\PlaylistControl.cs" />
     <Compile Include="Classes\UpdateCheckBW.cs" />
+    <Compile Include="Formes\CopyingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formes\CopyingForm.Designer.cs">
+      <DependentUpon>CopyingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Formes\MainFrame.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -70,6 +77,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Classes\UserActivityHook.cs" />
+    <EmbeddedResource Include="Formes\CopyingForm.resx">
+      <DependentUpon>CopyingForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formes\MainFrame.resx">
       <DependentUpon>MainFrame.cs</DependentUpon>
     </EmbeddedResource>

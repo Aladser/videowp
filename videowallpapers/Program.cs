@@ -15,10 +15,10 @@ namespace videowp
      
         static ConfigControl config;        // конфигурационный файл  
         static PlaylistControl plCtrl;      // управление плейлистом
-        static UpdateCheckBW updateCtrl;    // управляет обновленями плейлиста
-        static MainForm mainform;
+        static UpdateCheckBW updateCtrl;    // управляет обновленями плейлиста       
         static PlayerBW playerBW;
-        
+        public static MainForm mainform;
+
         static readonly string mpvPath = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\player\\mpv.exe"; // MPV
         public static readonly string SHORTCUT = $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}\\videowp.lnk"; // ярлык автозагрузки 
         static ProcessStartInfo mpvProc; // MPV процесс в Windows

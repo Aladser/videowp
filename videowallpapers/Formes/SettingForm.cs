@@ -13,16 +13,11 @@ namespace videowp.Formes
         readonly UpdateCheckBW updateSrv;
         string lastSrv = "";
 
-        public SettingForm(MainForm mf, ConfigControl config, UpdateCheckBW updateSrv)
+        public SettingForm(ConfigControl config, UpdateCheckBW updateSrv)
         {
             InitializeComponent();
             CenterToScreen();
             this.config = config;
-
-            int left = mf.Left + (this.Width - mf.Width) / 2;
-            int top = mf.Top + (this.Height - mf.Height) / 2;
-            Left = left;
-            Top = top;
 
             autoLoaderCheckbox.Checked = File.Exists(Program.SHORTCUT);
             autoShowCheckbox.Checked = config.AutoShow == 1;
@@ -91,10 +86,8 @@ namespace videowp.Formes
             {
                 config.UpdateServer = srvName;
                 updateSrv.SetShare(srvName);
-                if(!updateSrv.IsActive()) 
-                    updateSrv.Start();
-                else
-                    new FuncBackwork(updateSrv.BW_GetFilesFromShare).Start();
+                if (!updateSrv.IsActive()) updateSrv.Start();
+                else new FuncBackwork(updateSrv.BW_GetFilesFromShare).Start();
             }
             else if(!srvName.Equals(""))
             {
@@ -102,6 +95,7 @@ namespace videowp.Formes
                 updateSrvField.Text = $"{lastSrv}: нет связи";
             }               
         }
+
         // сброс сервера обновлений
         private void ResetUpdateSrvBtn_Click(object sender, EventArgs e)
         {
@@ -109,11 +103,13 @@ namespace videowp.Formes
             config.UpdateServer = "";
             if (updateSrv.IsActive())  updateSrv.Stop();
         }
+
         // очистка поля пути к серверу
         private void UpdateSrvField_DoubleClick(object sender, EventArgs e)
         {
             updateSrvField.Text = ""; 
         } 
+
         // установка времени
         private void UpdateTimeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {

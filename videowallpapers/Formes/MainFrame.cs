@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using videowp.Classes;
 using videowp.Formes;
+using ComboBox = System.Windows.Forms.ComboBox;
 
 namespace videowp
 {
@@ -70,7 +71,7 @@ namespace videowp
             {
                 SetSwitcherImage(OFF);
                 this.Show();
-            }          
+            }
         }
 
         // переключить показ обоев
@@ -123,6 +124,12 @@ namespace videowp
             showWallpaperSwitcher.Image = playlist.IsEmpty() ? switcher[DISABLED] : switcher[OFF];
         }
 
+        // асинхронная смена надписи плейлиста
+        public void CheckFilesOfPlaylist()
+        {
+            if (!playlist.IsEmpty()) playlistFolderNameLabel.Invoke(new MethodInvoker(delegate { playlistFolderNameLabel.Text = playlist.playlistFolderPath; }));
+        }
+
         // отрисовка combobox
         private void TimeComboBox_DrawItem(object sender, DrawItemEventArgs e)
         {
@@ -142,9 +149,15 @@ namespace videowp
             e.DrawFocusRectangle();
         }
 
+        // показ окна настроек
         void SetupBtn_Click(object sender, EventArgs e){
-            SettingForm sf = new SettingForm(this, config, updateSearch);
-            sf.ShowDialog();
+            new SettingForm(config, updateSearch).ShowDialog();
+        }
+
+        // свернуть окно
+        void MinBtn_Click(object sender, EventArgs e)
+        {
+            this.Hide();
         }
 
         // закрыть окно
@@ -153,12 +166,6 @@ namespace videowp
             updateSearch.Stop();
             bcgwork.Stop();
             Process.GetCurrentProcess().Kill();
-        }
-
-        // свернуть окно
-        void MinBtn_Click(object sender, EventArgs e)
-        {
-            this.Hide();
         }
     }
 }

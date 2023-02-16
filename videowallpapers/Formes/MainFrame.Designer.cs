@@ -86,7 +86,7 @@
             this.playlistFolderLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.playlistFolderLabel.Location = new System.Drawing.Point(12, 35);
             this.playlistFolderLabel.Name = "playlistFolderLabel";
-            this.playlistFolderLabel.Size = new System.Drawing.Size(87, 17);
+            this.playlistFolderLabel.Size = new System.Drawing.Size(114, 23);
             this.playlistFolderLabel.TabIndex = 10;
             this.playlistFolderLabel.Text = "Папка видео:";
             // 
@@ -122,7 +122,7 @@
             this.infoBtn.Size = new System.Drawing.Size(20, 20);
             this.infoBtn.TabIndex = 31;
             this.infoBtn.TabStop = false;
-            this.toolTip.SetToolTip(this.infoBtn, "Видеобои 1.53\r\nAladser ©\r\n2022");
+            this.toolTip.SetToolTip(this.infoBtn, "Видеобои 1.54\r\nAladser ©\r\n2022");
             // 
             // setupBtn
             // 
@@ -160,7 +160,7 @@
             "15 "});
             this.timeComboBox.Location = new System.Drawing.Point(148, 143);
             this.timeComboBox.Name = "timeComboBox";
-            this.timeComboBox.Size = new System.Drawing.Size(68, 25);
+            this.timeComboBox.Size = new System.Drawing.Size(68, 29);
             this.timeComboBox.TabIndex = 5;
             this.timeComboBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.TimeComboBox_DrawItem);
             this.timeComboBox.SelectedIndexChanged += new System.EventHandler(this.TimeComboBox_SelectedIndexChanged);
@@ -187,7 +187,7 @@
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ClientSize = new System.Drawing.Size(622, 191);
@@ -208,7 +208,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Видеобои 1.53";
+            this.Text = "Видеобои 1.54";
             this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.minBtn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.exitBtn)).EndInit();
