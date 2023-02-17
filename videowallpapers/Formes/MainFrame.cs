@@ -124,10 +124,15 @@ namespace videowp
             showWallpaperSwitcher.Image = playlist.IsEmpty() ? switcher[DISABLED] : switcher[OFF];
         }
 
-        // асинхронная смена надписи плейлиста
+        // асинхронная смена статуса плейлиста
         public void CheckFilesOfPlaylist()
         {
-            if (!playlist.IsEmpty()) playlistFolderNameLabel.Invoke(new MethodInvoker(delegate { playlistFolderNameLabel.Text = playlist.playlistFolderPath; }));
+            if (!playlist.IsEmpty())
+            {
+                playlistFolderNameLabel.Invoke(new MethodInvoker(delegate { playlistFolderNameLabel.Text = playlist.playlistFolderPath; }));
+                showWallpaperSwitcher.Image = switcher[OFF];
+                showWallpaperSwitcher.Enabled = true;
+            }
         }
 
         // отрисовка combobox
@@ -151,7 +156,7 @@ namespace videowp
 
         // показ окна настроек
         void SetupBtn_Click(object sender, EventArgs e){
-            new SettingForm(config, updateSearch).ShowDialog();
+            new SettingForm(playlist, config, updateSearch).ShowDialog();
         }
 
         // свернуть окно

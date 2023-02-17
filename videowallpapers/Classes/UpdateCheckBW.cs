@@ -24,7 +24,7 @@ namespace videowp.Classes
             bw.WorkerSupportsCancellation = true;
 
             this.config = config;
-            playlist = pl;
+            this.playlist = pl;
         }
 
         // фоновая задача
@@ -38,12 +38,12 @@ namespace videowp.Classes
         }
 
         // получить видео из сетевой папки
-        public void GetFilesFromShare()
+        public void GetFilesFromShare(SettingForm setForm = null)
         {
-            List<string> srcFiles = VideoFileFunctions.GetVideofilesFromFolder(config.UpdateServer, true);
-            List<string> dstFiles = VideoFileFunctions.GetVideofilesFromFolder(playlist.playlistFolderPath, true);
-            bool newdata = false;
-            bool isEmptyPL = dstFiles.Count == 0;
+            List<string> srcFiles = VideoFileFunctions.GetVideofilesFromFolder(config.UpdateServer, true); // файлы из сетевой папки
+            List<string> dstFiles = VideoFileFunctions.GetVideofilesFromFolder(playlist.playlistFolderPath, true); // файлы из папки плейлиста
+            IsNewData = false; // новые данные?
+            bool isEmptyPlaylist = dstFiles.Count == 0; // пустая папка плейлиста?
             // проверка целостности файлов в папке плейлиста
             int i = 0;
             string path;
@@ -59,32 +59,31 @@ namespace videowp.Classes
                     i++;
             }
             // добавление файлов из сетевой папки
+            if(setForm!=null && srcFiles.Count!=0) setForm.SetStepOfProgress(100/srcFiles.Count); // показ прогресса копирования
             foreach (string srcFilename in srcFiles)
             {
                 string findVideo = dstFiles.Find(x => x.Equals(srcFilename));
                 if (findVideo == null)
                 {
-                    newdata = true;
+                    IsNewData = true;
                     File.Copy($"{config.UpdateServer}\\{srcFilename}", $"{playlist.playlistFolderPath}\\{srcFilename}");
+                    if (setForm != null)  setForm.PerfromStepOfProgress(); // показ прогресса копирования
                 }
             }
-
+           
             // удаление файлов из папки, которых нет в сетевой папке
             foreach (string dstFilename in dstFiles)
             {
                 string findVideo = srcFiles.Find(x => x.Equals(dstFilename));
                 if (findVideo == null && IsShareConnection())
                 {
-                    newdata = true;
+                    IsNewData = true;
                     File.Delete($"{playlist.playlistFolderPath}\\{dstFilename}");
                 }
             }
-            IsNewData = newdata;
             // добавление новых видео, если папка плейлиста пуста
-            if(isEmptyPL && newdata)
-            {
-                Program.mainform.CheckFilesOfPlaylist();
-            }
+            if(isEmptyPlaylist && IsNewData) Program.mainform.CheckFilesOfPlaylist();
+            if (setForm != null) setForm.ShowProgressEnd();
         }
 
         public void BW_GetFilesFromShare(object sender, DoWorkEventArgs e)
@@ -106,7 +105,5 @@ namespace videowp.Classes
 
         // Возвращает активность фоновой задачи
         public bool IsActive() { return bw.IsBusy; }
-
-
     }
 }
