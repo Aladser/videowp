@@ -39,10 +39,7 @@ namespace videowp.Formes
                 config.UpdateServer = srvName;
                 updateSrv.SetShare(srvName);
 
-                if (playlist.IsEmpty())
-                {
-                    updateSrv.GetFilesFromShare(this);
-                }
+                if (playlist.IsEmpty()) updateSrv.GetFilesFromShare(this);
                 else
                 {
                     if (!updateSrv.IsActive()) updateSrv.Start();
