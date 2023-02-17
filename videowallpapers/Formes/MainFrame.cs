@@ -76,7 +76,9 @@ namespace videowp
                 this.Show();
             }
             // создание файла с версией программы
-            string versionPath = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\{this.Text}.txt";
+            string versionPath = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\{this.Text}.info";           
+            string[] arr  = Directory.GetFiles(Path.GetDirectoryName(Application.ExecutablePath), "Видеобои*.info");
+            if (arr.Length != 0 && !arr[0].Equals(versionPath)) File.Delete(arr[0]);
             if (!File.Exists(versionPath)) File.Create(versionPath);
         }
 
