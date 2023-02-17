@@ -82,7 +82,7 @@ namespace videowp.Classes
                 }
             }
             // добавление новых видео, если папка плейлиста пуста
-            if(isEmptyPlaylist && IsNewData) Program.mainform.CheckFilesOfPlaylist();
+            if(isEmptyPlaylist && IsNewData) Program.mainForm.CheckEmptyPlaylist();
             if (setForm != null) setForm.ShowProgressEnd();
         }
 

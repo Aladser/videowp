@@ -17,7 +17,7 @@ namespace videowp
         static PlaylistControl plCtrl;      // управление плейлистом
         static UpdateCheckBW updateCtrl;    // управляет обновленями плейлиста       
         static PlayerBW playerBW;
-        public static MainForm mainform;
+        public static MainForm mainForm;
 
         static readonly string mpvPath = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\player\\mpv.exe"; // MPV
         public static readonly string SHORTCUT = $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}\\videowp.lnk"; // ярлык автозагрузки 
@@ -89,7 +89,7 @@ namespace videowp
                 if(!plCtrl.playlistFolderPath.Equals("") && !config.UpdateServer.Equals("")) updateCtrl.Start();
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                mainform = new MainForm(config, playerBW, plCtrl, updateCtrl);
+                mainForm = new MainForm(config, playerBW, plCtrl, updateCtrl);
                 if (InstanceCheck()) Application.Run();               
             }      
         }

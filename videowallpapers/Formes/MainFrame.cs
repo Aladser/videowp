@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using videowp.Classes;
 using videowp.Formes;
@@ -13,10 +14,12 @@ namespace videowp
         readonly int OFF = 0;
         readonly int ON = 1;
         readonly int DISABLED = 2;
+
         readonly ConfigControl config;
         readonly PlayerBW bcgwork;
         readonly PlaylistControl playlist;
         readonly UpdateCheckBW updateSearch;
+
         readonly FolderBrowserDialog fbd = new FolderBrowserDialog();
         readonly Bitmap[] switcher = {Properties.Resources.offbtn, Properties.Resources.onbtn, Properties.Resources.disabledbtn}; // переключатель        
         int switcherIndex; // индекс переключателя 
@@ -72,6 +75,9 @@ namespace videowp
                 SetSwitcherImage(OFF);
                 this.Show();
             }
+            // создание файла с версией программы
+            string versionPath = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\{this.Text}.txt";
+            if (!File.Exists(versionPath)) File.Create(versionPath);
         }
 
         // переключить показ обоев
@@ -125,7 +131,7 @@ namespace videowp
         }
 
         // асинхронная смена статуса плейлиста
-        public void CheckFilesOfPlaylist()
+        public void CheckEmptyPlaylist()
         {
             if (!playlist.IsEmpty())
             {

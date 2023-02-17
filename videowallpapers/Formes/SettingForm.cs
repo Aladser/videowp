@@ -9,7 +9,7 @@ namespace videowp.Formes
     {
         bool firstLoadBoot = true; // флаг автозагрузки
         bool firstShowBoot = true; // флаг первого показа окна
-        PlaylistControl playlist;
+        readonly PlaylistControl playlist;
         readonly ConfigControl config;
         readonly UpdateCheckBW updateSrv;
         string lastSrv = "";
@@ -37,8 +37,7 @@ namespace videowp.Formes
             if (Directory.Exists(srvName))
             {
                 config.UpdateServer = srvName;
-                updateSrv.SetShare(srvName);
-
+                updateSrv.SetShare(srvName);                
                 if (playlist.IsEmpty()) updateSrv.GetFilesFromShare(this);
                 else
                 {
@@ -121,6 +120,7 @@ namespace videowp.Formes
         public void ShowProgressEnd()
         {
             this.progressLabel.Visible = true;
+            this.progressBar.Value = 100;
         }
 
         // сброс сервера обновлений
