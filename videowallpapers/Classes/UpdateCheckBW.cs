@@ -88,7 +88,7 @@ namespace videowp.Classes
 
         public void BW_GetFilesFromShare(object sender, DoWorkEventArgs e)
         {
-            GetFilesFromShare();
+            GetFilesFromShare((SettingForm)e.Argument);
         }
 
         // установить сетевую папку

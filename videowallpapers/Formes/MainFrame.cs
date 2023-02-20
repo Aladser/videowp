@@ -139,7 +139,7 @@ namespace videowp
             {
                 playlistFolderNameLabel.Invoke(new MethodInvoker(delegate { playlistFolderNameLabel.Text = playlist.playlistFolderPath; }));
                 showWallpaperSwitcher.Image = switcher[OFF];
-                showWallpaperSwitcher.Enabled = true;
+                playlistFolderNameLabel.Invoke(new MethodInvoker(delegate { showWallpaperSwitcher.Enabled = true; }));
             }
         }
 

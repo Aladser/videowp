@@ -38,7 +38,8 @@ namespace videowp.Formes
             {
                 config.UpdateServer = srvName;
                 updateSrv.SetShare(srvName);                
-                if (playlist.IsEmpty()) updateSrv.GetFilesFromShare(this);
+                if (playlist.IsEmpty())
+                    new FuncBackwork(updateSrv.BW_GetFilesFromShare, this).Start();
                 else
                 {
                     if (!updateSrv.IsActive()) updateSrv.Start();
@@ -107,20 +108,20 @@ namespace videowp.Formes
         {
             this.progressBar.Step = stepSize;
             this.progressBar.Value = 0;
-            this.progressBar.Visible = true;
+            this.progressBar.Invoke(new MethodInvoker(delegate { this.progressBar.Visible = true; }));
         }
 
         // изменение прогресса
         public void PerfromStepOfProgress()
         {
-            this.progressBar.PerformStep();
+            this.progressBar.Invoke(new MethodInvoker(delegate {this.progressBar.PerformStep();}));
         }
 
         // показ конца копирования
         public void ShowProgressEnd()
         {
-            this.progressLabel.Visible = true;
-            this.progressBar.Value = 100;
+            progressLabel.Invoke(new MethodInvoker(delegate { progressLabel.Visible = true; }));
+            progressBar.Value = 100;
         }
 
         // сброс сервера обновлений
