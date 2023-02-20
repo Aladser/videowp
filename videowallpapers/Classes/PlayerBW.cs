@@ -6,6 +6,9 @@ using videowp.Classes;
 
 namespace videowp
 {
+    /// <summary>
+    /// Фоновый поток видеоплеера
+    /// </summary>
     internal class PlayerBW
     {
         [DllImport("user32.dll", SetLastError = true)]
@@ -19,11 +22,11 @@ namespace videowp
         readonly ConfigControl config;
         readonly ProcessStartInfo mpvProc;
         readonly PlaylistControl playlist;
-        readonly UpdateCheckBW updateCtrl;
+        readonly PlaylistUpdatesBW updateCtrl;
         long downtime;
         long dwt1, dwt2;
 
-        public PlayerBW(ConfigControl config, UpdateCheckBW updateCtrl, ProcessStartInfo mpvProc, PlaylistControl pl)
+        public PlayerBW(ConfigControl config, PlaylistUpdatesBW updateCtrl, ProcessStartInfo mpvProc, PlaylistControl pl)
         {
             this.config = config;
             this.updateCtrl = updateCtrl;

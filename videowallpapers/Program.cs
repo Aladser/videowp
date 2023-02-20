@@ -13,9 +13,9 @@ namespace videowp
         [DllImport("gdi32.dll")]
         static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
      
-        static ConfigControl config;        // конфигурационный файл  
-        static PlaylistControl plCtrl;      // управление плейлистом
-        static UpdateCheckBW updateCtrl;    // управляет обновленями плейлиста       
+        static ConfigControl config;        
+        static PlaylistControl plCtrl;      
+        static PlaylistUpdatesBW playlistUpdatesBW;        
         static PlayerBW playerBW;
         public static MainForm mainForm;
 
@@ -76,9 +76,9 @@ namespace videowp
                 config = new ConfigControl();
 
                 plCtrl = new PlaylistControl(config.PlaylistFolderPath);
-                if(!plCtrl.IsEmpty()) plCtrl.CheckFilesInPlaylist();
-                updateCtrl = new UpdateCheckBW(config, plCtrl);
-                playerBW = new PlayerBW(config, updateCtrl, mpvProc, plCtrl);
+                if(!plCtrl.IsEmpty()) plCtrl.CheckFilesInPlaylist(); // сверяет файл плейлиста и содержимое папки плейлиста
+                playlistUpdatesBW = new PlaylistUpdatesBW(config, plCtrl);
+                playerBW = new PlayerBW(config, playlistUpdatesBW, mpvProc, plCtrl);
 
                 // создание хука
                 globalHook = new UserActivityHook();
@@ -86,10 +86,10 @@ namespace videowp
                 globalHook.OnMouseActivity += (object sender, MouseEventArgs e) => playerBW.StopShowWallpaper(); // движение мыши
                 globalHook.Start(true, true);
 
-                if(!plCtrl.playlistFolderPath.Equals("") && !config.UpdateServer.Equals("")) updateCtrl.Start();
+                if(!plCtrl.playlistFolderPath.Equals("") && !config.UpdateServer.Equals("")) playlistUpdatesBW.Start(); // запуск сверки плейлиста с сетевой папкой
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                mainForm = new MainForm(config, playerBW, plCtrl, updateCtrl);
+                mainForm = new MainForm(config, playerBW, plCtrl, playlistUpdatesBW);
                 if (InstanceCheck()) Application.Run();               
             }      
         }

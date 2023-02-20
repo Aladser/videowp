@@ -6,7 +6,10 @@ using videowp.Formes;
 
 namespace videowp.Classes
 {
-    internal class UpdateCheckBW
+    /// <summary>
+    /// Синхронизирует локальный и сетевой плейлисты
+    /// </summary>
+    internal class PlaylistUpdatesBW
     {
         readonly BackgroundWorker bw = new BackgroundWorker();
         public string SharePath
@@ -18,7 +21,7 @@ namespace videowp.Classes
         readonly ConfigControl config;
         readonly int[] times = {1, 30, 60, 120, 240, 480}; // время проверки обновлений
 
-        public UpdateCheckBW(ConfigControl config, PlaylistControl pl)
+        public PlaylistUpdatesBW(ConfigControl config, PlaylistControl pl)
         {
             bw.DoWork += BW_DoWork;
             bw.WorkerSupportsCancellation = true;

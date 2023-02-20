@@ -55,7 +55,7 @@
     <Compile Include="Classes\ConfigControl.cs" />
     <Compile Include="Classes\FuncBackwork.cs" />
     <Compile Include="Classes\PlaylistControl.cs" />
-    <Compile Include="Classes\UpdateCheckBW.cs" />
+    <Compile Include="Classes\PlaylistUpdatesBW.cs" />
     <Compile Include="Formes\MainFrame.cs">
       <SubType>Form</SubType>
     </Compile>

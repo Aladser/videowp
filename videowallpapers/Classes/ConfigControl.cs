@@ -4,7 +4,9 @@ using System.Windows.Forms;
 
 namespace videowp
 {
-    // Конфигурационный Control
+    /// <summary>
+    /// Конфигурация программы
+    /// </summary>
     internal class ConfigControl
     {
         // путь к конфигурационному файлу

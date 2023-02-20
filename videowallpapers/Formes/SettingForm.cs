@@ -11,10 +11,10 @@ namespace videowp.Formes
         bool firstShowBoot = true; // флаг первого показа окна
         readonly PlaylistControl playlist;
         readonly ConfigControl config;
-        readonly UpdateCheckBW updateSrv;
+        readonly PlaylistUpdatesBW updateSrv;
         string lastSrv = "";
 
-        public SettingForm(PlaylistControl pl, ConfigControl config, UpdateCheckBW updateSrv)
+        public SettingForm(PlaylistControl pl, ConfigControl config, PlaylistUpdatesBW updateSrv)
         {
             InitializeComponent();
             CenterToScreen();
@@ -70,7 +70,7 @@ namespace videowp.Formes
         // показ конца копирования
         public void ShowProgressEnd()
         {
-            this.Invoke(new MethodInvoker(delegate { this.Close(); }));
+            this.Invoke(new MethodInvoker(delegate { this.Close(); }));            
             MessageBox.Show("Копирование завершено");
         }
 

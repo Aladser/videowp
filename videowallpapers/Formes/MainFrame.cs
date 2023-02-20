@@ -16,20 +16,20 @@ namespace videowp
         readonly int DISABLED = 2;
 
         readonly ConfigControl config;
-        readonly PlayerBW bcgwork;
+        readonly PlayerBW playerBW;
         readonly PlaylistControl playlist;
-        readonly UpdateCheckBW updateSearch;
+        readonly PlaylistUpdatesBW updateSearch;
 
         readonly FolderBrowserDialog fbd = new FolderBrowserDialog();
         readonly Bitmap[] switcher = {Properties.Resources.offbtn, Properties.Resources.onbtn, Properties.Resources.disabledbtn}; // переключатель        
         int switcherIndex; // индекс переключателя 
 
-        public MainForm(ConfigControl config, PlayerBW bcgwork, PlaylistControl pl, UpdateCheckBW updtSrch)
+        public MainForm(ConfigControl config, PlayerBW playerBW, PlaylistControl pl, PlaylistUpdatesBW updtSrch)
         {
             InitializeComponent();
             CenterToScreen();
             this.config = config;
-            this.bcgwork = bcgwork;
+            this.playerBW = playerBW;
             playlist = pl;
             updateSearch = updtSrch;
 
@@ -60,7 +60,7 @@ namespace videowp
             {
                 SetSwitcherImage(ON);               
                 playlistSelectButton.Enabled = false;
-                bcgwork.Start();
+                playerBW.Start();
             }
             // пустая папка с видео
             else if (playlist.playlistFolderPath.Equals("") || playlist.IsEmpty())
@@ -90,13 +90,13 @@ namespace videowp
             {
                 SetSwitcherImage(ON);
                 playlistSelectButton.Enabled = false;
-                bcgwork.Start();
+                playerBW.Start();
             }
             else
             {
                 SetSwitcherImage(OFF);
                 playlistSelectButton.Enabled = true;
-                bcgwork.Stop();
+                playerBW.Stop();
             }
         }
         
@@ -177,7 +177,7 @@ namespace videowp
         void ExitBtn_Click(object sender, EventArgs e)
         {
             updateSearch.Stop();
-            bcgwork.Stop();
+            playerBW.Stop();
             Process.GetCurrentProcess().Kill();
         }
     }
