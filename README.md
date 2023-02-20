@@ -19,3 +19,5 @@
 
 ### Окно настроек
 ![Окно настроек](/images/Screenshot_2.png)
+
+[Скачать Видеообои 1.57](https://drive.google.com/file/d/1jaudYaRUn5rKYykLVPILZi0QB2rXFPAN/view?usp=sharing)
