@@ -86,6 +86,7 @@ namespace videowp.Classes
             if (setForm != null) setForm.ShowProgressEnd();
         }
 
+        // асинхронно получить видео из сетевой папки
         public void BW_GetFilesFromShare(object sender, DoWorkEventArgs e)
         {
             GetFilesFromShare((SettingForm)e.Argument);

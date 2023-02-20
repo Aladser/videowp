@@ -53,6 +53,27 @@ namespace videowp.Formes
             }
         }
 
+        // установка шага прогресса
+        public void SetStepOfProgress(int stepSize)
+        {
+            this.progressBar.Step = stepSize;
+            this.progressBar.Value = 0;
+            this.progressBar.Invoke(new MethodInvoker(delegate { this.progressBar.Visible = true; }));
+        }
+
+        // изменение прогресса
+        public void PerfromStepOfProgress()
+        {
+            this.progressBar.Invoke(new MethodInvoker(delegate { this.progressBar.PerformStep(); }));
+        }
+
+        // показ конца копирования
+        public void ShowProgressEnd()
+        {
+            this.Invoke(new MethodInvoker(delegate { this.Close(); }));
+            MessageBox.Show("Копирование завершено");
+        }
+
         // флаг автозагрузки
         private void AutoLoaderCheckbox_CheckedChanged(object sender, EventArgs e)
         {
@@ -101,27 +122,6 @@ namespace videowp.Formes
                 firstShowBoot = false;
                 config.OverWindows = Convert.ToInt32(overWindowsCheckbox.Checked);
             }
-        }
-
-        // установка шага прогресса
-        public void SetStepOfProgress(int stepSize)
-        {
-            this.progressBar.Step = stepSize;
-            this.progressBar.Value = 0;
-            this.progressBar.Invoke(new MethodInvoker(delegate { this.progressBar.Visible = true; }));
-        }
-
-        // изменение прогресса
-        public void PerfromStepOfProgress()
-        {
-            this.progressBar.Invoke(new MethodInvoker(delegate {this.progressBar.PerformStep();}));
-        }
-
-        // показ конца копирования
-        public void ShowProgressEnd()
-        {
-            progressLabel.Invoke(new MethodInvoker(delegate { progressLabel.Visible = true; }));
-            progressBar.Value = 100;
         }
 
         // сброс сервера обновлений

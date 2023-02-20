@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingForm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.progressLabel = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -47,7 +46,6 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.progressLabel);
             this.groupBox1.Controls.Add(this.progressBar);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
@@ -64,24 +62,15 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(753, 490);
+            this.groupBox1.Size = new System.Drawing.Size(753, 335);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Настройки";
             // 
-            // progressLabel
-            // 
-            this.progressLabel.Location = new System.Drawing.Point(272, 423);
-            this.progressLabel.Name = "progressLabel";
-            this.progressLabel.Size = new System.Drawing.Size(256, 29);
-            this.progressLabel.TabIndex = 14;
-            this.progressLabel.Text = "Копирование завершено";
-            this.progressLabel.Visible = false;
-            // 
             // progressBar
             // 
             this.progressBar.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.progressBar.Location = new System.Drawing.Point(126, 376);
+            this.progressBar.Location = new System.Drawing.Point(118, 287);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(503, 23);
             this.progressBar.TabIndex = 13;
@@ -89,7 +78,7 @@
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(500, 321);
+            this.label3.Location = new System.Drawing.Point(492, 232);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(64, 32);
@@ -98,7 +87,7 @@
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(173, 319);
+            this.label2.Location = new System.Drawing.Point(165, 230);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(215, 32);
@@ -117,7 +106,7 @@
             "120",
             "240",
             "480"});
-            this.updateTimeComboBox.Location = new System.Drawing.Point(409, 321);
+            this.updateTimeComboBox.Location = new System.Drawing.Point(401, 232);
             this.updateTimeComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.updateTimeComboBox.Name = "updateTimeComboBox";
             this.updateTimeComboBox.Size = new System.Drawing.Size(83, 36);
@@ -128,7 +117,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(120, 192);
+            this.label1.Location = new System.Drawing.Point(112, 103);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(229, 28);
@@ -137,7 +126,7 @@
             // 
             // overWindowsCheckbox
             // 
-            this.overWindowsCheckbox.Location = new System.Drawing.Point(518, 136);
+            this.overWindowsCheckbox.Location = new System.Drawing.Point(510, 47);
             this.overWindowsCheckbox.Margin = new System.Windows.Forms.Padding(4);
             this.overWindowsCheckbox.Name = "overWindowsCheckbox";
             this.overWindowsCheckbox.Size = new System.Drawing.Size(208, 32);
@@ -149,7 +138,7 @@
             // resetUpdateSrvBtn
             // 
             this.resetUpdateSrvBtn.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.resetUpdateSrvBtn.Location = new System.Drawing.Point(386, 264);
+            this.resetUpdateSrvBtn.Location = new System.Drawing.Point(378, 175);
             this.resetUpdateSrvBtn.Margin = new System.Windows.Forms.Padding(4);
             this.resetUpdateSrvBtn.Name = "resetUpdateSrvBtn";
             this.resetUpdateSrvBtn.Size = new System.Drawing.Size(113, 36);
@@ -161,7 +150,7 @@
             // setUpdateSrvBtn
             // 
             this.setUpdateSrvBtn.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.setUpdateSrvBtn.Location = new System.Drawing.Point(262, 264);
+            this.setUpdateSrvBtn.Location = new System.Drawing.Point(254, 175);
             this.setUpdateSrvBtn.Margin = new System.Windows.Forms.Padding(4);
             this.setUpdateSrvBtn.Name = "setUpdateSrvBtn";
             this.setUpdateSrvBtn.Size = new System.Drawing.Size(113, 36);
@@ -173,7 +162,7 @@
             // updateSrvField
             // 
             this.updateSrvField.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.updateSrvField.Location = new System.Drawing.Point(126, 222);
+            this.updateSrvField.Location = new System.Drawing.Point(118, 133);
             this.updateSrvField.Margin = new System.Windows.Forms.Padding(4);
             this.updateSrvField.Name = "updateSrvField";
             this.updateSrvField.Size = new System.Drawing.Size(503, 34);
@@ -184,7 +173,7 @@
             // autoShowCheckbox
             // 
             this.autoShowCheckbox.AutoSize = true;
-            this.autoShowCheckbox.Location = new System.Drawing.Point(46, 136);
+            this.autoShowCheckbox.Location = new System.Drawing.Point(38, 47);
             this.autoShowCheckbox.Margin = new System.Windows.Forms.Padding(4);
             this.autoShowCheckbox.Name = "autoShowCheckbox";
             this.autoShowCheckbox.Size = new System.Drawing.Size(222, 32);
@@ -196,7 +185,7 @@
             // autoLoaderCheckbox
             // 
             this.autoLoaderCheckbox.AutoSize = true;
-            this.autoLoaderCheckbox.Location = new System.Drawing.Point(319, 136);
+            this.autoLoaderCheckbox.Location = new System.Drawing.Point(311, 47);
             this.autoLoaderCheckbox.Margin = new System.Windows.Forms.Padding(4);
             this.autoLoaderCheckbox.Name = "autoLoaderCheckbox";
             this.autoLoaderCheckbox.Size = new System.Drawing.Size(156, 32);
@@ -210,7 +199,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(784, 521);
+            this.ClientSize = new System.Drawing.Size(784, 377);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -241,6 +230,5 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox updateTimeComboBox;
         private System.Windows.Forms.ProgressBar progressBar;
-        private System.Windows.Forms.Label progressLabel;
     }
 }
