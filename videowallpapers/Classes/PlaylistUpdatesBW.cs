@@ -39,8 +39,7 @@ namespace videowp.Classes
             {
                 Console.WriteLine($"Проверка обновлений {i++}");
                 if (IsShareConnection() && Directory.Exists(playlist.playlistFolderPath)) GetFilesFromShare();
-                //Thread.Sleep(times[config.UpdateTime]*60000);
-                Thread.Sleep(times[config.UpdateTime] * 15000);
+                Thread.Sleep(times[config.UpdateTime]*60000);
             }
         }
 
