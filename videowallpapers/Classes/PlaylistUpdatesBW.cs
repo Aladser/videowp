@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Threading;
@@ -33,10 +34,13 @@ namespace videowp.Classes
         // фоновая задача
         void BW_DoWork(object sender, DoWorkEventArgs e)
         {
+            int i = 0;
             while (true)
             {
+                Console.WriteLine($"Проверка обновлений {i++}");
                 if (IsShareConnection() && Directory.Exists(playlist.playlistFolderPath)) GetFilesFromShare();
-                Thread.Sleep(times[config.UpdateTime]*60000);
+                //Thread.Sleep(times[config.UpdateTime]*60000);
+                Thread.Sleep(times[config.UpdateTime] * 15000);
             }
         }
 
@@ -44,19 +48,20 @@ namespace videowp.Classes
         public void GetFilesFromShare(SettingForm setForm = null)
         {
             List<string> srcFiles = VideoFileFunctions.GetVideofilesFromFolder(config.UpdateServer, true); // файлы из сетевой папки
-            List<string> dstFiles = VideoFileFunctions.GetVideofilesFromFolder(playlist.playlistFolderPath, true); // файлы из папки плейлиста
+            List<string> localFiles = VideoFileFunctions.GetVideofilesFromFolder(playlist.playlistFolderPath, true); // файлы из папки плейлиста
+
             IsNewData = false; // новые данные?
-            bool isEmptyPlaylist = dstFiles.Count == 0; // пустая папка плейлиста?
+            bool isEmptyPlaylist = localFiles.Count == 0; // пустая папка плейлиста?
             // проверка целостности файлов в папке плейлиста
             int i = 0;
             string path;
-            while (i < dstFiles.Count)
+            while (i < localFiles.Count)
             {
-                path = $"{playlist.playlistFolderPath}\\{dstFiles[i]}";
+                path = $"{playlist.playlistFolderPath}\\{localFiles[i]}";
                 if (!VideoFileFunctions.IsIntegrity(path))
                 {
                     File.Delete(path);
-                    dstFiles.RemoveAt(i);
+                    localFiles.RemoveAt(i);
                 }
                 else
                     i++;
@@ -65,7 +70,7 @@ namespace videowp.Classes
             if(setForm!=null && srcFiles.Count!=0) setForm.SetStepOfProgress(100/srcFiles.Count); // показ прогресса копирования
             foreach (string srcFilename in srcFiles)
             {
-                string findVideo = dstFiles.Find(x => x.Equals(srcFilename));
+                string findVideo = localFiles.Find(x => x.Equals(srcFilename));
                 if (findVideo == null)
                 {
                     IsNewData = true;
@@ -75,7 +80,7 @@ namespace videowp.Classes
             }
            
             // удаление файлов из папки, которых нет в сетевой папке
-            foreach (string dstFilename in dstFiles)
+            foreach (string dstFilename in localFiles)
             {
                 string findVideo = srcFiles.Find(x => x.Equals(dstFilename));
                 if (findVideo == null && IsShareConnection())
@@ -85,8 +90,13 @@ namespace videowp.Classes
                 }
             }
             // добавление новых видео, если папка плейлиста пуста
+            if (IsNewData) playlist.CheckFilesInPlaylist();
             if(isEmptyPlaylist && IsNewData) Program.mainForm.CheckEmptyPlaylist();
             if (setForm != null) setForm.ShowProgressEnd();
+
+            localFiles = VideoFileFunctions.GetVideofilesFromFolder(playlist.playlistFolderPath, true);
+            foreach (string el in localFiles) Console.Write($"{el} ");
+            Console.WriteLine();
         }
 
         // асинхронно получить видео из сетевой папки

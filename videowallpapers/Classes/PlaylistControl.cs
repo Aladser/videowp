@@ -30,7 +30,9 @@ namespace videowp.Classes
             }
         }
 
-        //добавление и удаление файлов в плейлист из папки
+        /// <summary>
+        /// Добавление и удаление файлов в файле плейлиста из папки
+        /// </summary>
         public void CheckFilesInPlaylist()
         {         
             // считывание плейлиста

@@ -132,7 +132,9 @@ namespace videowp
             showWallpaperSwitcher.Image = playlist.IsEmpty() ? switcher[DISABLED] : switcher[OFF];
         }
 
-        // асинхронная смена статуса плейлиста
+        /// <summary>
+        /// Асинхронная смена статуса плейлиста
+        /// </summary>
         public void CheckEmptyPlaylist()
         {
             if (!playlist.IsEmpty())
