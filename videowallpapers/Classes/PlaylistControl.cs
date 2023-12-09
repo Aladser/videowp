@@ -43,7 +43,17 @@ namespace videowp.Classes
             reader.Close();
             // считывание файлов папки и проверка целостности файлов
             List<string> dirFiles = VideoFileFunctions.GetVideofilesFromFolder(playlistFolderPath);
-            foreach (string elem in dirFiles) if (!VideoFileFunctions.IsIntegrity(elem)) File.Delete(elem);
+            foreach (string elem in dirFiles) {
+                if (!VideoFileFunctions.IsIntegrity(elem)) {
+                    try
+                    {
+                        File.Delete(elem);
+                    } catch(IOException)
+                    {
+                        continue;
+                    }
+                }
+            }
             // удаление несуществующих файлов из плейлиста
             int i = 0;
             bool isOldFiles = false;
@@ -71,9 +81,17 @@ namespace videowp.Classes
             // перезапись плейлиста
             if (isOldFiles)
             {
-                StreamWriter writer = new StreamWriter(PLAYLIST_PATH, false);
-                foreach (string elem in plFiles) writer.WriteLine(elem);
-                writer.Close();
+                try
+                {
+                    StreamWriter writer = new StreamWriter(PLAYLIST_PATH, false);
+                    foreach (string elem in plFiles) writer.WriteLine(elem);
+                    writer.Close();
+                }
+                catch (IOException)
+                {
+                    return;
+                }
+
             }
         }
 

@@ -13,12 +13,19 @@ namespace videowp.Classes
         // проверка на нули последнего процента файла
         public static bool IsIntegrity(string path)
         {
-            byte[] byteArr = File.ReadAllBytes(path);
-            int percent = (int)(byteArr.Length * 0.01);
-            int zeroCount = 0;
+            try
+            {
+                byte[] byteArr = File.ReadAllBytes(path);
+                int percent = (int)(byteArr.Length * 0.01);
+                int zeroCount = 0;
 
-            for (int j = byteArr.Length - 1; j > byteArr.Length - percent - 1; j--) if (byteArr[j] == 0) zeroCount++;
-            return zeroCount != percent;
+                for (int j = byteArr.Length - 1; j > byteArr.Length - percent - 1; j--) if (byteArr[j] == 0) zeroCount++;
+                return zeroCount != percent;
+            } catch(System.IO.IOException)
+            {
+                return false;
+            }
+
         }
         /// <summary>
         /// Получить файлы из папки
