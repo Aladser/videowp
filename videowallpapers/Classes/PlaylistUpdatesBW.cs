@@ -34,11 +34,12 @@ namespace videowp.Classes
         // фоновая задача
         void BW_DoWork(object sender, DoWorkEventArgs e)
         {
-            int i = 0;
             while (true)
             {
-                Console.WriteLine($"Проверка обновлений {i++}");
-                if (IsShareConnection() && Directory.Exists(playlist.playlistFolderPath)) GetFilesFromShare();
+                if (IsShareConnection() && Directory.Exists(playlist.playlistFolderPath))
+                {
+                    GetFilesFromShare();
+                }
                 Thread.Sleep(times[config.UpdateTime]*60000);
             }
         }
@@ -88,7 +89,7 @@ namespace videowp.Classes
                     File.Delete($"{playlist.playlistFolderPath}\\{dstFilename}");
                 }
             }
-            // добавление новых видео, если папка плейлиста пуста
+            // добавление новых видеофайлов, если папка плейлиста пуста
             if (IsNewData) playlist.CheckFilesInPlaylist();
             if(isEmptyPlaylist && IsNewData) Program.mainForm.CheckEmptyPlaylist();
             if (setForm != null) setForm.ShowProgressEnd();

@@ -39,11 +39,14 @@ namespace videowp.Classes
             StreamReader reader = new StreamReader(PLAYLIST_PATH);
             List<string> plFiles = new List<string>();
             string line;
-            while ((line = reader.ReadLine()) != null) plFiles.Add(line);
+            while ((line = reader.ReadLine()) != null) { 
+                plFiles.Add(line); 
+            }
             reader.Close();
             // считывание файлов папки и проверка целостности файлов
             List<string> dirFiles = VideoFileFunctions.GetVideofilesFromFolder(playlistFolderPath);
             foreach (string elem in dirFiles) {
+                // если файл копируется сейчас, пропускается
                 if (!VideoFileFunctions.IsIntegrity(elem)) {
                     try
                     {
