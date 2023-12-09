@@ -9,16 +9,18 @@ namespace videowp.Formes
     {
         bool firstLoadBoot = true; // флаг автозагрузки
         bool firstShowBoot = true; // флаг первого показа окна
+        readonly MainForm parentForm;
         readonly PlaylistControl playlist;
         readonly ConfigControl config;
         readonly PlaylistUpdatesBW updateSrv;
         string lastSrv = "";
 
-        public SettingForm(PlaylistControl pl, ConfigControl config, PlaylistUpdatesBW updateSrv)
+        public SettingForm(MainForm parentForm, PlaylistControl pl, ConfigControl config, PlaylistUpdatesBW updateSrv)
         {
             InitializeComponent();
             CenterToScreen();
-            playlist = pl;
+            this.parentForm = parentForm;
+            this.playlist = pl;
             this.config = config;
 
             autoLoaderCheckbox.Checked = File.Exists(Program.SHORTCUT);
@@ -29,15 +31,16 @@ namespace videowp.Formes
             updateTimeComboBox.SelectedIndex = config.UpdateTime;
         }
 
-        // ввод названия сервера
-        // \\192.168.1.100\Data\video
+        // активация сервера обновлений плейлиста
+        // \\x.x.x.x\video
         private void SetUpdateSrvBtn_Click(object sender, EventArgs e)
         {
             string srvName = updateSrvField.Text;
             if (Directory.Exists(srvName))
             {
                 config.UpdateServer = srvName;
-                updateSrv.SetShare(srvName);                
+                updateSrv.SetShare(srvName);
+                parentForm.SetPlayerActivation(0);
                 if (playlist.IsEmpty())
                     new FuncBackwork(updateSrv.BW_GetFilesFromShare, this).Start();
                 else
@@ -51,27 +54,6 @@ namespace videowp.Formes
                 lastSrv = updateSrvField.Text.Contains("нет связи") ? lastSrv : updateSrvField.Text;
                 updateSrvField.Text = $"{lastSrv}: нет связи";
             }
-        }
-
-        // установка шага прогресса
-        public void SetStepOfProgress(int stepSize)
-        {
-            this.progressBar.Step = stepSize;
-            this.progressBar.Value = 0;
-            this.progressBar.Invoke(new MethodInvoker(delegate { this.progressBar.Visible = true; }));
-        }
-
-        // изменение прогресса
-        public void PerfromStepOfProgress()
-        {
-            this.progressBar.Invoke(new MethodInvoker(delegate { this.progressBar.PerformStep(); }));
-        }
-
-        // показ конца копирования
-        public void ShowProgressEnd()
-        {
-            this.Invoke(new MethodInvoker(delegate { this.Close(); }));            
-            MessageBox.Show("Копирование завершено");
         }
 
         // флаг автозагрузки

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 using videowp.Classes;
 using videowp.Formes;
@@ -86,20 +87,32 @@ namespace videowp
         void ShowWallpaperSwitcher_Click(object sender, EventArgs e)
         {
             switcherIndex = switcherIndex == ON ? OFF : ON;
-            if (switcherIndex == ON)
+            SetPlayerActivation(switcherIndex);
+            setPlayerExecution(switcherIndex);
+        }
+        
+        // смена статуса переключателя плеера
+        public void SetPlayerActivation(int index)
+        {
+            playlistFolderNameLabel.Text = playlist.playlistFolderPath;
+            switcherIndex = index;
+            showWallpaperSwitcher.Enabled = true;
+            showWallpaperSwitcher.Image = switcher[index];
+        }
+
+        // включение - выключение плеера
+        void setPlayerExecution(int index)
+        {
+            if (index == ON)
             {
-                SetSwitcherImage(ON);
-                playlistSelectButton.Enabled = false;
                 playerBW.Start();
             }
             else
             {
-                SetSwitcherImage(OFF);
-                playlistSelectButton.Enabled = true;
                 playerBW.Stop();
             }
         }
-        
+
         // изменить изображение переключателя
         void SetSwitcherImage(int index){
             switcherIndex = index;
@@ -166,7 +179,7 @@ namespace videowp
 
         // показ окна настроек
         void SetupBtn_Click(object sender, EventArgs e){
-            new SettingForm(playlist, config, updateSearch).ShowDialog();
+            new SettingForm(this, playlist, config, updateSearch).ShowDialog();
         }
 
         // свернуть окно

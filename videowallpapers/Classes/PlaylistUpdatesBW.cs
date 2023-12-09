@@ -67,7 +67,6 @@ namespace videowp.Classes
                     i++;
             }
             // добавление файлов из сетевой папки
-            if(setForm!=null && srcFiles.Count!=0) setForm.SetStepOfProgress(100/srcFiles.Count); // показ прогресса копирования
             foreach (string srcFilename in srcFiles)
             {
                 string findVideo = localFiles.Find(x => x.Equals(srcFilename));
@@ -75,7 +74,6 @@ namespace videowp.Classes
                 {
                     IsNewData = true;
                     File.Copy($"{config.UpdateServer}\\{srcFilename}", $"{playlist.playlistFolderPath}\\{srcFilename}");
-                    if (setForm != null)  setForm.PerfromStepOfProgress(); // показ прогресса копирования
                 }
             }
            
@@ -92,7 +90,6 @@ namespace videowp.Classes
             // добавление новых видеофайлов, если папка плейлиста пуста
             if (IsNewData) playlist.CheckFilesInPlaylist();
             if(isEmptyPlaylist && IsNewData) Program.mainForm.CheckEmptyPlaylist();
-            if (setForm != null) setForm.ShowProgressEnd();
 
             localFiles = VideoFileFunctions.GetVideofilesFromFolder(playlist.playlistFolderPath, true);
             foreach (string el in localFiles) Console.Write($"{el} ");

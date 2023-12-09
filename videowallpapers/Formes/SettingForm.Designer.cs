@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingForm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.updateTimeComboBox = new System.Windows.Forms.ComboBox();
@@ -46,7 +45,6 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.progressBar);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.updateTimeComboBox);
@@ -62,19 +60,10 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(753, 335);
+            this.groupBox1.Size = new System.Drawing.Size(753, 317);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Настройки";
-            // 
-            // progressBar
-            // 
-            this.progressBar.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.progressBar.Location = new System.Drawing.Point(118, 287);
-            this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(503, 23);
-            this.progressBar.TabIndex = 13;
-            this.progressBar.Visible = false;
             // 
             // label3
             // 
@@ -199,7 +188,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(784, 377);
+            this.ClientSize = new System.Drawing.Size(784, 353);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -229,6 +218,5 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox updateTimeComboBox;
-        private System.Windows.Forms.ProgressBar progressBar;
     }
 }
