@@ -14,11 +14,6 @@ namespace videowp.Classes
 
         public PlaylistControl(string playlistFolderPath)
         {
-            // проверка папки с видео
-            if (!playlistFolderPath.Equals(""))
-                if (!Directory.Exists(playlistFolderPath)) Directory.CreateDirectory(playlistFolderPath);
-            else
-                this.playlistFolderPath = "";
             this.playlistFolderPath = playlistFolderPath;
 
             // проверка наличия плейлиста

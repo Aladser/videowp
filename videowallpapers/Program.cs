@@ -24,40 +24,6 @@ namespace videowp
         static ProcessStartInfo mpvProc; // MPV процесс в Windows
         static UserActivityHook globalHook; // хук глобального движения мыши или клавиатуры
 
-        // ярлык автозагрузки
-        public static bool IsAutoLoader
-        {
-            set
-            {
-                if (value)
-                {
-                    //Windows Script Host Shell Object
-                    dynamic shell = Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8")));
-                    try
-                    {
-                        var lnk = shell.CreateShortcut(Program.SHORTCUT);
-                        try
-                        {
-                            lnk.TargetPath = Application.ExecutablePath;
-                            lnk.IconLocation = "shell32.dll, 1";
-                            lnk.Save();
-                        }
-                        finally
-                        {
-                            Marshal.FinalReleaseComObject(lnk);
-                        }
-                    }
-                    finally
-                    {
-                        Marshal.FinalReleaseComObject(shell);
-                    }
-                }
-                // Удаление ярлыка
-                else
-                    File.Delete(Program.SHORTCUT);
-            }
-        }
-
         [STAThread]
         static void Main()   
         {
@@ -100,6 +66,40 @@ namespace videowp
         {
             InstanceCheckMutex = new Mutex(true, "videowp", out bool isNew);
             return isNew;
+        }
+
+        // ярлык автозагрузки
+        public static bool IsAutoLoader
+        {
+            set
+            {
+                if (value)
+                {
+                    //Windows Script Host Shell Object
+                    dynamic shell = Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8")));
+                    try
+                    {
+                        var lnk = shell.CreateShortcut(Program.SHORTCUT);
+                        try
+                        {
+                            lnk.TargetPath = Application.ExecutablePath;
+                            lnk.IconLocation = "shell32.dll, 1";
+                            lnk.Save();
+                        }
+                        finally
+                        {
+                            Marshal.FinalReleaseComObject(lnk);
+                        }
+                    }
+                    finally
+                    {
+                        Marshal.FinalReleaseComObject(shell);
+                    }
+                }
+                // Удаление ярлыка
+                else
+                    File.Delete(Program.SHORTCUT);
+            }
         }
     }
 }

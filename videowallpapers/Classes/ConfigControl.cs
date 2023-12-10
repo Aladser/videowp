@@ -9,9 +9,10 @@ namespace videowp
     /// </summary>
     internal class ConfigControl
     {
-        // путь к конфигурационному файлу
+        /// <summary>
+        /// путь к конфигурационному файлу
+        /// </summary>
         readonly string CONFIG_PATH = $"{Path.GetDirectoryName(Application.ExecutablePath)}\\videowp.cfg";
-        // Плейлист
         public string PlaylistFolderPath
         {
             set {
@@ -20,9 +21,11 @@ namespace videowp
             }
             get { return plFolderPath; }
         }
+        /// <summary>
+        /// папка плейлиста
+        /// </summary>
         string plFolderPath;
 
-        // индекс времени бездействия
         public int InactionIndex
         {
             set {
@@ -31,6 +34,9 @@ namespace videowp
             }
             get { return inactonIndex; }
         }
+        /// <summary>
+        /// индекс времени бездействия
+        /// </summary>
         int inactonIndex;
 
         // получить время бездействия в мс
@@ -40,7 +46,6 @@ namespace videowp
             return (int)(inactionTimeNumberList[inactonIndex] * 60000);
         }
 
-        // автозапуск обоев
         public int AutoShow
         {
             set {
@@ -49,9 +54,11 @@ namespace videowp
             }
             get { return autoshow; }
         }
+        /// <summary>
+        /// автозапуск обоев
+        /// </summary>
         int autoshow;
 
-        // повех всех окон
         public int OverWindows
         {
             set
@@ -61,9 +68,11 @@ namespace videowp
             }
             get { return overwindows; }
         }
+        /// <summary>
+        /// поверх всех окон
+        /// </summary>
         int overwindows;
 
-        // Путь к шаре с видео
         public string UpdateServer
         {
             set
@@ -73,9 +82,10 @@ namespace videowp
             }
             get { return updateSrv; }
         }
+        /// <summary>
+        /// Путь к шаре с видео
+        /// </summary>
         string updateSrv;
-
-        // время проверки обновлений
         public int UpdateTime{
             set { 
                 updatetime = value;
@@ -83,6 +93,9 @@ namespace videowp
             }
             get { return updatetime; }
         }
+        /// <summary>
+        /// время проверки обновлений
+        /// </summary>
         int updatetime;
 
         public ConfigControl()
@@ -110,29 +123,38 @@ namespace videowp
             StreamReader reader = new StreamReader(CONFIG_PATH);
             try
             {
+                // папка плейлиста
                 string line = reader.ReadLine();
                 plFolderPath = line.Substring(line.IndexOf("= ") + 2);
                 if (!plFolderPath.Equals(""))
                 {
-                    if (!Directory.Exists(plFolderPath)) Directory.CreateDirectory(plFolderPath);
+                    if (!Directory.Exists(plFolderPath))
+                    {
+                        plFolderPath = "";
+                        this.WriteToFile();
+                    }
                 }
-
+                // время бездейтсвия
                 line = reader.ReadLine();
                 inactonIndex = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
-
+                // автопоказ
                 line = reader.ReadLine();
                 autoshow = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
-
+                // поверх всех окон
                 line = reader.ReadLine();
                 overwindows = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
-
+                // сетевая папка
                 line = reader.ReadLine();
                 updateSrv = line.Substring(line.IndexOf("= ") + 2);
                 if (!updateSrv.Equals(""))
                 {
-                    if (!Directory.Exists(plFolderPath)) Directory.CreateDirectory(updateSrv);
+                    if (!Directory.Exists(plFolderPath))
+                    {
+                        updateSrv = "";
+                        this.WriteToFile();
+                    }
                 }
-
+                // время обновления из сетевой папки видеофайлов
                 line = reader.ReadLine();
                 updatetime = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
             }
