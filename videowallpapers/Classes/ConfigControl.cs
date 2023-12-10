@@ -39,7 +39,9 @@ namespace videowp
         /// </summary>
         int inactonIndex;
 
-        // получить время бездействия в мс
+        /// <summary>
+        /// получить время бездействия в мс
+        /// </summary>
         public int GetInactionTime()
         {
             double[] inactionTimeNumberList = { 0.01, 1, 3, 5, 10, 15 };
@@ -82,6 +84,7 @@ namespace videowp
             }
             get { return updateSrv; }
         }
+
         /// <summary>
         /// Путь к шаре с видео
         /// </summary>
@@ -100,12 +103,9 @@ namespace videowp
 
         public ConfigControl()
         {
-            if (File.Exists(CONFIG_PATH))
-            {
+            if (File.Exists(CONFIG_PATH)) {
                 this.ReadFromFile();
-            }
-            else
-            {
+            } else {
                 MessageBox.Show("Конфигурационный файл не найден. Установлены стандартные настройки");
                 plFolderPath = "";
                 inactonIndex = 0;
@@ -126,10 +126,8 @@ namespace videowp
                 // папка плейлиста
                 string line = reader.ReadLine();
                 plFolderPath = line.Substring(line.IndexOf("= ") + 2);
-                if (!plFolderPath.Equals(""))
-                {
-                    if (!Directory.Exists(plFolderPath))
-                    {
+                if (!plFolderPath.Equals("")) {
+                    if (!Directory.Exists(plFolderPath)) {
                         plFolderPath = "";
                         this.WriteToFile();
                     }
@@ -146,10 +144,8 @@ namespace videowp
                 // сетевая папка
                 line = reader.ReadLine();
                 updateSrv = line.Substring(line.IndexOf("= ") + 2);
-                if (!updateSrv.Equals(""))
-                {
-                    if (!Directory.Exists(plFolderPath))
-                    {
+                if (!updateSrv.Equals("")) {
+                    if (!Directory.Exists(plFolderPath)) {
                         updateSrv = "";
                         this.WriteToFile();
                     }
@@ -157,9 +153,7 @@ namespace videowp
                 // время обновления из сетевой папки видеофайлов
                 line = reader.ReadLine();
                 updatetime = Int32.Parse(line.Substring(line.IndexOf("= ") + 2));
-            }
-            catch (Exception exc)
-            {
+            } catch (Exception exc) {
                 MessageBox.Show(exc.Message);
             }
             reader.Close();
