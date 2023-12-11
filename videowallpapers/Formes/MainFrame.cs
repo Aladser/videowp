@@ -34,7 +34,7 @@ namespace videowp
             playlist = pl;
             updateSearch = updtSrch;
 
-            notifyIcon.Text = "Aladser Видеообои";
+            notifyIcon.Text = "Aladser VW";
             timeComboBox.SelectedIndex = config.InactionIndex; // считывание времени заставки
 
             // цвет элементов
