@@ -93,7 +93,13 @@ namespace videowp
             }
         }
 
-        public void Start(){bw.RunWorkerAsync(); }
+        public void Start(){
+            Console.WriteLine(this.IsActive());
+            if (!this.IsActive())
+            {
+                bw.RunWorkerAsync();
+            }
+        }
         public void Stop(){ bw.CancelAsync();}
         public bool IsActive() { return bw.IsBusy; }
 

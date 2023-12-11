@@ -122,7 +122,7 @@
             this.infoBtn.Size = new System.Drawing.Size(20, 20);
             this.infoBtn.TabIndex = 31;
             this.infoBtn.TabStop = false;
-            this.toolTip.SetToolTip(this.infoBtn, "Видеобои 1.6\r\nAladser ©\r\n2022");
+            this.toolTip.SetToolTip(this.infoBtn, "Видеобои 1.62\r\nAladser ©\r\n2023");
             // 
             // setupBtn
             // 
@@ -208,7 +208,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Видеобои 1.6";
+            this.Text = "Видеобои 1.62";
             this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.minBtn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.exitBtn)).EndInit();
